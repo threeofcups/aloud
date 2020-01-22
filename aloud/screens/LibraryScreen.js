@@ -7,7 +7,7 @@ export default function LibraryScreen() {
    const [value, onChangeText] = React.useState('Search term')
   return (
 <View>
-  {/* <Icon> magnifying glass</Icon> */}
+  {/* // Todo <Icon> magnifying glass</Icon> */}
   <TextInput
   style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
   onChangeText={text => onChangeText(text)}

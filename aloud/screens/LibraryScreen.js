@@ -1,12 +1,17 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Text, Platform, TextInput, StatusBar, StyleSheet, View } from 'react-native';
 
 export default function LibraryScreen() {
-
+   const [value, onChangeText] = React.useState('type')
   return (
 <View>
-  <Text> This is the Library Screen</Text>
+  {/* <Icon> magnifying glass</Icon> */}
+  <Text>Search</Text>
+  <TextInput
+  style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+  onChangeText={text => onChangeText(text)}
+  value={value}/>
    {/* search input */}
    {/* <ScrollView>
    artists sounds collection tabs

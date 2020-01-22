@@ -20,7 +20,10 @@ export default function ProfileScreen() {
     'proName': proData[0].name_display,
     'proPic': proData[0].url_image,
     'proBio': proData[0].bio,
-    'collTitles': collData[0].title
+    'collImg': collData[0].url_image,
+    'recTitle': recData[0].title,
+    'recDescription': recData[0].description,
+    'recContent': recData[0].url_recording
   };
     return (
       <View style={styles.container}>
@@ -33,7 +36,16 @@ export default function ProfileScreen() {
         source={{uri: this.state['proPic']}}
         />
         <Text>Bio: {this.state['proBio']}</Text>
-    {/* <ScrollView>{this.state['collTitles']}</ScrollView> */}
+        <Text> {this.state.proInfo}'s Collections</Text> 
+      <Image
+      source={{uri: this.state.collImg, width: 64, height: 64}} />
+     <Text> {this.state.proInfo}'s Sounds</Text>
+     <ScrollView>
+      <Text>{this.state.recTitle}</Text>
+      <Text>{this.state.recDescription} </Text>
+      <View
+      source={{uri: this.state.recContent, width: 64, height: 64}} />
+      </ScrollView>
         {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>
     );

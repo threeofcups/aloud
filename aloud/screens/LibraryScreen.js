@@ -1,12 +1,21 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 export default function LibraryScreen() {
-  /**
-   * Go ahead and delete ExpoConfigView and replace it with your content;
-   * we just wanted to give you a quick view of your config.
-   */
-  return <ExpoConfigView />;
+
+  return (
+<View>
+  <Text> This is the Library Screen</Text>
+   {/* search input */}
+   {/* <ScrollView>
+   artists sounds collection tabs
+   ArtistListItem Component
+   SoundsListItem Component
+   CollectionsListItem Component */}
+
+</View>
+  );
 }
 
 LibraryScreen.navigationOptions = {

@@ -11,6 +11,8 @@ import LibraryScreen from '../screens/LibraryScreen';
 import SearchScreen from '../screens/SearchScreen';
 import RecordScreen from '../screens/RecordScreen';
 
+//Todo nav bar icons need to be changed
+
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},

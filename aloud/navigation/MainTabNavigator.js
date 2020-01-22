@@ -14,8 +14,9 @@ import RecordScreen from '../screens/RecordScreen';
 //Todo nav bar icons need to be changed
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
+  web: { headerMode: 'false' },
   default: {},
+  // default: { headerMode: "false"}, // this one will get rid of header bar at top of screen
 });
 
 const HomeStack = createStackNavigator(

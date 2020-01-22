@@ -8,12 +8,19 @@ import {
     TouchableOpacity,
     View,
   } from 'react-native';
+  import {Avatar} from 'react-native-elements'
 
 export default function ProfileScreen() {
 
   return (
       <View>
           <Text>This is the Profile Screen</Text>
+          <Avatar
+          rounded title ="Dot"
+          size="large"
+          
+          /> 
+
       </View>
   )
 }

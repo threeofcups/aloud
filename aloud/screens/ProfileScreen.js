@@ -15,12 +15,12 @@ import {
 
 export default function ProfileScreen() {
 
-  state = { 
-    'proInfo': proData[1].username,
-    'proName': proData[1].name_display,
-    'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
-    'proBio': proData[1].bio,
-  
+  state = {
+    'proInfo': proData[0].username,
+    'proName': proData[0].name_display,
+    'proPic': proData[0].url_image,
+    'proBio': proData[0].bio,
+    'collTitles': collData[0].title
   };
     return (
       <View style={styles.container}>
@@ -30,9 +30,10 @@ export default function ProfileScreen() {
         <Avatar
         rounded title ="Dot"
         size="large"
-        source={{uri: this.state.proPic}}
-        /> 
+        source={{uri: this.state['proPic']}}
+        />
         <Text>Bio: {this.state['proBio']}</Text>
+    {/* <ScrollView>{this.state['collTitles']}</ScrollView> */}
         {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>
     );

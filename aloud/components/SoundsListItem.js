@@ -3,14 +3,21 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
+import { ListItem } from 'react-native-elements';
 
 export default function SoundsListItem(props) {
   return (
-    <Ionicons
-      name={props.name}
-      size={26}
-      style={{ marginBottom: -3 }}
-      color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-    />
+    <ListItem
+        size="large"
+    leftAvatar={{
+       title:'Dot'
+    //   title: name[0],
+    //   source: { uri: avatar_url },
+    //   showEditButton: true,
+    }}
+    title={'dot'}
+    subtitle={'role'}
+    chevron
+  />
   );
 }

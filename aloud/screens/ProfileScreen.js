@@ -18,7 +18,6 @@ export default function ProfileScreen() {
           <Avatar
           rounded title ="Dot"
           size="large"
-          
           /> 
 
       </View>

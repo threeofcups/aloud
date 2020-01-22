@@ -5,12 +5,18 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import LibraryScreen from '../screens/LibraryScreen';
+import SearchScreen from '../screens/SearchScreen';
+import RecordScreen from '../screens/RecordScreen';
+
+//Todo nav bar icons need to be changed
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
+  web: { headerMode: 'false' },
   default: {},
+  // default: { headerMode: "false"}, // this one will get rid of header bar at top of screen
 });
 
 const HomeStack = createStackNavigator(
@@ -36,22 +42,6 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
-  {
-    Links: LinksScreen,
-  },
-  config
-);
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-  ),
-};
-
-LinksStack.path = '';
-
 const SettingsStack = createStackNavigator(
   {
     Settings: SettingsScreen,
@@ -68,10 +58,78 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen,
+  },
+  config
+);
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+ProfileStack.path = '';
+
+const LibraryStack = createStackNavigator(
+  {
+    Library: LibraryScreen,
+  },
+  config
+);
+
+LibraryStack.navigationOptions = {
+  tabBarLabel: 'Library',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+LibraryStack.path = '';
+
+const RecordStack = createStackNavigator(
+  {
+    Record: RecordScreen,
+  },
+  config
+);
+
+RecordStack.navigationOptions = {
+  tabBarLabel: 'Record',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+RecordStack.path = '';
+
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
+  },
+  config
+);
+
+SearchStack.navigationOptions = {
+  tabBarLabel: 'Search',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ),
+};
+
+SearchStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  SearchStack,
+  RecordStack,
+  LibraryStack,
+  ProfileStack,
+
+ 
 });
 
 tabNavigator.path = '';

@@ -9,21 +9,23 @@ import {
   Text,
   View,
 } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function RecordingsList(props) {
   const [recordings, setRecordings] = useState(recData);
 
   return (
     <View>
-    <Text>recordings list</Text>
+    <ScrollView>
+    <Text>{'    '}recordings</Text>
     <View>
       {
         recData.map((recording, i) => {
-         return <RecordingsListItem recording={recording}/>
+         return <RecordingsListItem key={i} recording={recording}/>
         })
       }
     </View>
+    </ScrollView>
     </View>
   );
 }

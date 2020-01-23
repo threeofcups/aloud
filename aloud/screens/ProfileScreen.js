@@ -13,34 +13,27 @@ import {
   import collData  from '../src/sampleCollData';
   import recData  from '../src/sampleRecData';
   import {Avatar} from 'react-native-elements'
+  //     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
-  // const [proInfo, setInfo] = useState(0)
-  // const [proName, setName] = useState(0)
-  // const [proPic, setPic] = useState(0)
-  // const [proBio, setBio] = useState(0)
+  const [proInfo, setInfo] = useState(proData[0].username)
+  const [proName, setName] = useState(proData[0].name_display)
+  const [proPic, setPic] = useState(proData[0].url_image)
+  const [proBio, setBio] = useState(proData[0].bio)
   const [value, onChangeText] = React.useState('new name')
   const [edit, toggleEditMode] = useState('false')
-  // toggleEditMode(false)
-//   state = { 
-//     'proInfo': proData[0].username,
-//     'proName': proData[1].name_display,
-//     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
-//     'proBio': proData[1].bio,
+  const [collImg] = useState(collData[0].url_image)
+  const [recTitle] = useState(recData[0].title) 
+  const [recDescription] = useState(recData[0].description)
+  const [recContent] = useState(recData[0].url_recording) 
+  // state = {
+  //   // 'collImg': collData[0].url_image,
+  //   'recTitle': recData[0].title,
+  //   'recDescription': recData[0].description,
+  //   'recContent': recData[0].url_recording
 
-
-  state = {
-    'proInfo': proData[0].username,
-    'proName': proData[0].name_display,
-    'proPic': proData[0].url_image,
-    'proBio': proData[0].bio,
-    'collImg': collData[0].url_image,
-    'recTitle': recData[0].title,
-    'recDescription': recData[0].description,
-    'recContent': recData[0].url_recording
-
-  };
-  // handleEditMode = handleEditMode.bind(this)
+  // };
+  
 
  const handleEditMode = ()=> {
    console.log('dot')
@@ -59,25 +52,25 @@ export default function ProfileScreen() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>aloud</Text>
-        <Text style={styles.instructions}>{this.state['proInfo']}'s Profile</Text>
+        <Text style={styles.instructions}>{proInfo}'s Profile</Text>
         
-        {edit === 'true' ? editName: <Text>@{this.state['proName']}</Text> }
+        {edit === 'true' ? editName: <Text>@{proName}</Text> }
         <Avatar onPress={() => {handleEditMode()}}
         rounded title ="Dot"
         size="large"
-        source={{uri: this.state['proPic']}}
+        source={{uri: proPic}}
         />
-        <Text>Bio: {this.state['proBio']}</Text>
+        <Text>Bio: {proBio}</Text>
 
-        <Text> {this.state.proInfo}'s Collections</Text> 
+        <Text> {proInfo}'s Collections</Text> 
       <Image
-      source={{uri: this.state.collImg, width: 64, height: 64}} />
-     <Text> {this.state.proInfo}'s Sounds</Text>
+      source={{uri: collImg, width: 64, height: 64}} />
+     <Text> {proInfo}'s Sounds</Text>
      <ScrollView>
-      <Text>{this.state.recTitle}</Text>
-      <Text>{this.state.recDescription} </Text>
+      <Text>{recTitle}</Text>
+      <Text>{recDescription} </Text>
       <View
-      source={{uri: this.state.recContent, width: 64, height: 64}} />
+      source={{uri: recContent, width: 64, height: 64}} />
       </ScrollView>
         {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>

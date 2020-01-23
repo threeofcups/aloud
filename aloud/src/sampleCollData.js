@@ -10,6 +10,7 @@ const collData = [
   {
     id: 1,
     id_user_creator: 1,
+    user: 'bjork',
     title: 'The Jams',
     description: 'Permanence of the stars Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur astonishment birth inconspicuous motes of rock and gas globular star cluster.',
     created_at: '2020-01-21 11:51:36.310508',
@@ -19,6 +20,7 @@ const collData = [
   {
     id: 2,
     id_user_creator: 2,
+    user: 'bowie',
     title: 'The Joints',
     description: 'Great turbulent clouds made in the interiors of collapsing stars qui dolorem ipsum quia dolor sit amet shores of the cosmic ocean hydrogen atoms take root and flourish.',
     created_at: '2020-01-21 11:52:36.310508',
@@ -28,6 +30,7 @@ const collData = [
   {
     id: 3,
     id_user_creator: 3,
+    user: 'jarman',
     title: 'The Bops',
     description: 'Stirred by starlight Orion\'s sword gathered by gravity from which we spring the only home weve ever known a mote of dust suspended in a sunbeam?',
     created_at: '2020-01-21 11:53:36.310508',
@@ -37,6 +40,7 @@ const collData = [
   {
     id: 4,
     id_user_creator: 4,
+    user: 'hara',
     title: 'The Breaks',
     description: 'Prime number shores of the cosmic ocean encyclopaedia galactica take root and flourish ship of the imagination Rig Veda. ',
     created_at: '2020-01-21 11:54:36.310508',

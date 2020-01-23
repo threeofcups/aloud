@@ -14,6 +14,7 @@ const recData = [
   {
     id: 1,
     id_user: 1,
+    user: 'bjork',
     title: 'jammin',
     description: 'Vastness is bearable only through love two ghostly white figures in coveralls and helmets are soflty dancing something',
     url_recording: 'https://www.epidemicsound.com/track/qQwBjFKxdn',
@@ -24,6 +25,7 @@ const recData = [
   {
     id: 2,
     id_user: 2,
+    user: 'bowie',
     title: 'singin',
     description: 'Tendrils of gossamer clouds a still more glorious dawn awaits a mote of dust suspended in a sunbeam rich in heavy atoms a billion trillion cosmic ocean',
     url_recording: 'https://www.epidemicsound.com/track/CVGgQ7PEV7',
@@ -34,6 +36,7 @@ const recData = [
   {
     id: 3,
     id_user: 3,
+    user: 'jarman',
     title: 'talkin',
     description: 'Sea of Tranquility courage of our questions galaxies white dwarf encyclopaedia galactica emerged into consciousness.',
     url_recording: 'https://www.epidemicsound.com/track/S03xNi2zfK',
@@ -44,6 +47,7 @@ const recData = [
   {
     id: 4,
     id_user: 4,
+    user: 'hara',
     title: 'cryin',
     description: 'Dream of the mind\'s eye network of wormholes globular star cluster dispassionate extraterrestrial observer the carbon in our apple pies bits of moving fluff',
     url_recording: 'https://www.epidemicsound.com/track/gZp2yXNUEA',

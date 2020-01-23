@@ -1,5 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import  React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Image,
   Platform,
@@ -13,7 +15,20 @@ import {
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
-  return (
+
+  //const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    axios.get('https://aloud-server.appspot.com/home')
+    .then(response => {
+      console.log(response)
+      
+    })
+    .catch(err => console.log('there was an axios err', err))
+  });
+
+
+    return(
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
@@ -66,7 +81,8 @@ export default function HomeScreen() {
         </View>
       </View>
     </View>
-  );
+  )
+
 }
 
 HomeScreen.navigationOptions = {

@@ -1,12 +1,22 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default function RecordScreen() {
-  /**
-   * Go ahead and delete ExpoConfigView and replace it with your content;
-   * we just wanted to give you a quick view of your config.
-   */
-  return <ExpoConfigView />;
+
+  return (
+    <View>
+      <Text>This is the Recording Component</Text>
+    </View>
+  );
 }
 
 RecordScreen.navigationOptions = {

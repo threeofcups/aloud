@@ -22,11 +22,23 @@ export default function ProfileScreen() {
   const [value, onChangeText] = React.useState('new name')
   const [edit, toggleEditMode] = useState('false')
   // toggleEditMode(false)
-  state = { 
+//   state = { 
+//     'proInfo': proData[0].username,
+//     'proName': proData[1].name_display,
+//     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
+//     'proBio': proData[1].bio,
+
+
+  state = {
     'proInfo': proData[0].username,
-    'proName': proData[1].name_display,
-    'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
-    'proBio': proData[1].bio,
+    'proName': proData[0].name_display,
+    'proPic': proData[0].url_image,
+    'proBio': proData[0].bio,
+    'collImg': collData[0].url_image,
+    'recTitle': recData[0].title,
+    'recDescription': recData[0].description,
+    'recContent': recData[0].url_recording
+
   };
   // handleEditMode = handleEditMode.bind(this)
 
@@ -53,9 +65,21 @@ export default function ProfileScreen() {
         <Avatar onPress={() => {handleEditMode()}}
         rounded title ="Dot"
         size="large"
-        source={{uri: this.state.proPic}}
-        /> 
+        source={{uri: this.state['proPic']}}
+        />
         <Text>Bio: {this.state['proBio']}</Text>
+
+        <Text> {this.state.proInfo}'s Collections</Text> 
+      <Image
+      source={{uri: this.state.collImg, width: 64, height: 64}} />
+     <Text> {this.state.proInfo}'s Sounds</Text>
+     <ScrollView>
+      <Text>{this.state.recTitle}</Text>
+      <Text>{this.state.recDescription} </Text>
+      <View
+      source={{uri: this.state.recContent, width: 64, height: 64}} />
+      </ScrollView>
+        {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>
     );
   }

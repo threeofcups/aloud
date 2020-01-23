@@ -31,6 +31,7 @@ export default function HomeScreen() {
           /> */}
         </View>
         <View>
+        <CollectionsList />
         <RecordingsList /> 
         </View>
       </ScrollView>

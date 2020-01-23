@@ -18,13 +18,14 @@ export default function SearchScreen() {
 
   return (
   <ScrollView>
-    <Text>search bar</Text>
+    {/* <Text>search bar</Text> */}
       <TextInput
         style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => onChangeText(text)}
         value={value}
       />
       <CollectionsList />
+      <RecordingsList />
   </ScrollView>
   );
 }

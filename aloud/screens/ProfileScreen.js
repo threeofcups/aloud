@@ -52,13 +52,8 @@ export default function ProfileScreen() {
       // todo center text and avatar
         <View style={styles.container}>
           <ScrollView>
-            
-
         <Text style={styles.text} >aloud</Text>
-      
         {/* {edit === 'true' ? editName:  */}
-
-        
         {/* //! handleEditMode is not being used for mvp */}
         <Avatar 
         // onPress={() => {handleEditMode()}}

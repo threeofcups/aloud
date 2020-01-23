@@ -22,6 +22,7 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
+        {/* //todo messaging icon */}
       <Header 
       backgroundColor={'#fbf0f2'}
       centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}

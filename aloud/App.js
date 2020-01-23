@@ -25,7 +25,8 @@ export default function App(props) {
       <Header 
       backgroundColor={'#fbf0f2'}
       centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
-      rightComponent={}/>
+      // rightComponent={}
+      />
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
       </View>

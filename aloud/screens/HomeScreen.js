@@ -2,7 +2,6 @@ import * as WebBrowser from 'expo-web-browser';
 import  React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import React from 'react';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
 
@@ -33,8 +32,8 @@ export default function HomeScreen() {
     .catch(err => console.log('there was an axios err', err))
   });
 
-  return null;
-}
+  // return null;
+
 
   return (
     <View style={styles.container}>

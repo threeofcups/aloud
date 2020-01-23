@@ -21,7 +21,7 @@ export default function HomeScreen() {
   useEffect(() => {
     axios.get('https://aloud-server.appspot.com/home')
     .then(response => {
-      console.log(response)
+      console.log(response.data)
       
     })
     .catch(err => console.log('there was an axios err', err))

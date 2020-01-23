@@ -16,7 +16,8 @@ import proData from '../src/sampleProData';
 import recData from '../src/sampleRecData';
 import collData from '../src/sampleCollData';
 
-export default function SoundsListItem(props) {
+
+export default function SoundsListItem(props, record) {
   
   state = {
     'proInfo': proData[0].username,
@@ -24,9 +25,9 @@ export default function SoundsListItem(props) {
     'proPic': proData[0].url_image,
     'proBio': proData[0].bio,
     'collImg': collData[0].url_image,
-    'recTitle': recData[0].title,
-    'recDescription': recData[0].description,
-    'recContent': recData[0].url_recording
+    'recTitle': record[0].title,
+    'recDescription': record[0].description,
+    'recContent': record[0].url_recording
   };
   return (
     <ListItem

@@ -13,6 +13,7 @@ import {
   import collData  from '../src/sampleCollData';
   import recData  from '../src/sampleRecData';
   import {Avatar} from 'react-native-elements'
+  import SoundsListItem from '../components/SoundsListItem'
   //     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
@@ -26,15 +27,8 @@ export default function ProfileScreen() {
   const [recTitle] = useState(recData[0].title) 
   const [recDescription] = useState(recData[0].description)
   const [recContent] = useState(recData[0].url_recording) 
-  // state = {
-  //   // 'collImg': collData[0].url_image,
-  //   'recTitle': recData[0].title,
-  //   'recDescription': recData[0].description,
-  //   'recContent': recData[0].url_recording
-
-  // };
+  const [records] = useState(recData);
   
-
  const handleEditMode = ()=> {
    console.log('dot')
     if(edit === 'false'){
@@ -55,6 +49,7 @@ export default function ProfileScreen() {
         <Text style={styles.instructions}>{proInfo}'s Profile</Text>
         
         {edit === 'true' ? editName: <Text>@{proName}</Text> }
+        {/* //! handleEditMode is not being used for mvp */}
         <Avatar onPress={() => {handleEditMode()}}
         rounded title ="Dot"
         size="large"
@@ -62,11 +57,17 @@ export default function ProfileScreen() {
         />
         <Text>Bio: {proBio}</Text>
 
+        {/* // sidescrollview for collections */}
         <Text> {proInfo}'s Collections</Text> 
       <Image
       source={{uri: collImg, width: 64, height: 64}} />
      <Text> {proInfo}'s Sounds</Text>
+
+     {/* componet for recording list */}
      <ScrollView>
+       {records.map(record => {
+         <SoundsListItem record={record}/>
+       })}
       <Text>{recTitle}</Text>
       <Text>{recDescription} </Text>
       <View

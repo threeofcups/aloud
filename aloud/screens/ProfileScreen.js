@@ -7,14 +7,19 @@ import {
     Text,
     TouchableOpacity,
     View,
-    TextInput
+    TextInput,
+    ListItem,
   } from 'react-native';
+  import {Card} from 'react-native-elements'
   import proData  from '../src/sampleProData';
   import collData  from '../src/sampleCollData';
   import recData  from '../src/sampleRecData';
   import {Avatar} from 'react-native-elements'
-  import SoundsListItem from '../components/SoundsListItem'
-  //     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
+  import { Ionicons } from '@expo/vector-icons';
+  import CollectionsList from '../components/Lists/CollectionsList';
+  import RecordingsList from '../components/Lists/RecordingsList'
+ 
+  //'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
   const [proInfo, setInfo] = useState(proData[0].username)
@@ -28,7 +33,7 @@ export default function ProfileScreen() {
   const [recDescription] = useState(recData[0].description)
   const [recContent] = useState(recData[0].url_recording) 
   const [records] = useState(recData);
-  
+
  const handleEditMode = ()=> {
    console.log('dot')
     if(edit === 'false'){
@@ -44,37 +49,33 @@ export default function ProfileScreen() {
     value={value}/>
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>aloud</Text>
-        <Text style={styles.instructions}>{proInfo}'s Profile</Text>
+      // todo center text and avatar
+        <View style={styles.container}>
+          <ScrollView>
+        <Text style={styles.text} >aloud</Text>
+      
+        {/* {edit === 'true' ? editName:  */}
+        <Card allignItems={'center'}>
+
+        <Text>@{proName}</Text> 
         
-        {edit === 'true' ? editName: <Text>@{proName}</Text> }
         {/* //! handleEditMode is not being used for mvp */}
-        <Avatar onPress={() => {handleEditMode()}}
-        rounded title ="Dot"
+        <Avatar 
+        // onPress={() => {handleEditMode()}}
+        rounded title ={proName[0].toUpperCase()}
         size="large"
         source={{uri: proPic}}
         />
-        <Text>Bio: {proBio}</Text>
-
-        {/* // sidescrollview for collections */}
-        <Text> {proInfo}'s Collections</Text> 
-      <Image
-      source={{uri: collImg, width: 64, height: 64}} />
-     <Text> {proInfo}'s Sounds</Text>
-
-     {/* componet for recording list */}
-     <ScrollView>
-       {records.map(record => {
-         <SoundsListItem record={record}/>
-       })}
-      <Text>{recTitle}</Text>
-      <Text>{recDescription} </Text>
-      <View
-      source={{uri: recContent, width: 64, height: 64}} />
+        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
+        </Card>
+     <View>
+        <CollectionsList />
+        <RecordingsList /> 
+        </View>
+      
       </ScrollView>
-        {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>
+        
     );
   }
 
@@ -87,9 +88,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems:'center'
+    // alignItems:'center'
   },
   image: {
     width: 50, height: 50
+  },
+  text: {
+    alignItems: 'center'
   }
 });

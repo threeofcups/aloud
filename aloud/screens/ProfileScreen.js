@@ -7,40 +7,32 @@ import {
     Text,
     TouchableOpacity,
     View,
-    TextInput
+    TextInput,
+    ListItem,
   } from 'react-native';
+  import {Card} from 'react-native-elements'
   import proData  from '../src/sampleProData';
   import collData  from '../src/sampleCollData';
   import recData  from '../src/sampleRecData';
   import {Avatar} from 'react-native-elements'
+  import { Ionicons } from '@expo/vector-icons';
+  import CollectionsList from '../components/Lists/CollectionsList';
+  import RecordingsList from '../components/Lists/RecordingsList'
+ 
+  //'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
-  // const [proInfo, setInfo] = useState(0)
-  // const [proName, setName] = useState(0)
-  // const [proPic, setPic] = useState(0)
-  // const [proBio, setBio] = useState(0)
+  const [proInfo, setInfo] = useState(proData[0].username)
+  const [proName, setName] = useState(proData[0].name_display)
+  const [proPic, setPic] = useState(proData[0].url_image)
+  const [proBio, setBio] = useState(proData[0].bio)
   const [value, onChangeText] = React.useState('new name')
   const [edit, toggleEditMode] = useState('false')
-  // toggleEditMode(false)
-//   state = { 
-//     'proInfo': proData[0].username,
-//     'proName': proData[1].name_display,
-//     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
-//     'proBio': proData[1].bio,
-
-
-  state = {
-    'proInfo': proData[0].username,
-    'proName': proData[0].name_display,
-    'proPic': proData[0].url_image,
-    'proBio': proData[0].bio,
-    'collImg': collData[0].url_image,
-    'recTitle': recData[0].title,
-    'recDescription': recData[0].description,
-    'recContent': recData[0].url_recording
-
-  };
-  // handleEditMode = handleEditMode.bind(this)
+  const [collImg] = useState(collData[0].url_image)
+  const [recTitle] = useState(recData[0].title) 
+  const [recDescription] = useState(recData[0].description)
+  const [recContent] = useState(recData[0].url_recording) 
+  const [records] = useState(recData);
 
  const handleEditMode = ()=> {
    console.log('dot')
@@ -57,30 +49,37 @@ export default function ProfileScreen() {
     value={value}/>
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>aloud</Text>
-        <Text style={styles.instructions}>{this.state['proInfo']}'s Profile</Text>
-        
-        {edit === 'true' ? editName: <Text>@{this.state['proName']}</Text> }
-        <Avatar onPress={() => {handleEditMode()}}
-        rounded title ="Dot"
-        size="large"
-        source={{uri: this.state['proPic']}}
-        />
-        <Text>Bio: {this.state['proBio']}</Text>
+      // todo center text and avatar
+        <View style={styles.container}>
+          <ScrollView>
+            
 
-        <Text> {this.state.proInfo}'s Collections</Text> 
-      <Image
-      source={{uri: this.state.collImg, width: 64, height: 64}} />
-     <Text> {this.state.proInfo}'s Sounds</Text>
-     <ScrollView>
-      <Text>{this.state.recTitle}</Text>
-      <Text>{this.state.recDescription} </Text>
-      <View
-      source={{uri: this.state.recContent, width: 64, height: 64}} />
+        <Text style={styles.text} >aloud</Text>
+      
+        {/* {edit === 'true' ? editName:  */}
+
+        
+        {/* //! handleEditMode is not being used for mvp */}
+        <Avatar 
+        // onPress={() => {handleEditMode()}}
+        rounded title ={proName[0].toUpperCase()}
+        size="large"
+        source={{uri: proPic}}
+        />
+        <Text>@{proName}</Text> 
+     
+        <Card >
+        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
+        
+        </Card>
+        <CollectionsList />
+     <View>
+        <RecordingsList /> 
+        </View>
+      
       </ScrollView>
-        {/* <Text style={styles.instructions}>{instructions}</Text> */}
       </View>
+        
     );
   }
 
@@ -97,5 +96,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 50, height: 50
+  },
+  text: {
+    alignItems: 'center'
   }
 });

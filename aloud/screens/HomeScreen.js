@@ -31,10 +31,6 @@ export default function HomeScreen() {
     })
     .catch(err => console.log('there was an axios err', err))
   });
-
-  // return null;
-
-
   return (
     <View style={styles.container}>
       <ScrollView

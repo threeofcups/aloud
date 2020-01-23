@@ -13,7 +13,7 @@ const proData = [
   email: 'example@example.com',
   username: 'biff',
   password: 'mcfly',
-  url_image: 'https://en.wikipedia.org/wiki/File:BiffTannenBackToTheFuture1985.jpg',
+  url_image: 'https://pbs.twimg.com/profile_images/1234628346/Biff_Tannen_400x400.jpg',
   name_display: 'rippedBiff',
   },
   {
@@ -22,7 +22,7 @@ const proData = [
   email: 'example2@example.com',
   username: 'marty',
   password: 'lorraine',
-  url_image: 'https://en.wikipedia.org/wiki/File:Lea_Thompson_February_2015_crop.JPG',
+  url_image: 'https://www.topcelebsjackets.com/wp-content/uploads/2019/03/Marty-Mcfly-Back-To-The-Future-2-Jacket.jpg',
   name_display: 'mr_mcfly',
   },
   {
@@ -31,7 +31,7 @@ const proData = [
   email: 'example3@example.com',
   username: 'lorraine',
   password: 'ilovemarty',
-  url_image: 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwjHp_bB2pfnAhULTawKHecUA0wQjRx6BAgBEAQ&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMarty_McFly&psig=AOvVaw1r_OTQ1VF6wVZMWfoMjIzK&ust=1579799666959159',
+  url_image: 'https://i.pinimg.com/originals/0f/46/75/0f46750f19fb7e8cabfb596cb7794265.jpg',
   name_display: 'rainey',
   },
   {
@@ -40,7 +40,7 @@ const proData = [
   email: 'example4@example.com',
   username: 'doc',
   password: 'greatscott',
-  url_image: 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwj0z6fK2pfnAhVKUK0KHZ0ND6gQjRx6BAgBEAQ&url=https%3A%2F%2Fcreative-analytics.corsairs.network%2Fdoc-brown-5d16b2b626f0&psig=AOvVaw218H9Q_lQ92MOSfchnIcLd&ust=1579799685389177',
+  url_image: 'https://cdna.artstation.com/p/assets/images/images/008/865/742/large/borislav-mitkov-docbrowntest02.jpg?1515768870',
   name_display: 'doc_brown' ,
   }
 ]

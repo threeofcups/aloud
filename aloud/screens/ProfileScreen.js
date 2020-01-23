@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    TextInput
   } from 'react-native';
   import proData  from '../src/sampleProData';
   import collData  from '../src/sampleCollData';
@@ -18,6 +19,7 @@ export default function ProfileScreen() {
   // const [proName, setName] = useState(0)
   // const [proPic, setPic] = useState(0)
   // const [proBio, setBio] = useState(0)
+  const [value, onChangeText] = React.useState('new name')
   const [edit, toggleEditMode] = useState('false')
   // toggleEditMode(false)
   state = { 
@@ -37,13 +39,17 @@ export default function ProfileScreen() {
     }
     console.log(edit)
   }
-    
+    const editName =  <TextInput
+    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+    onChangeText={text => onChangeText(text)}
+    value={value}/>
+
     return (
       <View style={styles.container}>
-        {/* <Hi/> */}
         <Text style={styles.welcome}>aloud</Text>
         <Text style={styles.instructions}>{this.state['proInfo']}'s Profile</Text>
-        <Text>@{this.state['proName']}</Text>
+        
+        {edit === 'true' ? editName: <Text>@{this.state['proName']}</Text> }
         <Avatar onPress={() => {handleEditMode()}}
         rounded title ="Dot"
         size="large"

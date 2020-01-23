@@ -3,7 +3,8 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; 
+import { Header } from 'react-native-elements';
 
 import AppNavigator from './navigation/AppNavigator';
 
@@ -21,6 +22,10 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
+      <Header 
+      backgroundColor={'#fbf0f2'}
+      centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
+      rightComponent={}/>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
       </View>

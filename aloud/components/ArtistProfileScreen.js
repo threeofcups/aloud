@@ -20,7 +20,6 @@ export default function ProfileScreen() {
     'proName': proData[1].name_display,
     'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
     'proBio': proData[1].bio,
-  
   };
   
     return (

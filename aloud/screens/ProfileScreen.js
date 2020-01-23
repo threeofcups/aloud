@@ -52,12 +52,12 @@ export default function ProfileScreen() {
       // todo center text and avatar
         <View style={styles.container}>
           <ScrollView>
+            
+
         <Text style={styles.text} >aloud</Text>
       
         {/* {edit === 'true' ? editName:  */}
-        <Card allignItems={'center'}>
 
-        <Text>@{proName}</Text> 
         
         {/* //! handleEditMode is not being used for mvp */}
         <Avatar 
@@ -66,7 +66,11 @@ export default function ProfileScreen() {
         size="large"
         source={{uri: proPic}}
         />
+        <Text>@{proName}</Text> 
+     
+        <Card >
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
+        
         </Card>
         <CollectionsList />
      <View>
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems:'center'
+    alignItems:'center'
   },
   image: {
     width: 50, height: 50

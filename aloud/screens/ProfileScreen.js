@@ -68,8 +68,8 @@ export default function ProfileScreen() {
         />
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
         </Card>
-     <View>
         <CollectionsList />
+     <View>
         <RecordingsList /> 
         </View>
       

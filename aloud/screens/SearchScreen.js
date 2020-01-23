@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ExpoConfigView } from '@expo/samples';
+import CollectionsList from '../components/Lists/CollectionsList';
+import RecordingsList from '../components/Lists/RecordingsList';
 import {
   Image,
   Platform,
@@ -18,10 +20,11 @@ export default function SearchScreen() {
   <ScrollView>
     <Text>search bar</Text>
       <TextInput
-        style={{ height: 40, borderColor: 'black', borderWidth: 0.5 }}
+        style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => onChangeText(text)}
         value={value}
       />
+      <CollectionsList />
   </ScrollView>
   );
 }

@@ -21,10 +21,10 @@ export default function HomeScreen() {
   const [homeFlash, homeFlasher] = useState(null);
 
   useEffect(() => {
-    axios.get('https://aloud-server.appspot.com/home')
+    axios.get('https://aloud-server.appspot.com/')
     .then(response => {
       console.log(response.data)
-      homeFlasher(response.data)
+     // homeFlasher(response.data)
     })
     .catch(err => console.log('there was an axios err', err))
   });

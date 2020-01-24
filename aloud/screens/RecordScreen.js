@@ -29,10 +29,7 @@ class Icon {
   }
 }
 
-const ICON_RECORD_BUTTON =  <Ionicons name={'md-mic'}
-      size={300}
-      onPress={()=>{console.log('dot')}}
-      />;
+const ICON_RECORD_BUTTON = new Icon(require('./assets/images/record_button.png'), 70, 119);
 const ICON_RECORDING = new Icon(require('./assets/images/record_icon.png'), 20, 14);
 
 const ICON_PLAY_BUTTON = new Icon(require('./assets/images/play_button.png'), 34, 51);
@@ -47,8 +44,8 @@ const ICON_THUMB_1 = new Icon(require('./assets/images/thumb_1.png'), 18, 19);
 const ICON_THUMB_2 = new Icon(require('./assets/images/thumb_2.png'), 15, 19);
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFF8ED';
-const LIVE_COLOR = '#FF0000';
+const BACKGROUND_COLOR = 'white';
+const LIVE_COLOR = '#f90909';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
@@ -284,6 +281,9 @@ export default class RecordScreen extends React.Component {
     }
   };
 
+  onSaveRecording(){
+    this.setState({recordingView: 'save'})
+  }
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
@@ -336,7 +336,7 @@ export default class RecordScreen extends React.Component {
             <View style={styles.emptyContainer} />
         )
     }
-
+//* this is the pop up to ask for permissions
     if (!this.state.haveRecordingPermissions){
         return (
             <View style={styles.container}>
@@ -351,6 +351,7 @@ export default class RecordScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+      {/* {this.state.recordingView !== 'save' ? <RecordingView/> : <SaveView/>} */}
         <View
           style={[
             styles.halfScreenContainer,
@@ -359,18 +360,34 @@ export default class RecordScreen extends React.Component {
             },
           ]}>
           <View />
-          <View style={styles.recordingContainer}>
-            <View />
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
               style={styles.wrapper}
               onPress={this._onRecordPressed}
               disabled={this.state.isLoading}>
-              <Image style={styles.image} source={ICON_RECORD_BUTTON.module} />
+              {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
+              <Ionicons name={'md-save'}
+              size={100}
+              />
             </TouchableHighlight>
+          <View style={styles.recordingContainer}>
+            <View />
+            
+            <TouchableHighlight
+              underlayColor={BACKGROUND_COLOR}
+              style={styles.wrapper}
+              onPress={this._onRecordPressed}
+              disabled={this.state.isLoading}>
+              {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
+              <Ionicons name={'md-mic'}
+              size={300}
+              />
+            </TouchableHighlight>
+
+           
             <View style={styles.recordingDataContainer}>
               <View />
-              <Text style={[styles.liveText, { fontFamily: 'cutive-mono-regular' }]}>
+              <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
                 {this.state.isRecording ? 'LIVE' : ''}
               </Text>
               <View style={styles.recordingDataRowContainer}>
@@ -418,10 +435,7 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onMutePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                <Image
-                  style={styles.image}
-                  source={this.state.muted ? ICON_MUTED_BUTTON.module : ICON_UNMUTED_BUTTON.module}
-                />
+                  {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
               </TouchableHighlight>
               <Slider
                 style={styles.volumeSlider}
@@ -438,18 +452,21 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onPlayPausePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                <Image
+                {/* <Image
                   style={styles.image}
                   source={this.state.isPlaying ? ICON_PAUSE_BUTTON.module : ICON_PLAY_BUTTON.module}
-                />
+                  
+                /> */}
+                 {this.state.isPlaying ? <Ionicons name={'md-play'} size={50} /> : <Ionicons name={'md-pause'} size={50}/> }
+
               </TouchableHighlight>
-              <TouchableHighlight
+              {/* <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
                 style={styles.wrapper}
                 onPress={this._onStopPressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
                 <Image style={styles.image} source={ICON_STOP_BUTTON.module} />
-              </TouchableHighlight>
+              </TouchableHighlight> */}
             </View>
             <View />
           </View>
@@ -621,6 +638,6 @@ const styles = StyleSheet.create({
 //   );
 // }
 
-// RecordScreen.navigationOptions = {
-//   title: 'Record',
-// };
+RecordScreen.navigationOptions = {
+  title: 'Record',
+};

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, Switch} from 'react-native'
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+import {View, Text, TextInput, Switch, Button} from 'react-native'
 import RecordingsList from '../components/Lists/RecordingsList'
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -25,7 +26,10 @@ export default function SaveRecordingScreen() {
 return (
     <View>
         <ScrollView>
-        {/* playback component  */}
+        {/* playback component  
+        TODO: save the title and description to the db
+        
+        */}
         <Text>Recording Title:</Text>
         <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setTitle(text)}
@@ -36,18 +40,17 @@ return (
         style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}
         value={description}/>
-        <Text>Public Sound</Text>
+        <Text>Public</Text>
         <Switch onValueChange={(switchValue)=>{setPrivacy(switchValue)}} value={'public'}></Switch>
-        <Text>Generate Transcript</Text>
+        {/* <Text>Generate Transcript</Text>
         <Switch></Switch>
         <Text>Transcript</Text>
-        <TextInput></TextInput>
-        <Text onPress={()=>{console.log('uhg')}}>Add to Collection + </Text>
+        <TextInput></TextInput> */}
+        <Button onPress={console.log('added to your collection')} title="Add to a Collection" color="#841584"/>
+        <Button onPress={uploadRec()} title="Save My Sound" color="#841584"/>
         </ScrollView>
-        
     </View>
-)
-}
+)};
 
 SaveRecordingScreen.navigationOptions = {
   title: 'app.json',

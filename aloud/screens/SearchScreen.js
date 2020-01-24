@@ -12,13 +12,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import SearchStack from '../navigation/SearchNavigator'
 export default function SearchScreen() {
   const [value, onChangeText] = React.useState('search here');
 
   return (
   <ScrollView>
     {/* <Text>search bar</Text> */}
+    {/* <SearchStack/> */}
       <TextInput
         style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => onChangeText(text)}

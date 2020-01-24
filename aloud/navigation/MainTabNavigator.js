@@ -36,6 +36,7 @@ HomeStack.navigationOptions = {
           ? `ios-home`
           : 'md-home'
       }
+      
     />
   ),
 };

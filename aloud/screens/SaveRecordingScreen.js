@@ -9,17 +9,29 @@ export default function SaveRecordingScreen() {
     const [privacySetting, setPrivacy] = useState('private');
     const [generateTranscript, setGenerateTranscript] = useState(false)
 
+    const [recFlash, recFlasher] = useState(null);
+
+    const uploadRec = function(){
+      useEffect(() => {
+      return axios.post('https://api.cloudinary.com/v1_1/dahfjsacf/upload')
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => console.log('there was an axios err', err))
+    });
+    }
+
+
 return (
     <View>
-    
         <ScrollView>
         {/* playback component  */}
-        <Text>Title</Text>
+        <Text>Recording Title</Text>
         <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setTitle(text)}
         value={title}
         />
-        <Text>Description</Text>
+        <Text>Recording Description</Text>
         <TextInput
         style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}

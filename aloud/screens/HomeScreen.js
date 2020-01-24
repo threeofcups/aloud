@@ -26,7 +26,7 @@ export default function HomeScreen() {
       console.log(response.data)
       homeFlasher(response.data)
     })
-    .catch(err => console.log('there was an axios err', err))
+    .catch(err => console.log('there was an error contacting the server', err))
   });
   return (
     <View style={styles.container}>

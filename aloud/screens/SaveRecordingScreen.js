@@ -65,6 +65,10 @@ return (
           console.log('created your collection')}} title="Create a new Collection" color="#841584"/>
 
         </ScrollView>
+        <Button onPress={() => {
+          //grab the url thats been saved to the db from the cloudinary call
+          //save the url to a new collection in the db
+          console.log('your session has been canceled')}} title="Cancel" color="#841584"/>
     </View>
 )};
 

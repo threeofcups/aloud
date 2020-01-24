@@ -26,12 +26,12 @@ return (
     <View>
         <ScrollView>
         {/* playback component  */}
-        <Text>Recording Title</Text>
+        <Text>Recording Title:</Text>
         <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setTitle(text)}
         value={title}
         />
-        <Text>Recording Description</Text>
+        <Text>Recording Description:</Text>
         <TextInput
         style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}

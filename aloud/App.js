@@ -12,11 +12,11 @@ import AppNavigator from './navigation/AppNavigator';
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
+
   useEffect(() => {
     requestCameraPermission()
     .then(response => {
       console.log(response.data)
-      homeFlasher(response.data)
     })
     .catch(err => console.log('there was an axios err', err))
   });

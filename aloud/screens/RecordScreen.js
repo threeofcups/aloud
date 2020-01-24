@@ -29,7 +29,10 @@ class Icon {
   }
 }
 
-const ICON_RECORD_BUTTON = new Icon(require('./assets/images/record_button.png'), 70, 119);
+const ICON_RECORD_BUTTON =  <Ionicons name={'md-mic'}
+      size={300}
+      onPress={()=>{console.log('dot')}}
+      />;
 const ICON_RECORDING = new Icon(require('./assets/images/record_icon.png'), 20, 14);
 
 const ICON_PLAY_BUTTON = new Icon(require('./assets/images/play_button.png'), 34, 51);
@@ -73,7 +76,7 @@ export default class RecordScreen extends React.Component {
       rate: 1.0,
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
-    // // UNCOMMENT THIS TO TEST maxFileSize:
+     // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
   }
 

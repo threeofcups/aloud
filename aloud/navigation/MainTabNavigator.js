@@ -125,7 +125,7 @@ SearchStack.navigationOptions = {
 SearchStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  SaveRecordingStack,
+  // SaveRecordingStack,
   HomeStack,
   SearchStack,
   RecordStack,

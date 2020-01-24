@@ -21,10 +21,6 @@ export default function CollectionsListItem({collection}) {
     subtitle={collection.user}
     
     />
-    // <ListItem
-    //   leftAvatar={{
-    //     source: { uri: "https://worldofwonder.net/wp-content/uploads/2017/03/3-27-frank-ohara.jpg" } }}
-    //   rightIcon={{ name: 'more-horiz' }}
-    // />
+   
   );
 }

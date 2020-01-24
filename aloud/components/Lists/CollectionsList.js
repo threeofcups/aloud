@@ -10,7 +10,6 @@ import {
   View,
   FlatList
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ListItem, Card } from 'react-native-elements';
 
 export default function CollectionsList(props) {

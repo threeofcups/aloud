@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
+import { Ionicons } from '@expo/vector-icons';
 import {
   Image,
   Platform,
@@ -13,10 +14,13 @@ import {
 export default function RecordScreen() {
 
   return (
-    <View>
-      <Image
-      style={{width: 300, height: 300}}
-      source={{uri: 'http://res.cloudinary.com/dahfjsacf/image/upload/v1579754358/ufr126rb6909oc8skkxa.png'}} />
+    <View allignItems={'center'}>
+
+      <Ionicons name={'md-mic'}
+      size={300}
+      onPress={()=>{console.log('dot')}}
+      />
+      
     </View>
   );
 }

@@ -10,6 +10,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import SearchScreen from '../screens/SearchScreen';
 import RecordScreen from '../screens/RecordScreen';
+import SaveRecordingScreen from '../screens/SaveRecordingScreen'
 
 //Todo nav bar icons need to be changed
 
@@ -43,21 +44,21 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const SaveRecordingStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    SaveRecording: SaveRecordingScreen,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+SaveRecordingStack.navigationOptions = {
+  tabBarLabel: 'Save',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
 };
 
-SettingsStack.path = '';
+SaveRecordingStack.path = '';
 
 const ProfileStack = createStackNavigator(
   {
@@ -124,6 +125,7 @@ SearchStack.navigationOptions = {
 SearchStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
+  SaveRecordingStack,
   HomeStack,
   SearchStack,
   RecordStack,

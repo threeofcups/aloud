@@ -1,23 +1,17 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
-import { Ionicons } from '@expo/vector-icons';
 import {
+  Dimensions,
   Image,
-  Platform,
-  ScrollView,
+  Slider,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
-  Dimensions,
-  Slider,
   TouchableHighlight,
-} from "react-native";
-import { Asset } from "expo-asset";
-import { Audio, Video } from "expo-av";
-import * as Font from "expo-font";
-import { MaterialIcons } from "@expo/vector-icons";
+  View,
+} from 'react-native';
+import { Asset } from 'expo-asset';
+import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import * as Font from 'expo-font';
 import * as Permissions from 'expo-permissions';
 
 class Icon {
@@ -49,7 +43,7 @@ const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
-export default class RecordScreen extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.recording = null;
@@ -603,21 +597,3 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// export default function RecordScreen() {
-
-//   return (
-//     <View allignItems={'center'}>
-
-//       <Ionicons name={'md-mic'}
-//       size={300}
-//       onPress={()=>{console.log('dot')}}
-//       />
-      
-//     </View>
-//   );
-// }
-
-// RecordScreen.navigationOptions = {
-//   title: 'Record',
-// };

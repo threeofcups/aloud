@@ -1,23 +1,17 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
-import { Ionicons } from '@expo/vector-icons';
 import {
+  Dimensions,
   Image,
-  Platform,
-  ScrollView,
+  Slider,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
-  Dimensions,
-  Slider,
   TouchableHighlight,
-} from "react-native";
-import { Asset } from "expo-asset";
-import { Audio, Video } from "expo-av";
-import * as Font from "expo-font";
-import { MaterialIcons } from "@expo/vector-icons";
+  View,
+} from 'react-native';
+import { Asset } from 'expo-asset';
+import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
+import * as Font from 'expo-font';
 import * as Permissions from 'expo-permissions';
 
 class Icon {
@@ -29,10 +23,7 @@ class Icon {
   }
 }
 
-const ICON_RECORD_BUTTON =  <Ionicons name={'md-mic'}
-      size={300}
-      onPress={()=>{console.log('dot')}}
-      />;
+const ICON_RECORD_BUTTON = new Icon(require('./assets/images/record_button.png'), 70, 119);
 const ICON_RECORDING = new Icon(require('./assets/images/record_icon.png'), 20, 14);
 
 const ICON_PLAY_BUTTON = new Icon(require('./assets/images/play_button.png'), 34, 51);
@@ -52,7 +43,7 @@ const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
-export default class RecordScreen extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.recording = null;
@@ -76,7 +67,7 @@ export default class RecordScreen extends React.Component {
       rate: 1.0,
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
-     // UNCOMMENT THIS TO TEST maxFileSize:
+    // // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
   }
 
@@ -606,21 +597,3 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// export default function RecordScreen() {
-
-//   return (
-//     <View allignItems={'center'}>
-
-//       <Ionicons name={'md-mic'}
-//       size={300}
-//       onPress={()=>{console.log('dot')}}
-//       />
-      
-//     </View>
-//   );
-// }
-
-// RecordScreen.navigationOptions = {
-//   title: 'Record',
-// };

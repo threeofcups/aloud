@@ -18,7 +18,7 @@ export default function SaveRecordingScreen() {
       .then(response => {
         console.log(response)
       })
-      .catch(err => console.log('there was an axios err', err))
+      .catch(err => console.log('there was an err saving that recording to cloudinary', err))
     });
     }
 
@@ -46,8 +46,24 @@ return (
         <Switch></Switch>
         <Text>Transcript</Text>
         <TextInput></TextInput> */}
-        <Button onPress={console.log('added to your collection')} title="Add to a Collection" color="#841584"/>
-        <Button onPress={uploadRec()} title="Save My Sound" color="#841584"/>
+        <Button onPress={() => {
+          //make the axios call to generate audio url 
+          //save url to cloudinary
+          //grab url from response object
+          //save url to the DB 
+          console.log('saved that sound for you')
+        }} title="Save My Sound" color="#841584"/>
+
+        <Button onPress={() => {
+          //grab the url thats been saved to the db from the cloudinary call
+          //save the url to a new collection in the db
+          console.log('added to your collection')}} title="Add to a Collection" color="#841584"/>
+        
+        <Button onPress={() => {
+          //grab the url thats been saved to the db
+          //create a new entry in the collections table with its details
+          console.log('created your collection')}} title="Create a new Collection" color="#841584"/>
+
         </ScrollView>
     </View>
 )};

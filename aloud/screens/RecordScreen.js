@@ -19,6 +19,8 @@ import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
+import SaveRecordingScreen from './SaveRecordingScreen';
+
 
 class Icon {
   constructor(module, width, height) {
@@ -71,6 +73,7 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
+      // view: 'record'
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
@@ -282,7 +285,7 @@ export default class RecordScreen extends React.Component {
   };
 
   onSaveRecording(){
-    this.setState({recordingView: 'save'})
+    this.setState({view: 'save'})
   }
   _getSeekSliderPosition() {
     if (
@@ -349,29 +352,35 @@ export default class RecordScreen extends React.Component {
         )
     }
 
+
+    // if(this.state.recordingView === 'save'){
+    //   return (
+    //     <SaveRecordingScreen/>
+    //   )
+    // }
     return (
-      <View style={styles.container}>
-      {/* {this.state.recordingView !== 'save' ? <RecordingView/> : <SaveView/>} */}
+         <View>
         <View
-          style={[
-            styles.halfScreenContainer,
-            {
-              opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-            },
-          ]}>
+        style={[
+          styles.halfScreenContainer,
+          {
+            opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
+          },
+        ]}>
           <View />
-            <TouchableHighlight
-              underlayColor={BACKGROUND_COLOR}
-              style={styles.wrapper}
-              onPress={this._onRecordPressed}
-              disabled={this.state.isLoading}>
-              {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-              <Ionicons name={'md-save'}
-              size={100}
-              />
-            </TouchableHighlight>
           <View style={styles.recordingContainer}>
             <View />
+          <TouchableHighlight
+            underlayColor={BACKGROUND_COLOR}
+            style={styles.wrapper}
+            onPress={console.log('hihihi')}
+            disabled={this.state.isLoading}>
+            {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
+            <Ionicons name={'md-save'}
+            size={100}
+            onPress={()=> {console.log('dog')}}
+            />
+          </TouchableHighlight>
             
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
@@ -394,7 +403,7 @@ export default class RecordScreen extends React.Component {
                 <Image
                   style={[styles.image, { opacity: this.state.isRecording ? 1.0 : 0.0 }]}
                   source={ICON_RECORDING.module}
-                />
+                  />
                 <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                   {this._getRecordingTimestamp()}
                 </Text>
@@ -406,11 +415,11 @@ export default class RecordScreen extends React.Component {
           <View />
         </View>
         <View
-          style={[
-            styles.halfScreenContainer,
+        style={[
+          styles.halfScreenContainer,
             {
               opacity:
-                !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
+              !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
             },
           ]}>
           <View />
@@ -423,7 +432,7 @@ export default class RecordScreen extends React.Component {
               onValueChange={this._onSeekSliderValueChange}
               onSlidingComplete={this._onSeekSliderSlidingComplete}
               disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-            />
+              />
             <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
               {this._getPlaybackTimestamp()}
             </Text>
@@ -444,7 +453,7 @@ export default class RecordScreen extends React.Component {
                 value={1}
                 onValueChange={this._onVolumeSliderValueChange}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-              />
+                />
             </View>
             <View style={styles.playStopContainer}>
               <TouchableHighlight
@@ -452,21 +461,10 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onPlayPausePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                {/* <Image
-                  style={styles.image}
-                  source={this.state.isPlaying ? ICON_PAUSE_BUTTON.module : ICON_PLAY_BUTTON.module}
-                  
-                /> */}
-                 {this.state.isPlaying ? <Ionicons name={'md-play'} size={50} /> : <Ionicons name={'md-pause'} size={50}/> }
+                 {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
 
               </TouchableHighlight>
-              {/* <TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onStopPressed}
-                disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                <Image style={styles.image} source={ICON_STOP_BUTTON.module} />
-              </TouchableHighlight> */}
+           
             </View>
             <View />
           </View>
@@ -492,7 +490,8 @@ export default class RecordScreen extends React.Component {
           </View>
           <View />
         </View>
-      </View>
+        </View>
+      
     );
   }
 }

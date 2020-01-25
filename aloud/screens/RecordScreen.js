@@ -420,23 +420,13 @@ export default class RecordScreen extends React.Component {
               onPress={this._onRecordPressed}
               disabled={this.state.isLoading}>
               {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-              <Ionicons name={'md-save'}
+              <Ionicons name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'}
               size={100}
               />
             </TouchableHighlight>
           <View style={styles.recordingContainer}>
             <View />
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={console.log('hihihi')}
-            disabled={this.state.isLoading}>
-            {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-            <Ionicons name={'md-save'}
-            size={100}
-            onPress={()=> {console.log('dog')}}
-            />
-          </TouchableHighlight>
+          
             
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
@@ -444,8 +434,8 @@ export default class RecordScreen extends React.Component {
               onPress={this._onRecordPressed}
               disabled={this.state.isLoading}>
               {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-              <Ionicons name={'md-mic'}
-              size={300}
+              <Ionicons name={'ios-mic'}
+              size={100}
               />
             </TouchableHighlight>
 

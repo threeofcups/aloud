@@ -202,20 +202,22 @@ export default class RecordScreen extends React.Component {
         console.log(xhr);
       };
       let formdata = new FormData();
-      formdata.append('file', 'EC72FBDB-27CC-49DD-9DB2-2266DFD7C443/Library/Caches/ExponentExperienceData/%2540anonymous%252Faloud-aaf24bff-8000-47f0-9d1c-0893b81c3cbc/AV/recording-F8F17274-5089-4DCF-A36A-18CE1FB57C43.caf');
+      formdata.append('file', uri);
       formdata.append('timestamp', timestamp);
       formdata.append('api_key', api_key);
       formdata.append('signature', signature);
       formdata.append('upload_prest', upload_preset)
       xhr.send(formdata);
     }
-    uploadImage(this.recording.uri);
     
     //save uri to the DB
     axios.post('https://aloud-server.appspot.com/recording', {
-      data: this.recording.uri
+      data: this.recording._uri
     })
-    .then(resp => console.log(resp))
+    .then(resp => {
+    uploadImage(this.recording._uri);
+    console.log(resp)
+    })
     .catch(err => console.log('there was an error saving your recording to our DB'))
 
     console.log(`FILE INFO: ${JSON.stringify(info)}`);

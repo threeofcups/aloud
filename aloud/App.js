@@ -10,32 +10,32 @@ import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 
 export default function App() {
-    const [signedIn, setSignIn] = useState(false);
+    const [signedIn, setSignIn] = useState('');
     const [name, setName] = useState('');
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
 
-  signIn = async () => {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId:
-          "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      })
-       if (result.type === "success") {
+  // signIn = async () => {
+  //   try {
+  //     const result = await Google.logInAsync({
+  //       androidClientId:
+  //         "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
+  //       scopes: ["profile", "email"]
+  //     })
+  //      if (result.type === "success") {
       
-          setSignIn("true");
-          setName(result.user.name);
-          setPhotoUrl(result.user.photoUrl)
+  //         setSignIn("true");
+  //         setName(result.user.name);
+  //         setPhotoUrl(result.user.photoUrl)
           
         
-      } else {
-        console.log("cancelled")
-      }
-    } catch (e) {
-      console.log("error", e)
-    }
-  }
+  //     } else {
+  //       console.log("cancelled")
+  //     }
+  //   } catch (e) {
+  //     console.log("error", e)
+  //   }
+  // }
 
 
 
@@ -57,15 +57,17 @@ export default function App() {
     );
   } else {
     return (
-      <View style={styles.container}>
-        {signedIn === 'true' ? (
-          <LoggedInPage name={name} photoUrl={photoUrl} />
-          ) : (
-            <LoginPage signIn={signIn} />
-            )}
-      </View>
+      <LoggedInPage />
+      // <View style={styles.container}>
+      //   {signedIn === 'true' ? (
+      //     <LoggedInPage name={name} photoUrl={photoUrl} />
+      //     ) : (
+      //       <LoginPage signIn={signIn} />
+      //       )}
+      // </View>
     ) 
           }
+        }
           
 const LoginPage = props => {
   return (

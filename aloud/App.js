@@ -2,49 +2,75 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { useState, useEffect } from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text, Button, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import {PermissionsAndroid} from 'react-native';
 import { Header } from 'react-native-elements';
-
 import AppNavigator from './navigation/AppNavigator';
+import * as Google from 'expo-google-app-auth';
 
-export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = useState(false);
+export default function App() {
+    const [signedIn, setSignIn] = useState(false);
+    const [name, setName] = useState('');
+    const [photoUrl, setPhotoUrl] = useState('')
+    const [isLoadingComplete, setLoadingComplete] = useState('false');
 
-  useEffect(() => {
-    requestCameraPermission()
-    .then(response => {
-      console.log(response.data)
-      homeFlasher(response.data)
-    })
-    .catch(err => console.log('there was an axios err', err))
-  });
-  
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
+  signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId:
+          "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      })
+       if (result.type === "success") {
+      
+          setSignIn("true");
+          setName(result.user.name);
+          setPhotoUrl(result.user.photoUrl)
+          
+        
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
 
-    
+
     return (
       <View style={styles.container}>
-        {/* //todo messaging icon */}
+        {signedIn === 'true' ? (
+          <LoggedInPage name={name} photoUrl={photoUrl} />
+          ) : (
+            <LoginPage signIn={signIn} />
+            )}
+      </View>
+    ) 
+          }
+          
+const LoginPage = props => {
+  return (
+    <View>
+      <Text style={styles.header}>Sign In With Google</Text>
+      <Button title="Sign in with Google" onPress={() => props.signIn()} />
+    </View>
+  )
+}
+
+const LoggedInPage = props => {
+  return (
+    <View style={styles.container}>
       <Header 
       backgroundColor={'#fbf0f2'}
       centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
-      // rightComponent={}
       />
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+      <Text style={styles.header}>Welcome:{props.name}</Text>
+      <Image style={styles.image} source={{ uri: props.photoUrl }} />
         <AppNavigator />
-      </View>
-    );
-  }
+    </View>
+  )
 }
 
 
@@ -74,6 +100,7 @@ async function requestCameraPermission() {
     console.warn(err);
   }
 }
+
 async function loadResourcesAsync() {
   await Promise.all([
     Asset.loadAsync([

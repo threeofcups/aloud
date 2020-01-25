@@ -8,13 +8,16 @@ import {PermissionsAndroid} from 'react-native';
 import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
+import RecordStack from './navigation/MainSaveRecordingNavigator'
 
 export default function App() {
-    const [signedIn, setSignIn] = useState(false);
+    const [signedIn, setSignIn] = useState("true");
+    // const [signedIn, setSignIn] = useState('false'); // uncomment this to activate auth
     const [name, setName] = useState('');
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
-
+    
+  
   signIn = async () => {
     try {
       const result = await Google.logInAsync({
@@ -37,8 +40,8 @@ export default function App() {
     }
   }
 
-
     return (
+    
       <View style={styles.container}>
         {signedIn === 'true' ? (
           <LoggedInPage name={name} photoUrl={photoUrl} />
@@ -68,6 +71,7 @@ const LoggedInPage = props => {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       <Text style={styles.header}>Welcome:{props.name}</Text>
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
+      <RecordStack/>
         <AppNavigator />
     </View>
   )

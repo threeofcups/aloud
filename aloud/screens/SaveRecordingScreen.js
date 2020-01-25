@@ -1,25 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {View, Text, TextInput, Switch, Button} from 'react-native'
+import {View, Text, TextInput, Switch, Button, AppState} from 'react-native'
+import { createStackNavigator } from 'react-navigation-stack';
+import recNav from '../navigation/AppNavigator';
 import RecordingsList from '../components/Lists/RecordingsList'
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { RecordStack } from '../navigation/MainTabNavigator';
+import RecordScreen from '../screens/RecordScreen';
 export default function SaveRecordingScreen() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [privacySetting, setPrivacy] = useState('private');
     const [generateTranscript, setGenerateTranscript] = useState(false)
-
     const [recFlash, recFlasher] = useState(null);
 
     const uploadRec = function(){
-      useEffect(() => {
-      return axios.post('https://api.cloudinary.com/v1_1/dahfjsacf/upload')
-      .then(response => {
-        console.log(response)
-      })
-      .catch(err => console.log('there was an err saving that recording to cloudinary', err))
-    });
+    //   useEffect((recFlash) => {
+    //   return axios.post('https://api.cloudinary.com/v1_1/dahfjsacf/upload')
+    //   .then(response => {
+    //     console.log(response)
+    //   })
+    //   .catch(err => console.log('there was an err saving that recording to cloudinary', err))
+    // });
     }
 
 
@@ -46,11 +48,33 @@ return (
         <Switch></Switch>
         <Text>Transcript</Text>
         <TextInput></TextInput> */}
-        <Button onPress={() => {
-          //make the axios call to generate audio url 
+        {/* <recNav /> */}
+        <Button onPress={(event) => {
+          const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+          const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
+          
+          //const axios = require('axios');
+          //addEventListener('change', function(event){
+            const file = event.target.files[0];
+            const formData = new FormData();
+            // formData.append('file', file);
+            // formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            
+            const defaultHeaders = {'Content-Type': 'application/x-www-form-urlencoded'};
+            axios({
+              url: CLOUDINARY_URL,
+              method: 'POST',
+              headers: defaultHeaders,
+              data: formData,
+              upload_preset: CLOUDINARY_UPLOAD_PRESET
+            })
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+        //  })
+          //make the axios call to generate audio url
           //save url to cloudinary
           //grab url from response object
-          //save url to the DB 
+          //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color="#841584"/>
 
@@ -63,15 +87,12 @@ return (
           //grab the url thats been saved to the db
           //create a new entry in the collections table with its details
           console.log('created your collection')}} title="Create a new Collection" color="#841584"/>
-
         </ScrollView>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
           console.log('your session has been canceled')}} title="Cancel" color="#841584"/>
     </View>
-)};
-
-SaveRecordingScreen.navigationOptions = {
+)};SaveRecordingScreen.navigationOptions = {
   title: 'app.json',
 };

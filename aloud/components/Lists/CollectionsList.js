@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CollectionsListItem from '../ListItems/CollectionsListItem';
 import { Ionicons } from '@expo/vector-icons';
 import collData from '../../src/sampleCollData';
@@ -12,21 +12,25 @@ import {
 } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 
-export default function CollectionsList(props) {
-  const [collections, setCollections] = useState(collData);
+export default function CollectionsList({ collections }) {
+  const [listCollections, setCollections] = useState([]);
+  
+  useEffect(() => {
+    setCollections(collections || collData);
+  }, [collections]);
 
   return (
     <View>
       <FlatList
       horizontal
-        data={collections}
+        data={listCollections}
         renderItem={({ item: rowData }) => {
           return (
-  
+
             <CollectionsListItem collection={rowData}/>
           );
         }}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => `${index}`}
       />
     </View>
   );

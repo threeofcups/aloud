@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {View, Text, TextInput, Switch, Button, AppState} from 'react-native'
+import {View, Text, TextInput, Switch, Button, AppState, StyleSheet} from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack';
 import recNav from '../navigation/AppNavigator';
 import RecordingsList from '../components/Lists/RecordingsList'
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 export default function SaveRecordingScreen() {
@@ -52,14 +52,12 @@ return (
         <Button onPress={(event) => {
           const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
           const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
-          
           //const axios = require('axios');
           //addEventListener('change', function(event){
             const file = event.target.files[0];
             const formData = new FormData();
             // formData.append('file', file);
             // formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            
             const defaultHeaders = {'Content-Type': 'application/x-www-form-urlencoded'};
             axios({
               url: CLOUDINARY_URL,
@@ -77,12 +75,14 @@ return (
           //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color="#841584"/>
-
-        <Button onPress={() => {
+        {/* <TouchableOpacity onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
           console.log('added to your collection')}} title="Add to a Collection" color="#841584"/>
-        
+         */}
+        <TouchableOpacity onPress={this.reset} style={styles.resetButton} >
+        <Text style={styles.resetText}>Cancel Recording</Text>
+        </TouchableOpacity>
         <Button onPress={() => {
           //grab the url thats been saved to the db
           //create a new entry in the collections table with its details
@@ -93,6 +93,29 @@ return (
           //save the url to a new collection in the db
           console.log('your session has been canceled')}} title="Cancel" color="#841584"/>
     </View>
-)};SaveRecordingScreen.navigationOptions = {
+)};
+
+
+SaveRecordingScreen.navigationOptions = {
   title: 'app.json',
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  resetButton: {
+    backgroundColor:'#841584',
+    paddingTop:10,
+    paddingBottom:10,
+    paddingLeft : 10,
+      paddingRight : 10
+  },
+  resetText:{
+      color:'#fff',
+      textAlign:'center',
+      paddingLeft : 10,
+      paddingRight : 10
+  }
+});

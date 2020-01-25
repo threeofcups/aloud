@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
     Image,
+    Button,
     Platform,
     ScrollView,
     StyleSheet,
@@ -18,7 +19,7 @@ import {
   import { Ionicons } from '@expo/vector-icons';
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
- 
+  import axios from 'axios';
   //'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
@@ -52,7 +53,6 @@ export default function ProfileScreen() {
       // todo center text and avatar
         <View style={styles.container}>
           <ScrollView>
-        <Text style={styles.text} >aloud</Text>
         {/* {edit === 'true' ? editName:  */}
         {/* //! handleEditMode is not being used for mvp */}
         <Avatar 
@@ -60,11 +60,32 @@ export default function ProfileScreen() {
         rounded title ={proName[0].toUpperCase()}
         size="large"
         source={{uri: proPic}}
+        style={styles.image}
         />
+        <Button onPress={(event) => {
+          const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+          const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
+          const defaultHeaders = {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          };
+          const file = event.target.files;
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            axios({
+              url: CLOUDINARY_URL,
+              method: 'POST',
+              headers: defaultHeaders,
+              data: formData
+            })
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+          }} title='upload photo' color="#841584">
+          </Button>
         <Text>@{proName}</Text> 
      
         <Card >
-        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
+        <Text rightIcon={{ name: 'more-horiz' }}> Bio: {proBio}</Text>
         
         </Card>
         <CollectionsList />
@@ -90,7 +111,9 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   image: {
-    width: 50, height: 50
+    justifyContent: 'center',
+    width: 50, height: 50,
+    position: 'relative',
   },
   text: {
     alignItems: 'center'

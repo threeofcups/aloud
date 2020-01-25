@@ -397,13 +397,6 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-
-
-    // if(this.state.recordingView === 'save'){
-    //   return (
-    //     <SaveRecordingScreen/>
-    //   )
-    // }
     return (
          <View>
         <View
@@ -414,6 +407,7 @@ export default class RecordScreen extends React.Component {
           },
         ]}>
           <View />
+          {/* TOP SAVE BUTTON */}
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
               style={styles.wrapper}
@@ -421,13 +415,13 @@ export default class RecordScreen extends React.Component {
               disabled={this.state.isLoading}>
               {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
               <Ionicons name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'}
-              size={100}
+              size={50}
               />
             </TouchableHighlight>
           <View style={styles.recordingContainer}>
             <View />
           
-            
+            {/* MICROPHONE */}
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
               style={styles.wrapper}
@@ -443,7 +437,7 @@ export default class RecordScreen extends React.Component {
             <View style={styles.recordingDataContainer}>
               <View />
               <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-                {this.state.isRecording ? 'LIVE' : ''}
+                {this.state.isRecording ? 'Now Recording' : ''}
               </Text>
               <View style={styles.recordingDataRowContainer}>
                 <Image
@@ -469,6 +463,7 @@ export default class RecordScreen extends React.Component {
             },
           ]}>
           <View />
+
           <View style={styles.playbackContainer}>
             <Slider
               style={styles.playbackSlider}
@@ -490,7 +485,7 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onMutePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                  {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
+                  {this.state.muted ? <Ionicons name={'ios-volume-high'} size={50} /> : <Ionicons name={'ios-volume-off'} size={50}/> }
               </TouchableHighlight>
               <Slider
                 style={styles.volumeSlider}
@@ -507,7 +502,7 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onPlayPausePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                 {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
+                 {this.state.isPlaying ? <Ionicons name={'ios-pause'} size={200} /> : <Ionicons name={'ios-play'} size={200}/> }
 
               </TouchableHighlight>
            
@@ -515,24 +510,6 @@ export default class RecordScreen extends React.Component {
             <View />
           </View>
           <View style={[styles.buttonsContainerBase, styles.buttonsContainerBottomRow]}>
-            <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
-            <Slider
-              style={styles.rateSlider}
-              trackImage={ICON_TRACK_1.module}
-              thumbImage={ICON_THUMB_1.module}
-              value={this.state.rate / RATE_SCALE}
-              onSlidingComplete={this._onRateSliderSlidingComplete}
-              disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-              />
-            <TouchableHighlight
-              underlayColor={BACKGROUND_COLOR}
-              style={styles.wrapper}
-              onPress={this._onPitchCorrectionPressed}
-              disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-              <Text style={[{ fontFamily: 'cutive-mono-regular' }]}>
-                PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-              </Text>
-            </TouchableHighlight>
           </View>
           <View />
         </View>
@@ -544,15 +521,13 @@ export default class RecordScreen extends React.Component {
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
+    alignSelf: 'stretch'
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
     minHeight: DEVICE_HEIGHT,
     maxHeight: DEVICE_HEIGHT,
@@ -564,7 +539,6 @@ const styles = StyleSheet.create({
   halfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
     minHeight: DEVICE_HEIGHT / 2.0,
@@ -573,17 +547,17 @@ const styles = StyleSheet.create({
   recordingContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
   },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
     minWidth: ICON_RECORD_BUTTON.width * 3.0,
@@ -592,8 +566,8 @@ const styles = StyleSheet.create({
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORDING.height,
     maxHeight: ICON_RECORDING.height,
   },

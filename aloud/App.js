@@ -18,7 +18,7 @@ export default function App(props) {
     .then(response => {
       console.log(response.data)
     })
-    .catch(err => console.log('there was an axios err', err))
+    .catch(err => console.log('camera permission denied!', err))
   });
   
   if (!isLoadingComplete && !props.skipLoadingScreen) {

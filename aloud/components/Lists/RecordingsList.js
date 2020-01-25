@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import RecordingsListItem from '../ListItems/RecordingsListItem'
 import { Ionicons } from '@expo/vector-icons';
 import recData from '../../src/sampleRecData';
@@ -11,16 +11,19 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function RecordingsList(props) {
-  const [recordings, setRecordings] = useState(recData);
+export default function RecordingsList({ recordings }) {
+  const [listRecordings, setRecordings] = useState([]);
+
+  useEffect(() => {
+    setRecordings(recordings || recData);
+  }, [recordings]);
 
   return (
     <View>
     <ScrollView>
-    <Text>{'    '}recordings</Text>
     <View>
       {
-        recData.map((recording, i) => {
+        listRecordings.map((recording, i) => {
          return <RecordingsListItem key={i} recording={recording}/>
         })
       }

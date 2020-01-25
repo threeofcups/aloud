@@ -23,6 +23,9 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import cloudinary from 'cloudinary-core';
 import fs from 'expo-file-system';
+import SaveRecordingScreen from './SaveRecordingScreen';
+
+
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -32,7 +35,7 @@ class Icon {
   }
 }
 
-const ICON_RECORD_BUTTON = new Icon(require('./assets/icons/icon_mic-512.png'), 70, 119);
+const ICON_RECORD_BUTTON = new Icon(require('./assets/images/record_button.png'), 70, 119);
 const ICON_RECORDING = new Icon(require('./assets/images/record_icon.png'), 20, 14);
 
 const ICON_PLAY_BUTTON = new Icon(require('./assets/images/play_button.png'), 34, 51);
@@ -74,6 +77,7 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
+      // view: 'record'
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
@@ -326,6 +330,9 @@ export default class RecordScreen extends React.Component {
     this.setState({recordingView: 'save'})
   }
 
+  onSaveRecording(){
+    this.setState({view: 'save'})
+  }
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
@@ -376,12 +383,12 @@ export default class RecordScreen extends React.Component {
       if(!this.state.fontLoaded) {
         return (
             <View style={styles.emptyContainer} />
-            )
-          }
+        )
+    }
 //* this is the pop up to ask for permissions
-if (!this.state.haveRecordingPermissions){
-  return (
-    <View style={styles.container}>
+    if (!this.state.haveRecordingPermissions){
+        return (
+            <View style={styles.container}>
                 <View />
                 <Text style={[styles.noPermissionsText, { fontFamily: 'cutive-mono-regular' }]}>
                   You must enable audio recording permissions in order to use this app.
@@ -391,16 +398,21 @@ if (!this.state.haveRecordingPermissions){
         )
     }
 
+
+    // if(this.state.recordingView === 'save'){
+    //   return (
+    //     <SaveRecordingScreen/>
+    //   )
+    // }
     return (
-      <View style={styles.container}>
-      {/* {this.state.recordingView !== 'save' ? <RecordingView/> : <SaveView/>} */}
+         <View>
         <View
-          style={[
-            styles.halfScreenContainer,
-            {
-              opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-            },
-          ]}>
+        style={[
+          styles.halfScreenContainer,
+          {
+            opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
+          },
+        ]}>
           <View />
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
@@ -414,6 +426,17 @@ if (!this.state.haveRecordingPermissions){
             </TouchableHighlight>
           <View style={styles.recordingContainer}>
             <View />
+          <TouchableHighlight
+            underlayColor={BACKGROUND_COLOR}
+            style={styles.wrapper}
+            onPress={console.log('hihihi')}
+            disabled={this.state.isLoading}>
+            {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
+            <Ionicons name={'md-save'}
+            size={100}
+            onPress={()=> {console.log('dog')}}
+            />
+          </TouchableHighlight>
             
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
@@ -436,7 +459,7 @@ if (!this.state.haveRecordingPermissions){
                 <Image
                   style={[styles.image, { opacity: this.state.isRecording ? 1.0 : 0.0 }]}
                   source={ICON_RECORDING.module}
-                />
+                  />
                 <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                   {this._getRecordingTimestamp()}
                 </Text>
@@ -448,11 +471,11 @@ if (!this.state.haveRecordingPermissions){
           <View />
         </View>
         <View
-          style={[
-            styles.halfScreenContainer,
+        style={[
+          styles.halfScreenContainer,
             {
               opacity:
-                !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
+              !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
             },
           ]}>
           <View />
@@ -465,7 +488,7 @@ if (!this.state.haveRecordingPermissions){
               onValueChange={this._onSeekSliderValueChange}
               onSlidingComplete={this._onSeekSliderSlidingComplete}
               disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-            />
+              />
             <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
               {this._getPlaybackTimestamp()}
             </Text>
@@ -494,20 +517,10 @@ if (!this.state.haveRecordingPermissions){
                 style={styles.wrapper}
                 onPress={this._onPlayPausePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                {/* <Image
-                  style={styles.image}
-                  source={this.state.isPlaying ? ICON_PAUSE_BUTTON.module : ICON_PLAY_BUTTON.module}
-                /> */}
-                 {this.state.isPlaying ? <Ionicons name={'md-play'} size={50} /> : <Ionicons name={'md-pause'} size={50}/> }
+                 {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
 
               </TouchableHighlight>
-              {/* <TouchableHighlight
-                underlayColor={BACKGROUND_COLOR}
-                style={styles.wrapper}
-                onPress={this._onStopPressed}
-                disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                <Image style={styles.image} source={ICON_STOP_BUTTON.module} />
-              </TouchableHighlight> */}
+           
             </View>
             <View />
           </View>
@@ -533,7 +546,8 @@ if (!this.state.haveRecordingPermissions){
           </View>
           <View />
         </View>
-      </View>
+        </View>
+      
     );
   }
 }
@@ -662,6 +676,7 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH / 2.0,
   },
 });
+
 
 RecordScreen.navigationOptions = {
   title: 'Record',

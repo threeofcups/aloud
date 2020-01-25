@@ -12,11 +12,11 @@ import SearchScreen from '../screens/SearchScreen';
 import RecordScreen from '../screens/RecordScreen';
 import SaveRecordingScreen from '../screens/SaveRecordingScreen'
 
-//Todo nav bar icons need to be changed
+
 
 const config = Platform.select({
   web: { headerMode: 'false' },
-  default: {},
+  // default: {},
   default: { headerMode: "false"}, // this one will get rid of header bar at top of screen
 });
 

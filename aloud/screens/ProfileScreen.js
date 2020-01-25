@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     Image,
     Platform,
@@ -16,26 +16,32 @@ import {
   import recData  from '../src/sampleRecData';
   import {Avatar} from 'react-native-elements'
   import { Ionicons } from '@expo/vector-icons';
+  import axios from 'axios';
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
  
-  //'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
 
 export default function ProfileScreen() {
-  const [proInfo, setInfo] = useState(proData[0].username)
-  const [proName, setName] = useState(proData[0].name_display)
-  const [proPic, setPic] = useState(proData[0].url_image)
-  const [proBio, setBio] = useState(proData[0].bio)
-  const [value, onChangeText] = React.useState('new name')
-  const [edit, toggleEditMode] = useState('false')
-  const [collImg] = useState(collData[0].url_image)
-  const [recTitle] = useState(recData[0].title) 
-  const [recDescription] = useState(recData[0].description)
-  const [recContent] = useState(recData[0].url_recording) 
-  const [records] = useState(recData);
+
+  const [userInfo, setUserInfo] = useState([]);
+  const [collections, setUserCollections] = useState([]);
+  const [recordings, setUserRecordings] = useState([]);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      await axios.get(`https://aloud-server.appspot.com/profile/joni/2`)
+        .then(response => {
+          setUserInfo(response.data[0].user[0]);
+          setUserCollections(response.data[0].collections);
+          setUserRecordings(response.data[0].recordings);
+        })
+        .catch(err => console.error(err));
+    };
+
+    fetchContent()
+  }, []);
 
  const handleEditMode = ()=> {
-   console.log('dot')
     if(edit === 'false'){
       toggleEditMode('true');
     } else{
@@ -43,38 +49,35 @@ export default function ProfileScreen() {
     }
     console.log(edit)
   }
-    const editName =  <TextInput
-    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-    onChangeText={text => onChangeText(text)}
-    value={value}/>
+    // const editName =  <TextInput
+    // style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+    // onChangeText={text => onChangeText(text)}
+    // value={value}/>
 
     return (
       // todo center text and avatar
         <View style={styles.container}>
-          <ScrollView>
+        <ScrollView>
         <Text style={styles.text} >aloud</Text>
         {/* {edit === 'true' ? editName:  */}
         {/* //! handleEditMode is not being used for mvp */}
         <Avatar 
         // onPress={() => {handleEditMode()}}
-        rounded title ={proName[0].toUpperCase()}
+        rounded title ={userInfo.name_display}
         size="large"
-        source={{uri: proPic}}
+        source={{uri: userInfo.url_image}}
         />
-        <Text>@{proName}</Text> 
-     
+        <Text>@{userInfo.username}</Text>
         <Card >
-        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {proBio}</Text>
+        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
         
         </Card>
-        <CollectionsList />
-     <View>
-        <RecordingsList /> 
-        </View>
-      
+          <View>
+            <CollectionsList collections={collections} />
+            <RecordingsList recordings={recordings} />
+          </View>
       </ScrollView>
-      </View>
-        
+      </View>     
     );
   }
 

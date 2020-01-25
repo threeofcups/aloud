@@ -5,14 +5,14 @@ import Colors from '../../constants/Colors';
 import { View, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
-export default function RecordingsListItem({recording}) {
+export default function RecordingsListItem({ recording }) {
 
   return (
     <View style={styles.container}>
       <ListItem
         leftIcon={{ name: "play-circle-filled"}}
         title={recording.title}
-        subtitle={recording.user}
+        subtitle={recording.username}
         rightIcon={{ name: 'more-horiz'}}
       />
     </View>

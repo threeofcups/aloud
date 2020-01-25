@@ -19,7 +19,10 @@ import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
-
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
+import cloudinary from 'cloudinary-core';
+import fs from 'expo-file-system';
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -180,6 +183,41 @@ export default class RecordScreen extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
+    console.log(this.recording._uri);
+
+
+    function uploadImage(uri) {
+      let timestamp = (Date.now() / 1000 | 0).toString();
+      let api_key = '235725224111251'
+      let api_secret = 'uRQkBgBWl5qSLzUIQHfOqzeZzak'
+      let cloud = 'dahfjsacf'
+      let upload_preset = 'qna2tpvj'
+      let hash_string = 'timestamp=' + timestamp + api_secret
+      let signature = CryptoJS.SHA1(hash_string).toString();
+      let upload_url = 'https://api.cloudinary.com/v1_1/' + cloud + '/video/upload'
+    
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', upload_url);
+      xhr.onload = () => {
+        console.log(xhr);
+      };
+      let formdata = new FormData();
+      formdata.append('file', 'EC72FBDB-27CC-49DD-9DB2-2266DFD7C443/Library/Caches/ExponentExperienceData/%2540anonymous%252Faloud-aaf24bff-8000-47f0-9d1c-0893b81c3cbc/AV/recording-F8F17274-5089-4DCF-A36A-18CE1FB57C43.caf');
+      formdata.append('timestamp', timestamp);
+      formdata.append('api_key', api_key);
+      formdata.append('signature', signature);
+      formdata.append('upload_prest', upload_preset)
+      xhr.send(formdata);
+    }
+    uploadImage(this.recording.uri);
+    
+    //save uri to the DB
+    axios.post('https://aloud-server.appspot.com/recording', {
+      data: this.recording.uri
+    })
+    .then(resp => console.log(resp))
+    .catch(err => console.log('there was an error saving your recording to our DB'))
+
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -206,7 +244,7 @@ export default class RecordScreen extends React.Component {
       isLoading: false,
     });
   }
-
+  
   _onRecordPressed = () => {
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
@@ -214,7 +252,7 @@ export default class RecordScreen extends React.Component {
       this._stopPlaybackAndBeginRecording();
     }
   };
-
+  
   _onPlayPausePressed = () => {
     if (this.sound != null) {
       if (this.state.isPlaying) {
@@ -224,7 +262,7 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
-
+  
   _onStopPressed = () => {
     if (this.sound != null) {
       this.sound.stopAsync();
@@ -242,7 +280,7 @@ export default class RecordScreen extends React.Component {
       this.sound.setVolumeAsync(value);
     }
   };
-
+  
   _trySetRate = async (rate, shouldCorrectPitch) => {
     if (this.sound != null) {
       try {
@@ -252,7 +290,7 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
-
+  
   _onRateSliderSlidingComplete = async value => {
     this._trySetRate(value * RATE_SCALE, this.state.shouldCorrectPitch);
   };
@@ -260,7 +298,7 @@ export default class RecordScreen extends React.Component {
   _onPitchCorrectionPressed = async value => {
     this._trySetRate(this.state.rate, !this.state.shouldCorrectPitch);
   };
-
+  
   _onSeekSliderValueChange = value => {
     if (this.sound != null && !this.isSeeking) {
       this.isSeeking = true;
@@ -268,7 +306,7 @@ export default class RecordScreen extends React.Component {
       this.sound.pauseAsync();
     }
   };
-
+  
   _onSeekSliderSlidingComplete = async value => {
     if (this.sound != null) {
       this.isSeeking = false;
@@ -280,26 +318,28 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
-
+  
   onSaveRecording(){
+    //TODO
     this.setState({recordingView: 'save'})
   }
+
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
       this.state.soundPosition != null &&
       this.state.soundDuration != null
-    ) {
+      ) {
       return this.state.soundPosition / this.state.soundDuration;
     }
     return 0;
   }
-
+  
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
     const minutes = Math.floor(totalSeconds / 60);
-
+    
     const padWithZero = number => {
       const string = number.toString();
       if (number < 10) {
@@ -309,7 +349,7 @@ export default class RecordScreen extends React.Component {
     };
     return padWithZero(minutes) + ':' + padWithZero(seconds);
   }
-
+  
   _getPlaybackTimestamp() {
     if (
       this.sound != null &&
@@ -318,28 +358,28 @@ export default class RecordScreen extends React.Component {
     ) {
       return `${this._getMMSSFromMillis(this.state.soundPosition)} / ${this._getMMSSFromMillis(
         this.state.soundDuration
-      )}`;
+        )}`;
+      }
+      return '';
     }
-    return '';
-  }
-
-  _getRecordingTimestamp() {
-    if (this.state.recordingDuration != null) {
-      return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
+    
+    _getRecordingTimestamp() {
+      if (this.state.recordingDuration != null) {
+        return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
+      }
+      return `${this._getMMSSFromMillis(0)}`;
     }
-    return `${this._getMMSSFromMillis(0)}`;
-  }
-
-  render() {
-    if(!this.state.fontLoaded) {
+    
+    render() {
+      if(!this.state.fontLoaded) {
         return (
             <View style={styles.emptyContainer} />
-        )
-    }
+            )
+          }
 //* this is the pop up to ask for permissions
-    if (!this.state.haveRecordingPermissions){
-        return (
-            <View style={styles.container}>
+if (!this.state.haveRecordingPermissions){
+  return (
+    <View style={styles.container}>
                 <View />
                 <Text style={[styles.noPermissionsText, { fontFamily: 'cutive-mono-regular' }]}>
                   You must enable audio recording permissions in order to use this app.
@@ -444,7 +484,7 @@ export default class RecordScreen extends React.Component {
                 value={1}
                 onValueChange={this._onVolumeSliderValueChange}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-              />
+                />
             </View>
             <View style={styles.playStopContainer}>
               <TouchableHighlight
@@ -478,7 +518,7 @@ export default class RecordScreen extends React.Component {
               value={this.state.rate / RATE_SCALE}
               onSlidingComplete={this._onRateSliderSlidingComplete}
               disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-            />
+              />
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
               style={styles.wrapper}

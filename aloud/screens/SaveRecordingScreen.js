@@ -74,24 +74,24 @@ return (
           //grab url from response object
           //save url to the DB
           console.log('saved that sound for you')
-        }} title="Save My Sound" color="#841584"/>
+        }} title="Save My Sound" color='#f90909'/>
         {/* <TouchableOpacity onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
           console.log('added to your collection')}} title="Add to a Collection" color="#841584"/>
          */}
-        <TouchableOpacity onPress={this.reset} style={styles.resetButton} >
+        {/* <TouchableOpacity onPress={this.reset} style={styles.resetButton} >
         <Text style={styles.resetText}>Cancel Recording</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Button onPress={() => {
           //grab the url thats been saved to the db
           //create a new entry in the collections table with its details
-          console.log('created your collection')}} title="Create a new Collection" color="#841584"/>
+          console.log('created your collection')}} title="Create a new Collection" color='#f90909'/>
         </ScrollView>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
-          console.log('your session has been canceled')}} title="Cancel" color="#841584"/>
+          console.log('your session has been canceled')}} title="Cancel" color='#f90909'/>
     </View>
 )};
 

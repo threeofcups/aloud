@@ -19,6 +19,10 @@ import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
+import axios from 'axios';
+import CryptoJS from 'crypto-js';
+import cloudinary from 'cloudinary-core';
+import fs from 'expo-file-system';
 import SaveRecordingScreen from './SaveRecordingScreen';
 
 
@@ -79,7 +83,7 @@ export default class RecordScreen extends React.Component {
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
   }
-
+  //ask for client permissions to access microphone on component mount
   componentDidMount() {
     (async () => {
       await Font.loadAsync({
@@ -183,6 +187,43 @@ export default class RecordScreen extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
+    console.log(this.recording._uri);
+
+
+    function uploadImage(uri) {
+      let timestamp = (Date.now() / 1000 | 0).toString();
+      let api_key = '235725224111251'
+      let api_secret = 'uRQkBgBWl5qSLzUIQHfOqzeZzak'
+      let cloud = 'dahfjsacf'
+      let upload_preset = 'qna2tpvj'
+      let hash_string = 'timestamp=' + timestamp + api_secret
+      let signature = CryptoJS.SHA1(hash_string).toString();
+      let upload_url = 'https://api.cloudinary.com/v1_1/' + cloud + '/video/upload'
+    
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', upload_url);
+      xhr.onload = () => {
+        console.log(xhr);
+      };
+      let formdata = new FormData();
+      formdata.append('file', uri);
+      formdata.append('timestamp', timestamp);
+      formdata.append('api_key', api_key);
+      formdata.append('signature', signature);
+      formdata.append('upload_prest', upload_preset)
+      xhr.send(formdata);
+    }
+    
+    //save uri to the DB
+    axios.post('https://aloud-server.appspot.com/recording', {
+      data: this.recording._uri
+    })
+    .then(resp => {
+    uploadImage(this.recording._uri);
+    console.log(resp)
+    })
+    .catch(err => console.log('there was an error saving your recording to our DB'))
+
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
@@ -209,7 +250,7 @@ export default class RecordScreen extends React.Component {
       isLoading: false,
     });
   }
-
+  
   _onRecordPressed = () => {
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
@@ -217,7 +258,7 @@ export default class RecordScreen extends React.Component {
       this._stopPlaybackAndBeginRecording();
     }
   };
-
+  
   _onPlayPausePressed = () => {
     if (this.sound != null) {
       if (this.state.isPlaying) {
@@ -227,7 +268,7 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
-
+  
   _onStopPressed = () => {
     if (this.sound != null) {
       this.sound.stopAsync();
@@ -245,7 +286,7 @@ export default class RecordScreen extends React.Component {
       this.sound.setVolumeAsync(value);
     }
   };
-
+  
   _trySetRate = async (rate, shouldCorrectPitch) => {
     if (this.sound != null) {
       try {
@@ -255,7 +296,7 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
-
+  
   _onRateSliderSlidingComplete = async value => {
     this._trySetRate(value * RATE_SCALE, this.state.shouldCorrectPitch);
   };
@@ -263,7 +304,7 @@ export default class RecordScreen extends React.Component {
   _onPitchCorrectionPressed = async value => {
     this._trySetRate(this.state.rate, !this.state.shouldCorrectPitch);
   };
-
+  
   _onSeekSliderValueChange = value => {
     if (this.sound != null && !this.isSeeking) {
       this.isSeeking = true;
@@ -271,7 +312,7 @@ export default class RecordScreen extends React.Component {
       this.sound.pauseAsync();
     }
   };
-
+  
   _onSeekSliderSlidingComplete = async value => {
     if (this.sound != null) {
       this.isSeeking = false;
@@ -283,6 +324,11 @@ export default class RecordScreen extends React.Component {
       }
     }
   };
+  
+  onSaveRecording(){
+    //TODO
+    this.setState({recordingView: 'save'})
+  }
 
   onSaveRecording(){
     this.setState({view: 'save'})
@@ -292,17 +338,17 @@ export default class RecordScreen extends React.Component {
       this.sound != null &&
       this.state.soundPosition != null &&
       this.state.soundDuration != null
-    ) {
+      ) {
       return this.state.soundPosition / this.state.soundDuration;
     }
     return 0;
   }
-
+  
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
     const minutes = Math.floor(totalSeconds / 60);
-
+    
     const padWithZero = number => {
       const string = number.toString();
       if (number < 10) {
@@ -312,7 +358,7 @@ export default class RecordScreen extends React.Component {
     };
     return padWithZero(minutes) + ':' + padWithZero(seconds);
   }
-
+  
   _getPlaybackTimestamp() {
     if (
       this.sound != null &&
@@ -321,20 +367,20 @@ export default class RecordScreen extends React.Component {
     ) {
       return `${this._getMMSSFromMillis(this.state.soundPosition)} / ${this._getMMSSFromMillis(
         this.state.soundDuration
-      )}`;
+        )}`;
+      }
+      return '';
     }
-    return '';
-  }
-
-  _getRecordingTimestamp() {
-    if (this.state.recordingDuration != null) {
-      return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
+    
+    _getRecordingTimestamp() {
+      if (this.state.recordingDuration != null) {
+        return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
+      }
+      return `${this._getMMSSFromMillis(0)}`;
     }
-    return `${this._getMMSSFromMillis(0)}`;
-  }
-
-  render() {
-    if(!this.state.fontLoaded) {
+    
+    render() {
+      if(!this.state.fontLoaded) {
         return (
             <View style={styles.emptyContainer} />
         )
@@ -351,13 +397,6 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-
-
-    // if(this.state.recordingView === 'save'){
-    //   return (
-    //     <SaveRecordingScreen/>
-    //   )
-    // }
     return (
          <View>
         <View
@@ -368,28 +407,29 @@ export default class RecordScreen extends React.Component {
           },
         ]}>
           <View />
-          <View style={styles.recordingContainer}>
-            <View />
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={console.log('hihihi')}
-            disabled={this.state.isLoading}>
-            {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-            <Ionicons name={'md-save'}
-            size={100}
-            onPress={()=> {console.log('dog')}}
-            />
-          </TouchableHighlight>
-            
+          {/* TOP SAVE BUTTON */}
             <TouchableHighlight
               underlayColor={BACKGROUND_COLOR}
               style={styles.wrapper}
               onPress={this._onRecordPressed}
               disabled={this.state.isLoading}>
               {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
-              <Ionicons name={'md-mic'}
-              size={300}
+              <Ionicons name={Platform.OS === 'ios' ? 'ios-save' : 'md-save'}
+              size={50}
+              />
+            </TouchableHighlight>
+          <View style={styles.recordingContainer}>
+            <View />
+          
+            {/* MICROPHONE */}
+            <TouchableHighlight
+              underlayColor={BACKGROUND_COLOR}
+              style={styles.wrapper}
+              onPress={this._onRecordPressed}
+              disabled={this.state.isLoading}>
+              {/* <Image style={styles.image} source={ICON_RECORD_BUTTON.module} /> */}
+              <Ionicons name={'ios-mic'}
+              size={100}
               />
             </TouchableHighlight>
 
@@ -397,7 +437,7 @@ export default class RecordScreen extends React.Component {
             <View style={styles.recordingDataContainer}>
               <View />
               <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-                {this.state.isRecording ? 'LIVE' : ''}
+                {this.state.isRecording ? 'Now Recording' : ''}
               </Text>
               <View style={styles.recordingDataRowContainer}>
                 <Image
@@ -423,6 +463,7 @@ export default class RecordScreen extends React.Component {
             },
           ]}>
           <View />
+
           <View style={styles.playbackContainer}>
             <Slider
               style={styles.playbackSlider}
@@ -444,7 +485,7 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onMutePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                  {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
+                  {this.state.muted ? <Ionicons name={'ios-volume-high'} size={50} /> : <Ionicons name={'ios-volume-off'} size={50}/> }
               </TouchableHighlight>
               <Slider
                 style={styles.volumeSlider}
@@ -461,7 +502,7 @@ export default class RecordScreen extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onPlayPausePressed}
                 disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                 {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
+                 {this.state.isPlaying ? <Ionicons name={'ios-pause'} size={200} /> : <Ionicons name={'ios-play'} size={200}/> }
 
               </TouchableHighlight>
            
@@ -469,24 +510,6 @@ export default class RecordScreen extends React.Component {
             <View />
           </View>
           <View style={[styles.buttonsContainerBase, styles.buttonsContainerBottomRow]}>
-            <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
-            <Slider
-              style={styles.rateSlider}
-              trackImage={ICON_TRACK_1.module}
-              thumbImage={ICON_THUMB_1.module}
-              value={this.state.rate / RATE_SCALE}
-              onSlidingComplete={this._onRateSliderSlidingComplete}
-              disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-            />
-            <TouchableHighlight
-              underlayColor={BACKGROUND_COLOR}
-              style={styles.wrapper}
-              onPress={this._onPitchCorrectionPressed}
-              disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-              <Text style={[{ fontFamily: 'cutive-mono-regular' }]}>
-                PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-              </Text>
-            </TouchableHighlight>
           </View>
           <View />
         </View>
@@ -498,15 +521,13 @@ export default class RecordScreen extends React.Component {
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
+    alignSelf: 'stretch'
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
     minHeight: DEVICE_HEIGHT,
     maxHeight: DEVICE_HEIGHT,
@@ -518,7 +539,6 @@ const styles = StyleSheet.create({
   halfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
     minHeight: DEVICE_HEIGHT / 2.0,
@@ -527,17 +547,17 @@ const styles = StyleSheet.create({
   recordingContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
   },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
     minWidth: ICON_RECORD_BUTTON.width * 3.0,
@@ -546,8 +566,8 @@ const styles = StyleSheet.create({
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     minHeight: ICON_RECORDING.height,
     maxHeight: ICON_RECORDING.height,
   },
@@ -615,27 +635,12 @@ const styles = StyleSheet.create({
     maxHeight: ICON_THUMB_1.height,
     alignSelf: 'stretch',
     paddingRight: 20,
-    paddingLeft: 20,
   },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
 });
 
-
-// export default function RecordScreen() {
-
-//   return (
-//     <View allignItems={'center'}>
-
-//       <Ionicons name={'md-mic'}
-//       size={300}
-//       onPress={()=>{console.log('dot')}}
-//       />
-      
-//     </View>
-//   );
-// }
 
 RecordScreen.navigationOptions = {
   title: 'Record',

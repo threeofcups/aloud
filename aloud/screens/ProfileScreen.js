@@ -20,7 +20,7 @@ import {
   import axios from 'axios';
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
-  import axios from 'axios';
+
   //'proPic': 'https://res.cloudinary.com/dahfjsacf/image/upload/v1579656042/qc35njypmtfvjt9baaxq.jpg',
  
 
@@ -58,14 +58,11 @@ export default function ProfileScreen() {
     // value={value}/>
 
     return (
-      // todo center text and avatar
+     
         <View style={styles.container}>
         <ScrollView>
         <Text style={styles.text} >aloud</Text>
-        {/* {edit === 'true' ? editName:  */}
-        {/* //! handleEditMode is not being used for mvp */}
         <Avatar 
-        // onPress={() => {handleEditMode()}}
         rounded title ={userInfo.name_display}
         size="large"
         source={{uri: userInfo.url_image}}
@@ -74,7 +71,7 @@ export default function ProfileScreen() {
         <Card >
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
         </Card>
-        />
+        
         <Button onPress={(event) => {
           const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
           const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';

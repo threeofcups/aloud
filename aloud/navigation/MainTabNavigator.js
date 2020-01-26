@@ -44,21 +44,7 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const SaveRecordingStack = createStackNavigator(
-  {
-    SaveRecording: SaveRecordingScreen,
-  },
-  config
-);
 
-SaveRecordingStack.navigationOptions = {
-  tabBarLabel: 'Save',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
-  ),
-};
-
-SaveRecordingStack.path = '';
 
 const ProfileStack = createStackNavigator(
   {
@@ -125,7 +111,7 @@ SearchStack.navigationOptions = {
 SearchStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  SaveRecordingStack,
+  
   HomeStack,
   SearchStack,
   RecordStack,

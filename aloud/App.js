@@ -8,35 +8,35 @@ import {PermissionsAndroid} from 'react-native';
 import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
-import RecordStack from './navigation/MainSaveRecordingNavigator'
+
 
 export default function App() {
-    const [signedIn, setSignIn] = useState('');
+    const [signedIn, setSignIn] = useState('true');
     const [name, setName] = useState('');
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
 
-  // signIn = async () => {
-  //   try {
-  //     const result = await Google.logInAsync({
-  //       androidClientId:
-  //         "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
-  //       scopes: ["profile", "email"]
-  //     })
-  //      if (result.type === "success") {
+  signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId:
+          "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      })
+       if (result.type === "success") {
       
-  //         setSignIn("true");
-  //         setName(result.user.name);
-  //         setPhotoUrl(result.user.photoUrl)
+          setSignIn("true");
+          setName(result.user.name);
+          setPhotoUrl(result.user.photoUrl)
           
         
-  //     } else {
-  //       console.log("cancelled")
-  //     }
-  //   } catch (e) {
-  //     console.log("error", e)
-  //   }
-  // }
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
 
 
     return (
@@ -49,8 +49,8 @@ export default function App() {
             )}
       </View>
     ) 
-          }
-        }
+          }  
+      
           
 const LoginPage = props => {
   return (
@@ -71,12 +71,10 @@ const LoggedInPage = props => {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       <Text style={styles.header}>Welcome:{props.name}</Text>
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
-      <RecordStack/>
         <AppNavigator />
     </View>
   )
 }
-
 
 
 async function requestCameraPermission() {

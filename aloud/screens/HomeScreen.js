@@ -19,26 +19,36 @@ import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
 
-
   // const [collections, getCollections] = useState(0);
-  const [homeFlash, homeFlasher] = useState(null);
+  const [collections, setHomeCollections] = useState([]);
+  const [recordings, setHomeRecordings] = useState([]);
 
   useEffect(() => {
-    axios.get('https://aloud-server.appspot.com/home')
-    .then(response => {
-      // console.log(response.data)
-      homeFlasher(response.data)
-    })
-    .catch(err => console.log('there was an axios err', err))
-  });
+
+
+    const fetchContent = async () => {
+      await axios.get('https://aloud-server.appspot.com/home')
+        .then(response => {
+          // console.log(response);
+          // console.log(response.data[0].collections)
+          setHomeCollections(response.data[0].collections);
+          setHomeRecordings(response.data[0].recordings);
+        })
+        .catch(err => console.log('there was an axios err', err))
+      };
+
+    fetchContent();
+  }, []);
+
+
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
         <View>
-        <CollectionsList />
-        <RecordingsList /> 
+        <CollectionsList collections={collections} />
+        <RecordingsList recordings={recordings} /> 
         </View>
       </ScrollView>
     </View>

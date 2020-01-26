@@ -27,8 +27,6 @@ export default function HomeScreen() {
     const fetchContent = async () => {
       await axios.get('https://aloud-server.appspot.com/home')
         .then(response => {
-          // console.log(response);
-          // console.log(response.data[0].collections)
           setHomeCollections(response.data[0].collections);
           setHomeRecordings(response.data[0].recordings);
         })

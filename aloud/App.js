@@ -10,44 +10,64 @@ import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 
 export default function App() {
-    const [signedIn, setSignIn] = useState(false);
+    const [signedIn, setSignIn] = useState('');
     const [name, setName] = useState('');
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
 
-  signIn = async () => {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId:
-          "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      })
-       if (result.type === "success") {
+  // signIn = async () => {
+  //   try {
+  //     const result = await Google.logInAsync({
+  //       androidClientId:
+  //         "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
+  //       scopes: ["profile", "email"]
+  //     })
+  //      if (result.type === "success") {
       
-          setSignIn("true");
-          setName(result.user.name);
-          setPhotoUrl(result.user.photoUrl)
+  //         setSignIn("true");
+  //         setName(result.user.name);
+  //         setPhotoUrl(result.user.photoUrl)
           
         
-      } else {
-        console.log("cancelled")
-      }
-    } catch (e) {
-      console.log("error", e)
-    }
-  }
+  //     } else {
+  //       console.log("cancelled")
+  //     }
+  //   } catch (e) {
+  //     console.log("error", e)
+  //   }
+  // }
 
 
+
+  useEffect(() => {
+    requestCameraPermission()
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(err => console.log('camera permission denied!', err))
+  });
+  
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
-      <View style={styles.container}>
-        {signedIn === 'true' ? (
-          <LoggedInPage name={name} photoUrl={photoUrl} />
-          ) : (
-            <LoginPage signIn={signIn} />
-            )}
-      </View>
+      <AppLoading
+        startAsync={loadResourcesAsync}
+        onError={handleLoadingError}
+        onFinish={() => handleFinishLoading(setLoadingComplete)}
+      />
+    );
+  } else {
+    return (
+      <LoggedInPage />
+      // <View style={styles.container}>
+      //   {signedIn === 'true' ? (
+      //     <LoggedInPage name={name} photoUrl={photoUrl} />
+      //     ) : (
+      //       <LoginPage signIn={signIn} />
+      //       )}
+      // </View>
     ) 
           }
+        }
           
 const LoginPage = props => {
   return (

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
-
 import {
   Image,
   Platform,
@@ -50,7 +49,6 @@ export default function HomeScreen() {
       </ScrollView>
     </View>
   );
-
 }
 
 HomeScreen.navigationOptions = {

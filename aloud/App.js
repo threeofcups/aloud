@@ -8,7 +8,7 @@ import {PermissionsAndroid} from 'react-native';
 import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
-import RecordStack from './navigation/MainSaveRecordingNavigator'
+
 
 export default function App() {
     const [signedIn, setSignIn] = useState("true");
@@ -71,7 +71,7 @@ const LoggedInPage = props => {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       <Text style={styles.header}>Welcome:{props.name}</Text>
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
-      <RecordStack/>
+      
         <AppNavigator />
     </View>
   )

@@ -72,7 +72,7 @@ export default function ProfileScreen() {
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
         </Card>
         
-        <Button onPress={(event) => {
+        {/* <Button onPress={(event) => {
           const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
           const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
           const defaultHeaders = {
@@ -92,7 +92,7 @@ export default function ProfileScreen() {
             .catch(err => console.log(err))
           }} title='upload photo' color="#841584">
           </Button>
-  
+   */}
           <View>
             <CollectionsList collections={collections} />
             <RecordingsList recordings={recordings} />

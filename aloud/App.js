@@ -69,7 +69,7 @@ const LoggedInPage = props => {
       centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
       />
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-      <Text style={styles.header}>Welcome:{props.name}</Text>
+      {/* <Text style={styles.header}>Welcome:{props.name}</Text> */}
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
         <AppNavigator />
     </View>

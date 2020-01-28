@@ -9,7 +9,7 @@ import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-export default function SaveRecordingScreen() {
+export default function SaveRecordingScreen({onBack}) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [privacySetting, setPrivacy] = useState('private');

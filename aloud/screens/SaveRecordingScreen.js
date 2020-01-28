@@ -7,7 +7,7 @@ import RecordingsList from '../components/Lists/RecordingsList'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
-export default function SaveRecordingScreen() {
+export default function SaveRecordingScreen({onBack}) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [privacySetting, setPrivacy] = useState('private');
@@ -91,7 +91,8 @@ return (
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
-          console.log('your session has been canceled')}} title="Cancel" color='#f90909'/>
+          onBack()}} title="Cancel" color='#f90909'
+          />
     </View>
 )};
 

@@ -79,7 +79,7 @@ export default class RecordScreen extends React.Component {
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
-    this.goSave= this.goSave.bind(this)
+    // this.goSave= this.goSave.bind(this)
   }
 
   componentDidMount() {
@@ -186,6 +186,7 @@ export default class RecordScreen extends React.Component {
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
+    console.log(info.uri.encodeURI())
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -328,12 +329,7 @@ export default class RecordScreen extends React.Component {
     return '';
   }
 
-  goSave() {
-    console.log("go to save");
-    console.log(this.props.navigation.actions)
-    this.props.navigation.actions.push({ screen: 'Save' });
-    
-  }
+
 
   _getRecordingTimestamp() {
     if (this.state.recordingDuration != null) {
@@ -360,7 +356,6 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-
       if(this.state.view === 'record'){
 
         
@@ -372,7 +367,7 @@ export default class RecordScreen extends React.Component {
     disabled={this.state.isLoading}>
     <Ionicons name={'md-save'}
     onPress={()=> this.onSaveRecording()}
-    size={100}
+    size={50}
     />
   </TouchableHighlight>
   <TouchableHighlight
@@ -381,10 +376,9 @@ export default class RecordScreen extends React.Component {
       onPress={this._onRecordPressed}
       disabled={this.state.isLoading}>
       <Ionicons name={'md-mic'}
-      size={300}/>
+      size={100}/>
     </TouchableHighlight> 
     <View style={styles.recordingDataContainer}>
-      <View />
       <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
         {this.state.isRecording ? 'LIVE' : ''}
       </Text>
@@ -396,11 +390,8 @@ export default class RecordScreen extends React.Component {
         <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
           {this._getRecordingTimestamp()}
         </Text>
-      </View>
-    </View>
-  
-  
 
+    </View>
 <View
 style={[
   styles.halfScreenContainer,
@@ -409,7 +400,6 @@ style={[
     !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
   },
 ]}>
-  <View />
   <View style={styles.playbackContainer}>
     <Slider
       style={styles.playbackSlider}
@@ -449,11 +439,8 @@ style={[
         onPress={this._onPlayPausePressed}
         disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
          {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
-
       </TouchableHighlight>
-   
     </View>
-    <View />
   </View>
   <View style={[styles.buttonsContainerBase, styles.buttonsContainerBottomRow]}>
     <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
@@ -475,6 +462,7 @@ style={[
       </Text>
     </TouchableHighlight>
   </View>
+</View>
 </View>
 </View>
 )
@@ -521,7 +509,7 @@ const styles = StyleSheet.create({
   recordingContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
     minHeight: ICON_RECORD_BUTTON.height,
@@ -530,7 +518,7 @@ const styles = StyleSheet.create({
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
@@ -540,7 +528,7 @@ const styles = StyleSheet.create({
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: ICON_RECORDING.height,
     maxHeight: ICON_RECORDING.height,
@@ -548,7 +536,7 @@ const styles = StyleSheet.create({
   playbackContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
     minHeight: ICON_THUMB_1.height * 2.0,
@@ -579,7 +567,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   buttonsContainerTopRow: {
     maxHeight: ICON_MUTED_BUTTON.height,

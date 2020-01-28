@@ -7,6 +7,7 @@ import RecordingsList from '../components/Lists/RecordingsList'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
+import * as DocumentPicker from 'expo-document-picker';
 export default function SaveRecordingScreen() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -14,17 +15,16 @@ export default function SaveRecordingScreen() {
     const [generateTranscript, setGenerateTranscript] = useState(false)
     const [recFlash, recFlasher] = useState(null);
 
-    const uploadRec = function(){
-    //   useEffect((recFlash) => {
-    //   return axios.post('https://api.cloudinary.com/v1_1/dahfjsacf/upload')
-    //   .then(response => {
-    //     console.log(response)
-    //   })
-    //   .catch(err => console.log('there was an err saving that recording to cloudinary', err))
-    // });
-    }
+const uploadRecFromPhone = function(){
+DocumentPicker.getDocumentAsync({
+  type: '*/*',
+  copyToCacheDirectory: true,
+})
+.then(succ => console.log(succ))
+.catch(err => console.log('Doc Pic error', err))
+}
 
-
+    
 return (
     <View>
         <ScrollView>
@@ -49,7 +49,7 @@ return (
         <Text>Transcript</Text>
         <TextInput></TextInput> */}
         {/* <recNav /> */}
-        <Button onPress={(event) => {
+        {/* <Button onPress={(event) => {
           const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
           const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
           //const axios = require('axios');
@@ -74,7 +74,7 @@ return (
           //grab url from response object
           //save url to the DB
           console.log('saved that sound for you')
-        }} title="Save My Sound" color='#f90909'/>
+        }} title="Save My Sound" color='#f90909'/> */}
         {/* <TouchableOpacity onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
@@ -83,10 +83,6 @@ return (
         {/* <TouchableOpacity onPress={this.reset} style={styles.resetButton} >
         <Text style={styles.resetText}>Cancel Recording</Text>
         </TouchableOpacity> */}
-        <Button onPress={() => {
-          //grab the url thats been saved to the db
-          //create a new entry in the collections table with its details
-          console.log('created your collection')}} title="Create a new Collection" color='#f90909'/>
         </ScrollView>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call

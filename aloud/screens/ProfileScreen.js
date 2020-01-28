@@ -68,16 +68,12 @@ export default function ProfileScreen() {
       return (
         <View style={styles.container}>
         <ScrollView>
-        <Text style={styles.text} >aloud</Text>
         <Avatar
         rounded title ={userInfo.name_display}
         size="large"
         source={{uri: selectedImage.localUri}}
-        onPress={openImagePickerAsync}
         />
-        {/* <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Upload a new photo</Text>
-        </TouchableOpacity> */}
+        <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text>
         <Text>@{userInfo.username}</Text>
         <Card >
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>

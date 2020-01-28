@@ -125,12 +125,16 @@ return (
           //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color='#f90909'/> */}
-        </ScrollView>
+        <Button title="Submit Sound" color='#f90909'/>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
-          onBack()}} title="Cancel" color='#f90909'
+
+         onBack()}} title="Cancel" color='#f90909'
           />
+        </ScrollView>
+
+
     </View>
 )};
 

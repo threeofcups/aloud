@@ -21,7 +21,6 @@ import {
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
   import * as ImagePicker from 'expo-image-picker';
-
 export default function ProfileScreen() {
 
   const [userInfo, setUserInfo] = useState([]);
@@ -40,10 +39,8 @@ export default function ProfileScreen() {
         })
         .catch(err => console.error(err));
     };
-
     fetchContent()
   }, []);
-
     //profile image uploader
     let openImagePickerAsync = async () => {
       let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -51,19 +48,36 @@ export default function ProfileScreen() {
         alert('Permission to access camera roll is required!');
         return;
       }
-      let pickerResult = await ImagePicker.launchImageLibraryAsync();
+      let pickerResult = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect:[4, 3],
+        base64: true
+      });
       if (pickerResult.cancelled === true) {
         return;
       }
       setSelectedImage({ localUri: pickerResult.uri });
+      //save image to cloudinary db
+    let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+    let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+    const data = {
+      'file': base64Img,
+      'upload_preset': 'qna2tpvj',
+    }
       // then send POST to server to save user's current image
-      //axios.post('https://aloud-server.appspot.com/profile/', {
-      //  data: pickerResult
-      //})
-      //.then(profPic => someFunctionThatSavesProfPicsToTheDB(pickerResult))
-      //.catch(err => console.log('there was an err saving user photo', err))
+      fetch(cloud, {
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+      }).then(async r => {
+          let data = await r.json()
+          console.log(data.secure_url)
+          return data.secure_url
+      }).catch(err=>console.log(err))
+      //send post rq to DB to store profile pic using (data.secure_url)
     };
-
     if (selectedImage !== null) {
       return (
         <View style={styles.container}>

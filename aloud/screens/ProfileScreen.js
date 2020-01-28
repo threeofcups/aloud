@@ -32,7 +32,7 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     const fetchContent = async () => {
-      await axios.get(`https://aloud-server.appspot.com/profile/`)
+      await axios.get(`https://aloud-server.appspot.com/profile/björk/1`)
         .then(response => {
           setUserInfo(response.data[0].user[0]);
           setUserCollections(response.data[0].collections);
@@ -56,20 +56,24 @@ export default function ProfileScreen() {
         return;
       }
       setSelectedImage({ localUri: pickerResult.uri });
+      // then send POST to server to save user's current image
+      //axios.post('https://aloud-server.appspot.com/profile/', {
+      //  data: pickerResult
+      //})
+      //.then(profPic => someFunctionThatSavesProfPicsToTheDB(pickerResult))
+      //.catch(err => console.log('there was an err saving user photo', err))
     };
+
     if (selectedImage !== null) {
       return (
         <View style={styles.container}>
         <ScrollView>
-        <Text style={styles.text} >aloud</Text>
         <Avatar
         rounded title ={userInfo.name_display}
         size="large"
         source={{uri: selectedImage.localUri}}
         />
-        <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-        <Text style={styles.buttonText}>Upload a new photo</Text>
-        </TouchableOpacity>
+        <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text>
         <Text>@{userInfo.username}</Text>
         <Card >
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
@@ -85,21 +89,28 @@ export default function ProfileScreen() {
     return (
     <View style={styles.container}>
     <ScrollView>
-    <Text style={styles.text} >aloud</Text>
     <Avatar
     rounded title ={userInfo.name_display}
     size="large"
     source={{uri: userInfo.url_image}}
     />
-    <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-    <Text style={styles.buttonText}>Upload a new photo</Text>
+    <TouchableOpacity
+    onPress={openImagePickerAsync}
+    style={styles.text}>
+    <Text style={styles.text}>
+    Upload a new profile photo
+    </Text>
     </TouchableOpacity>
-    <Text>@{userInfo.username}</Text>
+    <Text style={styles.text}> @ {userInfo.username}
+    </Text>
     <Card >
-    <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
+    <Text
+    rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
     </Card>
       <View>
+      <Text style={styles.text}> Collections </Text>
         <CollectionsList collections={collections} />
+        <Text style={styles.text}> Recordings </Text>
         <RecordingsList recordings={recordings} />
       </View>
     </ScrollView>
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
   },
   image: {
     justifyContent: 'center',
-    width: 50, height: 50,
+    width: 100, height: 100,
     position: 'relative',
   },
   text: {

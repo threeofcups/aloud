@@ -75,15 +75,8 @@ return (
           //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color='#f90909'/> */}
-        {/* <TouchableOpacity onPress={() => {
-          //grab the url thats been saved to the db from the cloudinary call
-          //save the url to a new collection in the db
-          console.log('added to your collection')}} title="Add to a Collection" color="#841584"/>
-         */}
-        {/* <TouchableOpacity onPress={this.reset} style={styles.resetButton} >
-        <Text style={styles.resetText}>Cancel Recording</Text>
-        </TouchableOpacity> */}
         </ScrollView>
+        <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload Sound" color='#f90909'/>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db

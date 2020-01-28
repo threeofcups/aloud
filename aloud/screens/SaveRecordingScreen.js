@@ -8,6 +8,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
+
 export default function SaveRecordingScreen() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -20,7 +21,7 @@ DocumentPicker.getDocumentAsync({
   type: '*/*',
   copyToCacheDirectory: true,
 })
-.then(succ => console.log(succ))
+.then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
 .catch(err => console.log('Doc Pic error', err))
 }
 

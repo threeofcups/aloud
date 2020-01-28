@@ -8,7 +8,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
-
+import * as FileSystem from 'expo-file-system';
 export default function SaveRecordingScreen() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -16,23 +16,72 @@ export default function SaveRecordingScreen() {
     const [generateTranscript, setGenerateTranscript] = useState(false)
     const [recFlash, recFlasher] = useState(null);
 
-const uploadRecFromPhone = function(){
-DocumentPicker.getDocumentAsync({
-  type: '*/*',
-  copyToCacheDirectory: true,
-})
-.then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
-.catch(err => console.log('Doc Pic error', err))
-}
+// const uploadRecFromPhone = function(){
+// DocumentPicker.getDocumentAsync({
+//   type: '*/*',
+//   copyToCacheDirectory: true,
+// })
+// .then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
+// .catch(err => console.log('Audio upload error', err))
+// }
 
-    
+// const callback = downloadProgress => {
+//   const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+//   this.setState({
+//     downloadProgress: progress,
+//   });
+// };
+
+// const downloadResumable = FileSystem.createDownloadResumable(
+//   'http://techslides.com/demos/sample-videos/small.mp4',
+//   FileSystem.documentDirectory + 'small.mp4',
+//   {},
+//   callback
+// );
+
+// try {
+//   const { uri } = await downloadResumable.downloadAsync();
+//   console.log('Finished downloading to ', uri);
+// } catch (e) {
+//   console.error(e);
+// }
+
+// try {
+//   await downloadResumable.pauseAsync();
+//   console.log('Paused download operation, saving for future retrieval');
+//   AsyncStorage.setItem('pausedDownload', JSON.stringify(downloadResumable.savable()));
+// } catch (e) {
+//   console.error(e);
+// }
+
+// try {
+//   const { uri } = await downloadResumable.resumeAsync();
+//   console.log('Finished downloading to ', uri);
+// } catch (e) {
+//   console.error(e);
+// }
+
+// //To resume a download across app restarts, assuming the the DownloadResumable.savable() object was stored:
+// const downloadSnapshotJson = await AsyncStorage.getItem('pausedDownload');
+// const downloadSnapshot = JSON.parse(downloadSnapshotJson);
+// const downloadResumable = new FileSystem.DownloadResumable(
+//   downloadSnapshot.url,
+//   downloadSnapshot.fileUri,
+//   downloadSnapshot.options,
+//   callback,
+//   downloadSnapshot.resumeData
+// );
+
+// try {
+//   const { uri } = await downloadResumable.resumeAsync();
+//   console.log('Finished downloading to ', uri);
+// } catch (e) {
+//   console.error(e);
+// }
+
 return (
     <View>
         <ScrollView>
-        {/* playback component  
-        TODO: save the title and description to the db
-        
-        */}
         <Text>Recording Title:</Text>
         <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setTitle(text)}
@@ -77,7 +126,6 @@ return (
           console.log('saved that sound for you')
         }} title="Save My Sound" color='#f90909'/> */}
         </ScrollView>
-        <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload Sound" color='#f90909'/>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db

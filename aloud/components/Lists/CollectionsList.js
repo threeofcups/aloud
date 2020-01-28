@@ -11,6 +11,7 @@ import {
   FlatList
 } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
+import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function CollectionsList({ collections }) {
   const [listCollections, setCollections] = useState([]);
@@ -21,17 +22,23 @@ export default function CollectionsList({ collections }) {
 
   return (
     <View>
+     
+
       <FlatList
       horizontal
-        data={listCollections}
-        renderItem={({ item: rowData }) => {
-          return (
-
-            <CollectionsListItem collection={rowData}/>
+      data={listCollections}
+      renderItem={({ item: rowData }) => {
+        return (
+          <TouchableWithoutFeedback onPress={()=> {console.log('dot')}} >
+            <CollectionsListItem  collection={rowData}/>
+          </TouchableWithoutFeedback>
+          
+          
           );
         }}
         keyExtractor={(item, index) => `${index}`}
-      />
+        />
+       
     </View>
   );
 }

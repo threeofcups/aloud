@@ -22,7 +22,7 @@ import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import SaveRecordingScreen from './SaveRecordingScreen';
 import navigator from 'react-native-elements'
-
+import * as DocumentPicker from 'expo-document-picker';
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -332,9 +332,6 @@ export default class RecordScreen extends React.Component {
     }
     return '';
   }
-
-
-
   _getRecordingTimestamp() {
     if (this.state.recordingDuration != null) {
       return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
@@ -360,11 +357,21 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-      if(this.state.view === 'record'){
 
-        
+const uploadRecFromPhone = function(){
+  DocumentPicker.getDocumentAsync({
+    type: '*/*',
+    copyToCacheDirectory: true,
+  })
+  .then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
+  .catch(err => console.log('Audio upload error', err))
+  }
+
+
+      if(this.state.view === 'record'){
         return (
-          <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}> 
+    <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}>
+    <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
     <TouchableHighlight
     underlayColor={BACKGROUND_COLOR}
     style={styles.wrapper}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
 import Colors from '../../constants/Colors';
-import { View, StyleSheet, Modal, Text, TouchableHighlight, ScrollView } from 'react-native';
+import { View, StyleSheet, Modal, Text, TouchableHighlight, ScrollView, Picker } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
@@ -9,6 +9,8 @@ export default function RecordingsListItem({ recording }) {
   const [playback, setPlayback] = useState('');
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
   const [modalVisible, setModalVisible] = useState(false);
+  const [chosenCollection, setCollection] = useState('collection');
+  const [chosenLibrary, setLibrary] = useState('collection');
 
 
   const loadAudio = () => {
@@ -112,6 +114,16 @@ export default function RecordingsListItem({ recording }) {
                 setModalVisible(!modalVisible);
               }}
               />
+                <Picker
+                  selectedValue={chosenCollection}
+                  style={{ alignSelf: 'center', height: 50, width: 150 }}
+                  visible={true}
+              onValueChange={(itemValue) =>
+                    setCollection(itemValue)
+                  }>
+                  <Picker.Item label="Collection1" value="collection1" />
+                  <Picker.Item label="Collection2" value="collection2" />
+                </Picker>
               <Button
                 title="add to library"
                 type="clear"
@@ -119,13 +131,16 @@ export default function RecordingsListItem({ recording }) {
                   setModalVisible(!modalVisible);
                 }}
               />
-              {/* <Button
-                title="go to artist"
-                type="clear"
-                onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-              /> */}
+            <Picker
+              selectedValue={chosenLibrary}
+              style={{ alignSelf: 'center', height: 50, width: 150 }}
+              visible={true}
+              onValueChange={(itemValue) =>
+                setLibrary(itemValue)
+              }>
+              <Picker.Item label="Library1" value="library1" />
+              <Picker.Item label="Library2" value="library2" />
+            </Picker>
               <Button
                 title="x"
                 type="clear"

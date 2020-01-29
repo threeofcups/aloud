@@ -1,15 +1,14 @@
-// avatar, sound name, artist name, length, more
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
 import Colors from '../../constants/Colors';
-import { View, StyleSheet } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { View, StyleSheet, Modal, Text, TouchableHighlight, ScrollView } from 'react-native';
+import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
   const [isPlaying, setPlayStatus] = useState('');
   const [playback, setPlayback] = useState('');
-  const [onPlaybackUpdate, setOnPBupdate] = useState('');
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   const loadAudio = () => {
@@ -68,52 +67,83 @@ export default function RecordingsListItem({ recording }) {
 
   setPlayStatus(!isPlaying);
   };
+  
+  const openModal = () => {
+    setModalVisible(!modalVisible);
+  }
 
+  const handleCollectionAdd = () => {
+    //send axios post request to collection recording save route
+    // recording.id and collection.id
+    // need info from chosen collection (may have to retrieve with selected collection name)
+  };
 
-  // const playRecording = async() => {
-  //   try {
-  //     setSound(await Audio.Sound.createAsync(
-  //       { uri: 'https://ia902704.us.archive.org/26/items/macbeth_0810_librivox/macbeth_0_shakespeare.mp3' },
-  //       { shouldPlay: true }
-  //     ))
-  //     setPlayStatus(true);
-  //     setIconStatus('pause-circle-filled');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleLibraryAdd = () => {
+    //send axios post request to library recording save route
+    // recording.id and user.id
+    // need info from global auth
+  };
 
-  // const pauseRecording = async () => {
-  //   try {
-      
-  //     setPlayStatus(false);
-  //     setIconStatus('play-circle-filled');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  // const handleGoToArtist = () => {
 
-
-  // const playAndPause = () => {
-  //   switch (playStatus) {
-  //     case false:
-  //       playRecording();
-  //       break;
-  //     case true:
-  //       pauseRecording();
-  //       break;
-  //   }
   // };
 
   return (
     <View style={styles.container}>
+      <Modal
+        style={styles.modal}
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible)
+        }}>
+        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+          <View>
+            <Text style={{ marginTop: 54, textAlign: "center"}}>playback here</Text>
+            <Text style={{ textAlign: "center"}}>{recording.title}</Text>
+            <Text style={{ textAlign: "center" }}>{recording.username}</Text>
+            <Text style={{ margin: 22, textAlign: "left" }}>{recording.description}</Text>
+            <Text style={{ marginLeft: 22, marginBottom: 22, textAlign: "left" }}>{recording.speech_to_text}</Text>
+              <Button
+                title="add to collection"
+                type="clear"
+                onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              />
+              <Button
+                title="add to library"
+                type="clear"
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              />
+              {/* <Button
+                title="go to artist"
+                type="clear"
+                onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+              /> */}
+              <Button
+                title="x"
+                type="clear"
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              />
+          </View>
+        </ScrollView>
+      </Modal>
       <ListItem
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus}}
+        leftIcon={{ name: iconStatus }}
         title={recording.title}
         subtitle={recording.username}
-        rightIcon={{ name: 'more-horiz'}}
-      />
+        rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}
+      bottomDivider
+    />
     </View>
   );
 }
@@ -130,5 +160,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     textAlign: 'center',
-  }
+  },
+  modal: {
+    backgroundColor: 'white',
+    margin: 0, 
+    alignItems: undefined,
+    justifyContent: undefined,
+  },
+  
 });

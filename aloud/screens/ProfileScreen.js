@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     Button,
@@ -20,16 +20,19 @@ import {
   import axios from 'axios';
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
+  import {UserContext} from '../App'
   import * as ImagePicker from 'expo-image-picker';
 export default function ProfileScreen() {
-
+  //todo id
+  const {userName, userId, photoUrl} = useContext(UserContext)
   const [userInfo, setUserInfo] = useState([]);
   const [collections, setUserCollections] = useState([]);
   const [recordings, setUserRecordings] = useState([]);
    //Profile image hook uploader
   const [selectedImage, setSelectedImage] = React.useState(null);
-
   useEffect(() => {
+    console.log(userName)
+    console.log(userId)
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/björk/1`)
         .then(response => {
@@ -104,9 +107,9 @@ export default function ProfileScreen() {
     <View style={styles.container}>
     <ScrollView>
     <Avatar
-    rounded title ={userInfo.name_display}
+    rounded title ={userName}
     size="large"
-    source={{uri: userInfo.url_image}}
+    source={{uri: photoUrl}}
     />
     <TouchableOpacity
     onPress={openImagePickerAsync}
@@ -115,7 +118,7 @@ export default function ProfileScreen() {
     Upload a new profile photo
     </Text>
     </TouchableOpacity>
-    <Text style={styles.text}> @ {userInfo.username}
+    <Text style={styles.text}> @ {userName}
     </Text>
     <Card >
     <Text

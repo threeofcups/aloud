@@ -1,7 +1,7 @@
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, Button, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import {PermissionsAndroid} from 'react-native';
@@ -9,25 +9,30 @@ import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 
-
+export const UserContext = React.createContext();
 export default function App() {
-    const [signedIn, setSignIn] = useState('true');
-    const [name, setName] = useState('');
+    const [signedIn, setSignIn] = useState('false');
+    // const [name, setName] = useState('');S
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
-
-  signIn = async () => {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId:
+    const [userName, setUsername] = useState('temp')
+    const [userId, setUserId] = useState('')
+    const [state, setTheState] = useState({userName, userId, photoUrl})
+    signIn = async () => {
+      try {
+        const result = await Google.logInAsync({
+          androidClientId:
           "1001786307226-3b5813q7pc0g9j32gjqd5vp58g28shpk.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      })
-       if (result.type === "success") {
-      
+          scopes: ["profile", "email"]
+        })
+        if (result.type === "success") {
+          console.log(result)
           setSignIn("true");
-          setName(result.user.name);
+          setUsername(result.user.name);
           setPhotoUrl(result.user.photoUrl)
+          setUserId(result.user.id)
+          setTheState({userName:result.user.name, userId: result.user.id, photoUrl:result.user.photoUrl})
+          console.log(state)
           
         
       } else {
@@ -37,17 +42,17 @@ export default function App() {
       console.log("error", e)
     }
   }
-
-
     return (
-    
       <View style={styles.container}>
         {signedIn === 'true' ? (
-          <LoggedInPage name={name} photoUrl={photoUrl} />
+          <UserContext.Provider value={state}>
+            <LoggedInPage name={userName} photoUrl={photoUrl} />
+            </UserContext.Provider>
           ) : (
             <LoginPage signIn={signIn} />
             )}
       </View>
+            
     ) 
           }  
       
@@ -63,6 +68,7 @@ const LoginPage = props => {
 
 const LoggedInPage = props => {
   return (
+    
     <View style={styles.container}>
       <Header 
       backgroundColor={'#fbf0f2'}
@@ -73,6 +79,7 @@ const LoggedInPage = props => {
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
         <AppNavigator />
     </View>
+  
   )
 }
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
     Image,
     Button,
@@ -20,17 +20,18 @@ import {
   import axios from 'axios';
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
+  import {UserContext} from '../App'
   import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen() {
-
+  const userName = useContext(UserContext)
   const [userInfo, setUserInfo] = useState([]);
   const [collections, setUserCollections] = useState([]);
   const [recordings, setUserRecordings] = useState([]);
    //Profile image hook uploader
   const [selectedImage, setSelectedImage] = React.useState(null);
-
   useEffect(() => {
+    console.log(userName)
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/björk/1`)
         .then(response => {

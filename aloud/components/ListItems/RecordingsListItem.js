@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
 import Colors from '../../constants/Colors';
-import { View, StyleSheet, Modal, Text, TouchableHighlight, ScrollView, Picker } from 'react-native';
+import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
@@ -85,10 +85,6 @@ export default function RecordingsListItem({ recording }) {
     // recording.id and user.id
     // need info from global auth
   };
-
-  // const handleGoToArtist = () => {
-
-  // };
 
   return (
     <View style={styles.container}>

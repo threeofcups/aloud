@@ -74,11 +74,14 @@ export default function RecordingsListItem({ recording }) {
 
   const handleCollectionAdd = () => {
     //send axios post request to collection recording save route
-    
+    // recording.id and collection.id
+    // need info from chosen collection (may have to retrieve with selected collection name)
   };
 
   const handleLibraryAdd = () => {
     //send axios post request to library recording save route
+    // recording.id and user.id
+    // need info from global auth
   };
 
   // const handleGoToArtist = () => {

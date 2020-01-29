@@ -76,7 +76,7 @@ export default class RecordScreen extends React.Component {
       rate: 1.0,
       view: 'record'
     };
-    this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
+    this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
     // this.goSave= this.goSave.bind(this)
@@ -116,7 +116,7 @@ export default class RecordScreen extends React.Component {
       this.setState({
         soundDuration: null,
         soundPosition: null,
-        isPlaybackAllowed: false,
+        isPlaybackAllowed: true,
       });
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
@@ -187,7 +187,7 @@ export default class RecordScreen extends React.Component {
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
     await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
+      allowsRecordingIOS: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
       playsInSilentModeIOS: true,
       playsInSilentLockedModeIOS: true,
@@ -363,6 +363,43 @@ const uploadRecFromPhone = function(){
   }
 
 
+  // let openImagePickerAsync = async () => {
+  //     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+  //     if (permissionResult.granted === false) {
+  //       alert('Permission to access camera roll is required!');
+  //       return;
+  //     }
+  //     let pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //       allowsEditing: true,
+  //       aspect:[4, 3],
+  //       base64: true
+  //     });
+  //     if (pickerResult.cancelled === true) {
+  //       return;
+  //     }
+  //     setSelectedImage({ localUri: pickerResult.uri });
+  //     //save image to cloudinary db
+  //   let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+  //   let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+  //   const data = {
+  //     'file': base64Img,
+  //     'upload_preset': 'qna2tpvj',
+  //   }
+  //     // then send POST to server to save user's current image
+  //     fetch(cloud, {
+  //       body: JSON.stringify(data),
+  //       headers: {
+  //         'content-type': 'application/json'
+  //       },
+  //       method: 'POST',
+  //     }).then(async r => {
+  //         let data = await r.json()
+  //         console.log(data.secure_url)
+  //         return data.secure_url
+  //     }).catch(err=>console.log(err))
+  //     //send post rq to DB to store profile pic using (data.secure_url)
+  //   };
+
       if(this.state.view === 'record'){
         return (
     <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}>
@@ -396,7 +433,6 @@ const uploadRecFromPhone = function(){
         <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
           {this._getRecordingTimestamp()}
         </Text>
-
     </View>
 <View
 style={[

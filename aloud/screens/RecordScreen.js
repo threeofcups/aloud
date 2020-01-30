@@ -95,7 +95,7 @@ export default class RecordScreen extends React.Component {
   }
 
   _askForPermissions = async () => {
-    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING, Permissions.CAMERA_ROLL);
     const { status, expires, permissions } = await Permissions.getAsync(
       Permissions.AUDIO_RECORDING,
       Permissions.CAMERA_ROLL
@@ -185,7 +185,6 @@ export default class RecordScreen extends React.Component {
   }
 
   async _stopRecordingAndEnablePlayback() {
-    
     this.setState({
       isLoading: true,
     });
@@ -195,9 +194,7 @@ export default class RecordScreen extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
-
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
-
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -219,7 +216,6 @@ export default class RecordScreen extends React.Component {
       this._updateScreenForSoundStatus
     );
     this.sound = sound;
-    // MediaLibrary.createAssetAsync(this.recording.uri)
     this.setState({
       isLoading: false,
     });
@@ -237,15 +233,41 @@ export default class RecordScreen extends React.Component {
   }
 
   async _saveToPhoneLibrary(){
-    // let permissionResult = await Permissions.requestCameraRollPermissionsAsync();
-    // if (permissionResult.granted === false) {
-    //   alert('Permission to access camera roll is required!');
-    //   return;
-    // }
     this._createAudioAsset()
   .then(asset => MediaLibrary.saveToLibraryAsync(asset))
+  .then(resp => console.log(resp))
   .catch(err => console.log('media library save asset err', err))
-  // const test = this.recording._uri;
+  }
+
+  uploadRecFromPhone(){
+    DocumentPicker.getDocumentAsync({
+      type: '*/*',
+      copyToCacheDirectory: true,
+      base64: true
+    })
+    .then(succ => {
+      console.log(succ.uri, succ.type, succ.name, succ.size)
+    // .catch(err => console.log('Audio upload error', err))
+    let base64Img = `data:image/jpg;base64,${succ.base64}`;
+    let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+    const data = {
+      'file': base64Img,
+      'upload_preset': 'qna2tpvj',
+      'resource_type': 'video'
+    }
+      // then send POSTco server to save user's current image
+      fetch(cloud, {
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+      }).then(async r => {
+          let data = await r.json()
+          console.log(data.secure_url)
+          return data.secure_url
+      }).catch(err=>console.log(err))
+    }).catch(err => console.log(err))
   }
 
   _onRecordPressed = () => {
@@ -364,35 +386,6 @@ export default class RecordScreen extends React.Component {
   //   //send post rq to DB to store profile pic using (data.secure_url)
   // };
 
-  uploadRecFromPhone(){
-    DocumentPicker.getDocumentAsync({
-      type: '*/*',
-      copyToCacheDirectory: true,
-      base64: true
-    })
-    .then(succ => {
-      console.log(succ.uri, succ.type, succ.name, succ.size)
-    // .catch(err => console.log('Audio upload error', err))
-    let base64Img = `data:image/jpg;base64,${succ[uri].base64}`;
-    let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-    const data = {
-      'file': base64Img,
-      'upload_preset': 'qna2tpvj',
-    }
-      // then send POST to server to save user's current image
-      fetch(cloud, {
-        body: JSON.stringify(data),
-        headers: {
-          'content-type': 'application/json'
-        },
-        method: 'POST',
-      }).then(async r => {
-          let data = await r.json()
-          console.log(data.secure_url)
-          return data.secure_url
-      }).catch(err=>console.log(err))
-    }).catch(err => console.log(err))
-  }
 
   _getSeekSliderPosition() {
     if (

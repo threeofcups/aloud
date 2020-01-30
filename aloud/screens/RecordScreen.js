@@ -81,7 +81,7 @@ export default class RecordScreen extends React.Component {
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
-    // this.goSave= this.goSave.bind(this)
+    this.onSaveRecording = this.onSaveRecording.bind(this)
   }
 
   componentDidMount() {
@@ -345,7 +345,11 @@ export default class RecordScreen extends React.Component {
   };
 
   onSaveRecording(){
-    this.setState({view: 'save'})
+    if(this.state.view !== 'save'){
+      this.setState({view: 'save'})
+    } else {
+      this.setState({view:'record'})
+    }
   }
 
 
@@ -561,7 +565,7 @@ style={[
 } else {
   return (
     <View>
-      <SaveRecordingScreen/>
+      <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
     </View>
   )
 }

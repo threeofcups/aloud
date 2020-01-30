@@ -179,6 +179,13 @@ export default function RecordingsListItem({ recording }) {
                 }}
               />
               </Modal>
+            <Button
+              title="go to artist"
+              type="clear"
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            />
               <Button
                 title="x"
                 type="clear"

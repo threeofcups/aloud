@@ -8,6 +8,7 @@ import {PermissionsAndroid} from 'react-native';
 import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
+import axios from 'axios';
 
 export const UserContext = React.createContext();
 export default function App() {
@@ -16,8 +17,8 @@ export default function App() {
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');
     const [userName, setUsername] = useState('temp')
-    const [userId, setUserId] = useState('')
-    const [state, setTheState] = useState({userName, userId, photoUrl})
+    const [googleId, setGoogleId] = useState('')
+    const [state, setTheState] = useState({userName, photoUrl})
     signIn = async () => {
       try {
         const result = await Google.logInAsync({
@@ -30,10 +31,23 @@ export default function App() {
           setSignIn("true");
           setUsername(result.user.name);
           setPhotoUrl(result.user.photoUrl)
-          setUserId(result.user.id)
-          setTheState({userName:result.user.name, userId: result.user.id, photoUrl:result.user.photoUrl})
-          console.log(state)
-          
+          setGoogleId(result.user.id)
+          axios.post('https://aloud-server.appspot.com/user/signup', {
+            //Todo insert body
+    "user": {
+      "email": result.user.email,
+        "familyName": result.user.familyName,
+          "givenName": result.user.givenName,
+            "id": result.user.id,
+              "name": result.user.name,
+                "photoUrl": result.user.photoUrl
+
+    }})
+          .then(response => {
+            setTheState({userName:result.user.name, googleId: result.user.id, photoUrl:result.user.photoUrl, userId:response[0].id})
+          //TODO what if user is already in database
+          })
+          .catch(console.error('there was an error saving user'))
         
       } else {
         console.log("cancelled")

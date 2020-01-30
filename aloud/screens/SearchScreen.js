@@ -2,17 +2,11 @@ import React, { useState } from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+import {Image,Platform,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View,
 } from 'react-native';
-import SearchStack from '../navigation/SearchNavigator'
+import SearchStack from '../navigation/SearchNavigator';
+import ButtonGroup from 'react-native-elements';
+
 export default function SearchScreen() {
   const [value, onChangeText] = React.useState('search here');
 

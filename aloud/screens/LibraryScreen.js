@@ -13,7 +13,7 @@ const [recordings, setLibraryRecordings] = useState([]);
 
 useEffect(() => {
     const fetchContent = async () => {
-      await axios.get(`https://aloud-server.appspot.com/library/björk/1`)
+      await axios.get(`https://aloud-server.appspot.com/library/bjork/1`)
         .then(response => {
           setLibraryCollections(response.data[0].collections);
           setLibraryRecordings(response.data[0].recordings);

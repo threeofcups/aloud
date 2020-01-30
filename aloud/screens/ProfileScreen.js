@@ -90,7 +90,7 @@ export default function ProfileScreen() {
         size="large"
         source={{uri: selectedImage.localUri}}
         />
-        <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text>
+        {/* <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> */}
         <Text>@{userInfo.username}</Text>
         <Card >
         <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
@@ -107,27 +107,29 @@ export default function ProfileScreen() {
     <View style={styles.container}>
     <ScrollView>
     <Avatar
-    rounded title ={userName}
+    rounded title ={userInfo.name}
     size="large"
-    source={{uri: photoUrl}}
+    source={{uri: userInfo.url_image}}
     />
     <TouchableOpacity
     onPress={openImagePickerAsync}
     style={styles.text}>
-    <Text style={styles.text}>
+    {/* <Text style={styles.text}>
     Upload a new profile photo
-    </Text>
+    </Text> */}
     </TouchableOpacity>
-    <Text style={styles.text}> @ {userName}
+    <Text style={styles.text}> @ {userInfo.username}
     </Text>
     <Card >
     <Text
-    rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
+    rightIcon={{ name: 'more-horiz' }}>{userInfo.bio.toLowerCase()}</Text>
     </Card>
       <View>
-      <Text style={styles.text}> Collections </Text>
+      <Text></Text>
+      <Text style={styles.text}> collections </Text>
         <CollectionsList collections={collections} />
-        <Text style={styles.text}> Recordings </Text>
+        <Text></Text>
+        <Text style={styles.text}> recordings </Text>
         <RecordingsList recordings={recordings} />
       </View>
     </ScrollView>

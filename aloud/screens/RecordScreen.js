@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
+import * as MediaLibrary from 'expo-media-library'
 import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';
@@ -23,6 +24,7 @@ import * as Permissions from 'expo-permissions';
 import SaveRecordingScreen from './SaveRecordingScreen';
 import navigator from 'react-native-elements'
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-document-picker';
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -94,6 +96,12 @@ export default class RecordScreen extends React.Component {
 
   _askForPermissions = async () => {
     const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const { status, expires, permissions } = await Permissions.getAsync(
+      Permissions.AUDIO_RECORDING,
+      Permissions.CAMERA_ROLL
+    );
+
+
     this.setState({
       haveRecordingPermissions: response.status === 'granted',
     });
@@ -116,7 +124,6 @@ export default class RecordScreen extends React.Component {
       this.setState({
         soundDuration: null,
         soundPosition: null,
-        isPlaybackAllowed: true,
       });
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
@@ -160,6 +167,8 @@ export default class RecordScreen extends React.Component {
       staysActiveInBackground: true,
     });
     if (this.recording !== null) {
+      //const asset = await MediaLibrary.createAssetAsync(this.recording.uri);
+      //console.log('asset', asset);
       this.recording.setOnRecordingStatusUpdate(null);
       this.recording = null;
     }
@@ -176,6 +185,7 @@ export default class RecordScreen extends React.Component {
   }
 
   async _stopRecordingAndEnablePlayback() {
+    
     this.setState({
       isLoading: true,
     });
@@ -185,7 +195,9 @@ export default class RecordScreen extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
+
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
+
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -198,7 +210,7 @@ export default class RecordScreen extends React.Component {
     });
     const { sound, status } = await this.recording.createNewLoadedSoundAsync(
       {
-        isLooping: true,
+        isLooping: false,
         isMuted: this.state.muted,
         volume: this.state.volume,
         rate: this.state.rate,
@@ -207,9 +219,33 @@ export default class RecordScreen extends React.Component {
       this._updateScreenForSoundStatus
     );
     this.sound = sound;
+    // MediaLibrary.createAssetAsync(this.recording.uri)
     this.setState({
       isLoading: false,
     });
+  }
+
+  async _createAudioAsset() {
+  let newAss = await MediaLibrary.createAssetAsync(this.recording.getURI())
+  MediaLibrary.createAlbumAsync('Recordings', newAss)
+  .then(() => {
+    console.log('Album created!');
+  })
+  .catch(error => {
+    console.log('err', error);
+  });
+  }
+
+  async _saveToPhoneLibrary(){
+    // let permissionResult = await Permissions.requestCameraRollPermissionsAsync();
+    // if (permissionResult.granted === false) {
+    //   alert('Permission to access camera roll is required!');
+    //   return;
+    // }
+    this._createAudioAsset()
+  .then(asset => MediaLibrary.saveToLibraryAsync(asset))
+  .catch(err => console.log('media library save asset err', err))
+  // const test = this.recording._uri;
   }
 
   _onRecordPressed = () => {
@@ -289,6 +325,75 @@ export default class RecordScreen extends React.Component {
   onSaveRecording(){
     this.setState({view: 'save'})
   }
+
+
+  // openImagePickerAsync = async () => {
+  //   let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+  //   if (permissionResult.granted === false) {
+  //     alert('Permission to access camera roll is required!');
+  //     return;
+  //   }
+  //   let pickerResult = await ImagePicker.launchImageLibraryAsync({
+  //     allowsEditing: true,
+  //     aspect:[4, 3],
+  //     base64: true
+  //   });
+  //   if (pickerResult.cancelled === true) {
+  //     return;
+  //   }
+  //   setSelectedImage({ localUri: pickerResult.uri });
+  //   //save image to cloudinary db
+  // let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+  // let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+  // const data = {
+  //   'file': base64Img,
+  //   'upload_preset': 'qna2tpvj',
+  // }
+  //   // then send POST to server to save user's current image
+  //   fetch(cloud, {
+  //     body: JSON.stringify(data),
+  //     headers: {
+  //       'content-type': 'application/json'
+  //     },
+  //     method: 'POST',
+  //   }).then(async r => {
+  //       let data = await r.json()
+  //       console.log(data.secure_url)
+  //       return data.secure_url
+  //   }).catch(err=>console.log(err))
+  //   //send post rq to DB to store profile pic using (data.secure_url)
+  // };
+
+  uploadRecFromPhone(){
+    DocumentPicker.getDocumentAsync({
+      type: '*/*',
+      copyToCacheDirectory: true,
+      base64: true
+    })
+    .then(succ => {
+      console.log(succ.uri, succ.type, succ.name, succ.size)
+    // .catch(err => console.log('Audio upload error', err))
+    let base64Img = `data:image/jpg;base64,${succ[uri].base64}`;
+    let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+    const data = {
+      'file': base64Img,
+      'upload_preset': 'qna2tpvj',
+    }
+      // then send POST to server to save user's current image
+      fetch(cloud, {
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+      }).then(async r => {
+          let data = await r.json()
+          console.log(data.secure_url)
+          return data.secure_url
+      }).catch(err=>console.log(err))
+    }).catch(err => console.log(err))
+  }
+
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
@@ -352,64 +457,16 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-
-const uploadRecFromPhone = function(){
-  DocumentPicker.getDocumentAsync({
-    type: '*/*',
-    copyToCacheDirectory: true,
-  })
-  .then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
-  .catch(err => console.log('Audio upload error', err))
-  }
-
-
-  // let openImagePickerAsync = async () => {
-  //     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-  //     if (permissionResult.granted === false) {
-  //       alert('Permission to access camera roll is required!');
-  //       return;
-  //     }
-  //     let pickerResult = await ImagePicker.launchImageLibraryAsync({
-  //       allowsEditing: true,
-  //       aspect:[4, 3],
-  //       base64: true
-  //     });
-  //     if (pickerResult.cancelled === true) {
-  //       return;
-  //     }
-  //     setSelectedImage({ localUri: pickerResult.uri });
-  //     //save image to cloudinary db
-  //   let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
-  //   let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-  //   const data = {
-  //     'file': base64Img,
-  //     'upload_preset': 'qna2tpvj',
-  //   }
-  //     // then send POST to server to save user's current image
-  //     fetch(cloud, {
-  //       body: JSON.stringify(data),
-  //       headers: {
-  //         'content-type': 'application/json'
-  //       },
-  //       method: 'POST',
-  //     }).then(async r => {
-  //         let data = await r.json()
-  //         console.log(data.secure_url)
-  //         return data.secure_url
-  //     }).catch(err=>console.log(err))
-  //     //send post rq to DB to store profile pic using (data.secure_url)
-  //   };
-
       if(this.state.view === 'record'){
         return (
     <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}>
-    <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
+    <Button onPress={()=> this.uploadRecFromPhone()} title="Upload from Device" color='#f90909'/>
     <TouchableHighlight
     underlayColor={BACKGROUND_COLOR}
     style={styles.wrapper}
     disabled={this.state.isLoading}>
     <Ionicons name={'md-save'}
-    onPress={()=> this.onSaveRecording()}
+    onPress={()=> this._saveToPhoneLibrary()}
     size={50}
     />
   </TouchableHighlight>
@@ -515,7 +572,7 @@ style={[
     </View>
   )
 }
-  }
+}
 }
 
 

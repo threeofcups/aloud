@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export const UserContext = React.createContext();
 export default function App() {
-    const [signedIn, setSignIn] = useState('false');
+    const [signedIn, setSignIn] = useState('true');
     // const [name, setName] = useState('');S
     const [photoUrl, setPhotoUrl] = useState('')
     const [isLoadingComplete, setLoadingComplete] = useState('false');

@@ -24,7 +24,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const fetchContent = async () => {
-      await axios.get('https://aloud-server.appspot.com/home')
+      await axios.get('https://aloud-server.appspot.com/home/1')
         .then(response => {
           setHomeCollections(response.data[0].collections);
           setHomeRecordings(response.data[0].recordings);

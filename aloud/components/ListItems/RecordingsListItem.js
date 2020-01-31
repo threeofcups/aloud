@@ -6,6 +6,7 @@ import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native'
 import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
+  const [src, setSrc] = useState(recording.url_recording);
   const [isPlaying, setPlayStatus] = useState('');
   const [playback, setPlayback] = useState('');
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
@@ -30,9 +31,8 @@ export default function RecordingsListItem({ recording }) {
     const loadSetup = async() => {
     try {
       const playback = new Audio.Sound()
-      const soundSrc = recording.url_recording;
       const source = {
-        uri: soundSrc
+        uri: src,
       }
       const status = {
         shouldPlay: isPlaying,

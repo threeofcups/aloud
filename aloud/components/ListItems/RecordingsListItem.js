@@ -12,12 +12,8 @@ export default function RecordingsListItem({ recording }) {
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
   const [modalVisible, setModalVisible] = useState(false);
   const [collectionsModalVisible, setCollectionsVisible] = useState(false);
-  const [librariesModalVisible, setLibrariesVisible] = useState(false);
   const [collections, setCollections] = useState([]);
-
-  //get all collections for user
-  //get all libraries for user
-
+  const [choiceCollection, setChoiceCollection] = useState([]);
   const fetchCollectionContent = async () => {
     await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
       .then(response => {
@@ -68,21 +64,11 @@ export default function RecordingsListItem({ recording }) {
     }
   };
 
-    // const fetchLibraryContent = async () => {
-  //   await axios.get('https://aloud-server.appspot.com/home')
-  //     .then(response => {
-  //       setHomeCollections(response.data[0].collections);
-  //       setHomeRecordings(response.data[0].recordings);
-  //     })
-  //     .catch(err => console.log('there was an axios err', err))
-  // };
-      
   useEffect(() => {
 
     
     setAudioMode();
     fetchCollectionContent();
-    // fetchLibraryContent();
 
   }, []);
 
@@ -102,16 +88,32 @@ export default function RecordingsListItem({ recording }) {
     setModalVisible(!modalVisible);
   }
 
+  const saveToLibrary = async () => {
+    await axios.post(`https://aloud-server.appspot.com/library/save/recording/${recording.id}`, {
+      "userId": "1"
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
+
+  const saveToCollection = async () => {
+    await axios.post(`https://aloud-server.appspot.com/recording/${choiceCollection.id}`, {
+      "recordingId": recording.id
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
+
   const handleCollectionAdd = () => {
-    //send axios post request to collection recording save route
-    // recording.id and collection.id
-    // need info from chosen collection (may have to retrieve with selected collection name)
+    saveToCollection();
   };
 
   const handleLibraryAdd = () => {
-    //send axios post request to library recording save route
-    // recording.id and user.id
-    // need info from global auth
+    saveToLibrary();
   };
 
   return (
@@ -156,6 +158,8 @@ export default function RecordingsListItem({ recording }) {
                     onPress={() => {
                       //add to collection
                       //axios post function called here
+                      setChoiceCollection(collection)
+                      handleCollectionAdd();
                       setCollectionsVisible(!collectionsModalVisible);
                     }}
                   />
@@ -173,6 +177,7 @@ export default function RecordingsListItem({ recording }) {
                 title="add to library"
                 type="clear"
                 onPress={() => {
+                  handleLibraryAdd();
                   setModalVisible(!setModalVisible);
                 }}
               />

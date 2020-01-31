@@ -14,10 +14,6 @@ export default function RecordingsListItem({ recording }) {
   const [collectionsModalVisible, setCollectionsVisible] = useState(false);
   const [collections, setCollections] = useState([]);
   const [choiceCollection, setChoiceCollection] = useState([]);
-
-  //get all collections for user
-  //get all libraries for user
-
   const fetchCollectionContent = async () => {
     await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
       .then(response => {
@@ -68,21 +64,11 @@ export default function RecordingsListItem({ recording }) {
     }
   };
 
-    // const fetchLibraryContent = async () => {
-  //   await axios.get('https://aloud-server.appspot.com/home')
-  //     .then(response => {
-  //       setHomeCollections(response.data[0].collections);
-  //       setHomeRecordings(response.data[0].recordings);
-  //     })
-  //     .catch(err => console.log('there was an axios err', err))
-  // };
-      
   useEffect(() => {
 
     
     setAudioMode();
     fetchCollectionContent();
-    // fetchLibraryContent();
 
   }, []);
 

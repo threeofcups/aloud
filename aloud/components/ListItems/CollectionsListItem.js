@@ -17,10 +17,10 @@ if(listOrCollection === 'list'){
   <TouchableWithoutFeedback onPress={()=> {toggleListOrCollection('collection')}}>
 
     <Card
-    containerStyle={{ padding: 0, width: 160 }}
+    containerStyle={{ padding: 0, width: 150, height: 150, borderWidth: 0, marginBottom: 15 }}
     image={{ uri: collection.url_image } }
-    title={collection.title} 
-    subtitle={collection.username}
+    // title={collection.title} 
+    featuredSubtitle={collection.title}
     />
   </TouchableWithoutFeedback>
   )

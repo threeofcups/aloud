@@ -21,8 +21,9 @@ export default function RecordingsListItem({ recording }) {
     const loadSetup = async() => {
     try {
       const playback = new Audio.Sound()
+      const soundSrc = recording.url_recording;
       const source = {
-        uri: 'https://www.nasa.gov/mp3/584791main_spookysaturn.mp3'
+        uri: soundSrc
       }
       const status = {
         shouldPlay: isPlaying,

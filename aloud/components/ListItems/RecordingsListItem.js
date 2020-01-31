@@ -102,6 +102,16 @@ export default function RecordingsListItem({ recording }) {
     setModalVisible(!modalVisible);
   }
 
+  const saveToLibrary = async () => {
+    await axios.post(`https://aloud-server.appspot.com/library/save/recording/${recording.id}`, {
+      "userId": "1"
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
+
   const handleCollectionAdd = () => {
     //send axios post request to collection recording save route
     // recording.id and collection.id
@@ -109,9 +119,7 @@ export default function RecordingsListItem({ recording }) {
   };
 
   const handleLibraryAdd = () => {
-    //send axios post request to library recording save route
-    // recording.id and user.id
-    // need info from global auth
+    saveToLibrary();
   };
 
   return (
@@ -173,6 +181,7 @@ export default function RecordingsListItem({ recording }) {
                 title="add to library"
                 type="clear"
                 onPress={() => {
+                  handleLibraryAdd();
                   setModalVisible(!setModalVisible);
                 }}
               />

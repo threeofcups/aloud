@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
+import axios from 'axios';
 import Colors from '../../constants/Colors';
 import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
@@ -11,11 +12,19 @@ export default function RecordingsListItem({ recording }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [collectionsModalVisible, setCollectionsVisible] = useState(false);
   const [librariesModalVisible, setLibrariesVisible] = useState(false);
-  const [chosenCollection, setCollection] = useState('collection');
-  const [chosenLibrary, setLibrary] = useState('collection');
+  const [collections, setCollections] = useState([]);
 
   //get all collections for user
   //get all libraries for user
+
+  const fetchCollectionContent = async () => {
+    await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
+      .then(response => {
+        setCollections(response.data[0].collections);
+      })
+      .catch(err => console.log('there was an axios err', err))
+  };
+
 
   const loadAudio = () => {
     const loadSetup = async() => {
@@ -59,15 +68,6 @@ export default function RecordingsListItem({ recording }) {
     }
   };
 
-  // const fetchCollectionContent = async () => {
-  //   await axios.get('https://aloud-server.appspot.com/home')
-  //     .then(response => {
-  //       setHomeCollections(response.data[0].collections);
-  //       setHomeRecordings(response.data[0].recordings);
-  //     })
-  //     .catch(err => console.log('there was an axios err', err))
-  // };
-
     // const fetchLibraryContent = async () => {
   //   await axios.get('https://aloud-server.appspot.com/home')
   //     .then(response => {
@@ -81,7 +81,7 @@ export default function RecordingsListItem({ recording }) {
 
     
     setAudioMode();
-    // fetchCollectionContent();
+    fetchCollectionContent();
     // fetchLibraryContent();
 
   }, []);
@@ -147,7 +147,20 @@ export default function RecordingsListItem({ recording }) {
               onRequestClose={() => {
                 setCollectionsVisible(!collectionsModalVisible)
               }}>
-              <Text>collections</Text>
+              <Text style={{margin: 54, textAlign: "center"}}>collections</Text>
+              {collections.map(collection => {
+                return (
+                  <Button
+                    title={collection.title}
+                    type="clear"
+                    onPress={() => {
+                      //add to collection
+                      //axios post function called here
+                      setCollectionsVisible(!collectionsModalVisible);
+                    }}
+                  />
+                )
+              })}
               <Button
                 title="x"
                 type="clear"
@@ -160,26 +173,9 @@ export default function RecordingsListItem({ recording }) {
                 title="add to library"
                 type="clear"
                 onPress={() => {
-                  setLibrariesVisible(!librariesModalVisible);
+                  setModalVisible(!setModalVisible);
                 }}
               />
-              <Modal
-              style={styles.modal}
-              animationType="fade"
-              transparent={false}
-              visible={librariesModalVisible}
-              onRequestClose={() => {
-                setLibrariesVisible(!librariesModalVisible)
-              }}>
-              <Text>libraries</Text>
-              <Button
-                title="x"
-                type="clear"
-                onPress={() => {
-                  setLibrariesVisible(!librariesModalVisible);
-                }}
-              />
-              </Modal>
             <Button
               title="go to artist"
               type="clear"

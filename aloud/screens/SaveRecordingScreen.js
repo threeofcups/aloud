@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import axios from 'axios';
+import {UserContext} from '../App'
 import {View, Text, TextInput, Switch, Button, AppState, StyleSheet} from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack';
 import recNav from '../navigation/AppNavigator';
@@ -10,12 +11,30 @@ import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 export default function SaveRecordingScreen({onBack}) {
-    const [title, setTitle] = useState('');
+  const {userName, userId, photoUrl} = useContext(UserContext)
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState('');
     const [privacySetting, setPrivacy] = useState('private');
     const [generateTranscript, setGenerateTranscript] = useState(false)
     const [recFlash, recFlasher] = useState(null);
 
+
+
+    saveRecording = async() => {
+      //todo route is not hitting
+      console.log(privacySetting)
+        await axios.post('https://aloud-server.appspot.com/recording/save', {
+    "id_user": "1",
+    "title": title,
+    "description": description,
+    "url_recording": "cloudinary.mp3",
+    "published": privacySetting,
+    "speech_to_text": "sample sample sample",
+  
+        })
+        .then(console.log('yay'))
+        .catch((console.error('there was an error with save recording')))
+    }
 // const uploadRecFromPhone = function(){
 // DocumentPicker.getDocumentAsync({
 //   type: '*/*',
@@ -125,16 +144,13 @@ return (
           //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color='#f90909'/> */}
-        <Button title="Submit Sound" color='#f90909'/>
+        <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
-
          onBack()}} title="Cancel" color='#f90909'
           />
         </ScrollView>
-
-
     </View>
 )};
 

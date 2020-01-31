@@ -36,14 +36,11 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView
-        style={styles.container}
         contentContainerStyle={styles.contentContainer}>
-        <View>
         <CollectionsList collections={collections} />
         <RecordingsList recordings={recordings} /> 
-        </View>
       </ScrollView>
     </View>
   );
@@ -65,12 +62,8 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: 'center',
   },
-  contentContainer: {
-    paddingTop: 30,
-  },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
     marginBottom: 20,
   },
   welcomeImage: {

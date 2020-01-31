@@ -1,6 +1,7 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import { Ionicons } from '@expo/vector-icons';
+import Trimmer from 'react-native-trimmer'
 import {
   Image,
   Platform,
@@ -74,7 +75,8 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      view: 'record'
+      view: 'record',
+     
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
@@ -371,6 +373,7 @@ const uploadRecFromPhone = function(){
         return (
     <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}>
     <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
+   
     <TouchableHighlight
     underlayColor={BACKGROUND_COLOR}
     style={styles.wrapper}

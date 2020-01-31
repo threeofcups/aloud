@@ -20,11 +20,10 @@ export default function SaveRecordingScreen({onBack}) {
 
 
 
-    saveRecording = () => {
+    saveRecording = async() => {
       //todo route is not hitting
-      //todo needs to be in doublequotes
-      //todo userid not be googles
-        axios.post('https://aloud-server.appspot.com/recording/save', {
+      console.log(privacySetting)
+        await axios.post('https://aloud-server.appspot.com/recording/save', {
     "id_user": "1",
     "title": title,
     "description": description,
@@ -145,16 +144,13 @@ return (
           //save url to the DB
           console.log('saved that sound for you')
         }} title="Save My Sound" color='#f90909'/> */}
-        <Button title="Submit Sound" color='#f90909' onPress={()=> this.saveRecording()}/>
+        <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
         <Button onPress={() => {
           //grab the url thats been saved to the db from the cloudinary call
           //save the url to a new collection in the db
-
          onBack()}} title="Cancel" color='#f90909'
           />
         </ScrollView>
-
-
     </View>
 )};
 

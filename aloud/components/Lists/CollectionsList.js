@@ -45,7 +45,7 @@ export default function CollectionsList({ collections }) {
 
     )
   } else {
-    return <CollectionScreen collection={collectionData}/>
+    return <CollectionScreen  toggleListOrCollection={toggleListOrCollection} collection={collectionData}/>
   }
 }
 // const styles = StyleSheet.create({

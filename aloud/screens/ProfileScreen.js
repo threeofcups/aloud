@@ -36,6 +36,7 @@ export default function ProfileScreen() {
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
         .then(response => {
+          console.log('response', response.data[0].user[0])
           setUserInfo(response.data[0].user[0]);
           setUserCollections(response.data[0].collections);
           setUserRecordings(response.data[0].recordings);

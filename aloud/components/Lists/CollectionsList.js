@@ -31,9 +31,6 @@ export default function CollectionsList({ collections }) {
       renderItem={({ item: rowData }) => {
         setCollectionData(rowData)
         return (
-
-   
-    
                 <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
               
         )

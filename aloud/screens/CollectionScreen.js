@@ -11,6 +11,7 @@ export default function CollectionScreen({collection, toggleListOrCollection}) {
 // const [value, onChangeText] = React.useState('Search term');
 const [recordings, setCollectionRecordings] = useState([]);
 
+
 useEffect(() => {
     // const fetchContent = async () => {
     //     // todo get recordings from collection
@@ -23,7 +24,8 @@ useEffect(() => {
     // };
 
     // fetchContent()
-    setCollectionRecordings(collection.collection)
+    console.log('GOOOOO',collection)
+    setCollectionRecordings(collection.recordings)
 }, []);
 
 return (
@@ -39,9 +41,6 @@ return (
     title={collection.title} 
     subtitle={collection.name_display}
     >
-     
-   
-
     </Card>
     </TouchableWithoutFeedback>
           {/* <Text>{collection.description}</Text> */}

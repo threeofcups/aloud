@@ -55,7 +55,8 @@ export default function CollectionsListItem({ collection }) {
         <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left" }}>{collection.title}</Text>
         <Text style={{ marginLeft: 15, textAlign: "left" }}>{collection.username}</Text>
         <Text style={{ margin: 15, marginBottom: 15, textAlign: "left" }}>{collection.description}</Text>
-        <Text style={{ marginLeft: 15, marginBottom: 15, textAlign: "left" }}>add options like save collection</Text>
+        <Text style={{ marginLeft: 15, textAlign: "left" }}>save collection button</Text>
+        <Text style={{ marginLeft: 15, marginBotton: 15, textAlign: "left" }}>go to artist button</Text>
         <RecordingsList recordings={recordings} />
       </Modal>
     ) 

@@ -190,9 +190,9 @@ export default class RecordScreen extends React.Component {
     }
 
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
-    
+
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
-    
+
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -203,7 +203,7 @@ export default class RecordScreen extends React.Component {
       playThroughEarpieceAndroid: false,
       staysActiveInBackground: true,
     });
-    
+
     const { sound, status } = await this.recording.createNewLoadedSoundAsync({
         isLooping: false,
         isMuted: this.state.muted,
@@ -363,7 +363,7 @@ export default class RecordScreen extends React.Component {
       })
       .then(succ => {
         //check out the saved info
-        console.log(succ, `path: ${succ.uri}, type: ${succ.type}, name: ${succ.id}, size: ${succ.size}`)
+        console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
         //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
         var Base64 = {
           // private property
@@ -382,68 +382,49 @@ export default class RecordScreen extends React.Component {
                   enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
                   enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
                   enc4 = chr3 & 63;
-          
                   if (isNaN(chr2)) {
                       enc3 = enc4 = 64;
                   } else if (isNaN(chr3)) {
                       enc4 = 64;
                   }
-          
                   output = output +
                   this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
                   this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-          
               }
-          
               return output;
           },
-          
           // public method for decoding
           decode : function (input) {
               var output = "";
               var chr1, chr2, chr3;
               var enc1, enc2, enc3, enc4;
               var i = 0;
-          
               input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-          
               while (i < input.length) {
-          
                   enc1 = this._keyStr.indexOf(input.charAt(i++));
                   enc2 = this._keyStr.indexOf(input.charAt(i++));
                   enc3 = this._keyStr.indexOf(input.charAt(i++));
                   enc4 = this._keyStr.indexOf(input.charAt(i++));
-          
                   chr1 = (enc1 << 2) | (enc2 >> 4);
                   chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
                   chr3 = ((enc3 & 3) << 6) | enc4;
-          
                   output = output + String.fromCharCode(chr1);
-          
                   if (enc3 != 64) {
                       output = output + String.fromCharCode(chr2);
                   }
                   if (enc4 != 64) {
                       output = output + String.fromCharCode(chr3);
                   }
-          
               }
-          
               output = Base64._utf8_decode(output);
-          
               return output;
-          
           },
-          
           // private method for UTF-8 encoding
           _utf8_encode : function (string) {
               string = string.replace(/\r\n/g,"\n");
               var utftext = "";
-          
               for (var n = 0; n < string.length; n++) {
-          
                   var c = string.charCodeAt(n);
-          
                   if (c < 128) {
                       utftext += String.fromCharCode(c);
                   }
@@ -456,22 +437,16 @@ export default class RecordScreen extends React.Component {
                       utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                       utftext += String.fromCharCode((c & 63) | 128);
                   }
-          
               }
-          
               return utftext;
           },
-          
           // private method for UTF-8 decoding
           _utf8_decode : function (utftext) {
               var string = "";
               var i = 0;
               var c = c1 = c2 = 0;
-          
               while ( i < utftext.length ) {
-          
                   c = utftext.charCodeAt(i);
-          
                   if (c < 128) {
                       string += String.fromCharCode(c);
                       i++;
@@ -487,14 +462,11 @@ export default class RecordScreen extends React.Component {
                       string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
                       i += 3;
                   }
-          
               }
-          
               return string;
           }
-          
           }
-
+          //Post the Uploaded Recording to Cloudinary
           let cloudUri = Base64.encode(succ.uri);
           console.log(cloudUri);
           let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
@@ -503,9 +475,9 @@ export default class RecordScreen extends React.Component {
           fd.append("file", `${base64Aud}`);
           fd.append("upload_preset", "qna2tpvj");
           fd.append("resource_type", "video")
-          fd.append("height", "200");
-          fd.append("width", "500");
-          fd.append("flags", "waveform");
+          // fd.append("height", "200");
+          // fd.append("width", "500");
+          // fd.append("flags", "waveform");
           fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
             method: 'POST',
             body: fd,
@@ -515,55 +487,10 @@ export default class RecordScreen extends React.Component {
               console.log('Cloudinary Info:', recordingURL);
               return recordingURL;
             })
+            .then('https://aloud-server.appspot.com/recording')
           .catch(err => console.log('cloudinary err'))
           })
         .catch(err => console.log('audio upload err', err))
-    //}
-      // console.log(base64Aud);
-      // let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-      // const data = {
-      //   'file': succ.uri,
-      //   'upload_preset': 'qna2tpvj',
-      //   'resource_type': 'video',
-      // }
-      //   // then send POSTco server to save recording info
-      //   fetch(cloud, {
-      //     body: JSON.stringify(data),
-      //     headers: {
-      //       'content-type': 'application/x-www-form-urlencoded'
-      //     },
-      //     method: 'POST',
-      //   })
-      //   .then(async r => {
-      //       let data = await r.json()
-      //       console.log('cloudinary url:', data.secure_url)
-            // let recInfo = {
-            //   id_user: 1,
-            //   user: ,
-            //   title: ,
-            //   description:  ,
-            //   url_recording: data.secure_url,
-            //   created_at: ,
-            //   published: ,
-      //       //   speech_to_text: ,
-      //       // }
-      //       fetch('/recordings', {
-      //         body: JSON.stringify(data.secure),
-      //         headers: {
-      //           'content-type': 'application/json'
-      //         },
-      //         method: 'POST',
-      //       })
-      //   })
-      //   .catch(err=>console.log(err))
-      // })
-      // .catch(err => console.log(err))
-    }
-  
-    speak() {
-      var thingToSay = '0';
-      Speech.speak(thingToSay, {})
-      console.log('talk to me')
     }
 
   onSaveRecording(){
@@ -593,10 +520,8 @@ export default class RecordScreen extends React.Component {
         )
     }
       if(this.state.view === 'record'){
-        
           return (
             <View style={styles.container}>
-           
             <Button onPress={rec => this.uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
               <View
                 style={[
@@ -605,9 +530,7 @@ export default class RecordScreen extends React.Component {
                     opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
                   },
                 ]}>
-                
                 <View>
-
                   <TouchableHighlight
                     underlayColor={BACKGROUND_COLOR}
                     style={styles.wrapper}>
@@ -626,7 +549,7 @@ export default class RecordScreen extends React.Component {
                     size={100}
                     />
                   </TouchableHighlight>
-                    </View> 
+                    </View>
                   <View style={styles.recordingDataContainer}>
                     <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
                       {this.state.isRecording ? 'LIVE' : ''}
@@ -643,7 +566,6 @@ export default class RecordScreen extends React.Component {
                   </View>
                 </View>
                 </View>
-               
                 <View style={styles.playbackContainer}>
                   <Slider
                     style={styles.playbackSlider}
@@ -682,7 +604,7 @@ export default class RecordScreen extends React.Component {
                       style={styles.wrapper}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
+                      {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -705,9 +627,7 @@ export default class RecordScreen extends React.Component {
                     </Text>
                   </TouchableHighlight>
                 </View>
-            
           );
-
 } else {
   return (
     <View>

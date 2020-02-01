@@ -23,6 +23,8 @@ export default function RecentListItem ({ collection }) {
         }}>
       <Text style={{ marginTop: 54, textAlign: "center" }}>{collection.title}</Text>
       <Text style={{ margin: 22, textAlign: "center" }}>render all {collection.title} recordings here</Text>
+      <Text style={{ marginLeft: 22, textAlign: "center" }}>add options like save collection</Text>
+      <Text style={{ marginLeft: 22, textAlign: "center" }}>render recording list</Text>
       <Button
           title="x"
           type="clear"

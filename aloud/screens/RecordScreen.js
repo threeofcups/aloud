@@ -576,113 +576,121 @@ export default class RecordScreen extends React.Component {
         )
     }
       if(this.state.view === 'record'){
-        return (
-    <View style={[styles.halfScreenContainer,{opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,},]}>
-    <Button onPress={()=> this.uploadRecFromPhone()} title="Upload Audio" color='#f90909'/>
-    <TouchableHighlight
-    underlayColor={BACKGROUND_COLOR}
-    style={styles.wrapper}
-    disabled={this.state.isLoading}>
-    <Ionicons name={'md-save'}
-    onPress={()=> this.saveToPhoneLibrary()}
-    size={50}
-    />
-  </TouchableHighlight>
-  <TouchableHighlight
-      underlayColor={BACKGROUND_COLOR}
-      style={styles.wrapper}
-      onPress={this._onRecordPressed}
-      disabled={this.state.isLoading}>
-      <Ionicons name={'md-mic'}
-      size={100}/>
-    </TouchableHighlight> 
-    <View style={styles.recordingDataContainer}>
-      <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-        {this.state.isRecording ? 'Now Recording' : ''}
-      </Text>
-      <View style={styles.recordingDataRowContainer}>
-        <Image
-          style={[styles.image, { opacity: this.state.isRecording ? 1.0 : 0.0 }]}
-          source={ICON_RECORDING.module}
-          />
-        <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
-          {this._getRecordingTimestamp()}
-        </Text>
-    </View>
-<View
-style={[
-  styles.halfScreenContainer,
-  {
-    opacity:
-    !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0,
-  },
-]}>
-  <View style={styles.playbackContainer}>
-    <Slider
-      style={styles.playbackSlider}
-      trackImage={ICON_TRACK_1.module}
-      thumbImage={ICON_THUMB_1.module}
-      value={this._getSeekSliderPosition()}
-      onValueChange={this._onSeekSliderValueChange}
-      onSlidingComplete={this._onSeekSliderSlidingComplete}
-      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-      />
-    <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
-      {this._getPlaybackTimestamp()}
-    </Text>
-  </View>
-  <View style={[styles.buttonsContainerBase, styles.buttonsContainerTopRow]}>
-    <View style={styles.volumeContainer}>
-      <TouchableHighlight
-        underlayColor={BACKGROUND_COLOR}
-        style={styles.wrapper}
-        onPress={this._onMutePressed}
-        disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-          {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
-      </TouchableHighlight>
-      <Slider
-        style={styles.volumeSlider}
-        trackImage={ICON_TRACK_1.module}
-        thumbImage={ICON_THUMB_2.module}
-        value={1}
-        onValueChange={this._onVolumeSliderValueChange}
-        disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-        />
-    </View>
-    <View style={styles.playStopContainer}>
-      <TouchableHighlight
-        underlayColor={BACKGROUND_COLOR}
-        style={styles.wrapper}
-        onPress={this._onPlayPausePressed}
-        disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-         {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
-      </TouchableHighlight>
-    </View>
-  </View>
-  <View style={[styles.buttonsContainerBase, styles.buttonsContainerBottomRow]}>
-    <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
-    <Slider
-      style={styles.rateSlider}
-      trackImage={ICON_TRACK_1.module}
-      thumbImage={ICON_THUMB_1.module}
-      value={this.state.rate / RATE_SCALE}
-      onSlidingComplete={this._onRateSliderSlidingComplete}
-      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-      />
-    <TouchableHighlight
-      underlayColor={BACKGROUND_COLOR}
-      style={styles.wrapper}
-      onPress={this._onPitchCorrectionPressed}
-      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-      <Text style={[{ fontFamily: 'cutive-mono-regular' }]}>
-        PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-      </Text>
-    </TouchableHighlight>
-  </View>
-</View>
-</View>
-</View>
-)
+        
+          return (
+            <View style={styles.container}>
+           
+            <Button onPress={rec => this.uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
+              <View
+                style={[
+                  styles.halfScreenContainer,
+                  {
+                    opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
+                  },
+                ]}>
+                
+                <View>
+
+                  <TouchableHighlight
+                    underlayColor={BACKGROUND_COLOR}
+                    style={styles.wrapper}>
+                    <Ionicons name={'md-save'}
+                    onPress={()=> this.onSaveRecording()}
+                    size={100}
+                    />
+                  </TouchableHighlight>
+                <View style={styles.recordingContainer}>
+                  <TouchableHighlight
+                    underlayColor={BACKGROUND_COLOR}
+                    style={styles.wrapper}
+                    onPress={this._onRecordPressed}
+                    disabled={this.state.isLoading}>
+                    <Ionicons name={'md-mic'}
+                    size={100}
+                    />
+                  </TouchableHighlight>
+                    </View> 
+                  <View style={styles.recordingDataContainer}>
+                    <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
+                      {this.state.isRecording ? 'LIVE' : ''}
+                    </Text>
+                    <View style={styles.recordingDataRowContainer}>
+                      <Image
+                        style={[styles.image, { opacity: this.state.isRecording ? 1.0 : 0.0 }]}
+                        source={ICON_RECORDING.module}
+                      />
+                      <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
+                        {this._getRecordingTimestamp()}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                </View>
+               
+                <View style={styles.playbackContainer}>
+                  <Slider
+                    style={styles.playbackSlider}
+                    trackImage={ICON_TRACK_1.module}
+                    thumbImage={ICON_THUMB_1.module}
+                    value={this._getSeekSliderPosition()}
+                    onValueChange={this._onSeekSliderValueChange}
+                    onSlidingComplete={this._onSeekSliderSlidingComplete}
+                    disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
+                  />
+                  <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
+                    {this._getPlaybackTimestamp()}
+                  </Text>
+                </View>
+                <View style={[styles.buttonsContainerBase, styles.buttonsContainerTopRow]}>
+                  <View style={styles.volumeContainer}>
+                    <TouchableHighlight
+                      underlayColor={BACKGROUND_COLOR}
+                      style={styles.wrapper}
+                      onPress={this._onMutePressed}
+                      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
+                        {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
+                    </TouchableHighlight>
+                    <Slider
+                      style={styles.volumeSlider}
+                      trackImage={ICON_TRACK_1.module}
+                      thumbImage={ICON_THUMB_2.module}
+                      value={1}
+                      onValueChange={this._onVolumeSliderValueChange}
+                      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
+                    />
+                  </View>
+                  <View style={styles.playStopContainer}>
+                    <TouchableHighlight
+                      underlayColor={BACKGROUND_COLOR}
+                      style={styles.wrapper}
+                      onPress={this._onPlayPausePressed}
+                      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
+                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
+                    </TouchableHighlight>
+                  </View>
+                </View>
+                  <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
+                  <Slider
+                    style={styles.rateSlider}
+                    trackImage={ICON_TRACK_1.module}
+                    thumbImage={ICON_THUMB_1.module}
+                    value={this.state.rate / RATE_SCALE}
+                    onSlidingComplete={this._onRateSliderSlidingComplete}
+                    disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
+                  />
+                  <TouchableHighlight
+                    underlayColor={BACKGROUND_COLOR}
+                    style={styles.wrapper}
+                    onPress={this._onPitchCorrectionPressed}
+                    disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
+                    <Text style={[{ fontFamily: 'cutive-mono-regular' }]}>
+                      PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+            
+          );
+
 } else {
   return (
     <View>

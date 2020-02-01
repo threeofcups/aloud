@@ -32,10 +32,10 @@ export default function CollectionsList({ collections }) {
         setCollectionData(rowData)
         return (
 
-          // <TouchableWithoutFeedback onPress={()=> {toggleListOrCollection('collection')}}>
+   
     
                 <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
-              // </TouchableWithoutFeedback>
+              
         )
         }}
         keyExtractor={(item, index) => `${index}`}

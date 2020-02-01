@@ -9,6 +9,8 @@ import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 import axios from 'axios';
+// disables yellow warnings
+console.disableYellowBox = true;
 
 export const UserContext = React.createContext();
 export default function App() {

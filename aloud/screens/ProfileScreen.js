@@ -120,9 +120,9 @@ export default function ProfileScreen() {
     </TouchableOpacity>
     <Text style={styles.text}> @ {userInfo.username}
     </Text>
-    <Card >
+    <Card containerStyle={{ borderWidth: 0, elevation: 0}}>
     <Text
-    rightIcon={{ name: 'more-horiz' }}>{userInfo.bio.toLowerCase()}</Text>
+     rightIcon={{ name: 'more-horiz' }}>{userInfo.bio}</Text>
     </Card>
       <View>
       <Text></Text>

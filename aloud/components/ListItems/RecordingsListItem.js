@@ -1,28 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
+import axios from 'axios';
 import Colors from '../../constants/Colors';
 import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
+  const [src, setSrc] = useState(recording.url_recording);
   const [isPlaying, setPlayStatus] = useState('');
   const [playback, setPlayback] = useState('');
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
   const [modalVisible, setModalVisible] = useState(false);
   const [collectionsModalVisible, setCollectionsVisible] = useState(false);
-  const [librariesModalVisible, setLibrariesVisible] = useState(false);
-  const [chosenCollection, setCollection] = useState('collection');
-  const [chosenLibrary, setLibrary] = useState('collection');
+  const [collections, setCollections] = useState([]);
+  const [choiceCollection, setChoiceCollection] = useState([]);
+  const [iconColor, setIconColor] = useState('#f90909');
+  const [backgroundColor, setBackground] = useState('#fdfffc');
 
-  //get all collections for user
-  //get all libraries for user
+  const fetchCollectionContent = async () => {
+    await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
+      .then(response => {
+        setCollections(response.data[0].collections);
+      })
+      .catch(err => console.log('there was an axios err', err))
+  };
+
 
   const loadAudio = () => {
     const loadSetup = async() => {
     try {
       const playback = new Audio.Sound()
       const source = {
-        uri: 'https://www.nasa.gov/mp3/584791main_spookysaturn.mp3'
+        uri: src,
       }
       const status = {
         shouldPlay: isPlaying,
@@ -58,40 +67,25 @@ export default function RecordingsListItem({ recording }) {
     }
   };
 
-  // const fetchCollectionContent = async () => {
-  //   await axios.get('https://aloud-server.appspot.com/home')
-  //     .then(response => {
-  //       setHomeCollections(response.data[0].collections);
-  //       setHomeRecordings(response.data[0].recordings);
-  //     })
-  //     .catch(err => console.log('there was an axios err', err))
-  // };
-
-    // const fetchLibraryContent = async () => {
-  //   await axios.get('https://aloud-server.appspot.com/home')
-  //     .then(response => {
-  //       setHomeCollections(response.data[0].collections);
-  //       setHomeRecordings(response.data[0].recordings);
-  //     })
-  //     .catch(err => console.log('there was an axios err', err))
-  // };
-      
   useEffect(() => {
 
     
     setAudioMode();
-    // fetchCollectionContent();
-    // fetchLibraryContent();
+    fetchCollectionContent();
 
   }, []);
 
   const handlePlayPause = async () => {
   if(isPlaying) {
     await playback.pauseAsync();
-    setIconStatus('play-circle-filled')
+    setIconColor('#f90909');
+    setIconStatus('play-circle-filled');
+    setBackground('#fdfffc');
   } else {
     await playback.playAsync();
+    setIconColor('#eac2cd');
     setIconStatus('pause-circle-filled');
+    setBackground('#fbf0f2');
   }
 
   setPlayStatus(!isPlaying);
@@ -101,16 +95,32 @@ export default function RecordingsListItem({ recording }) {
     setModalVisible(!modalVisible);
   }
 
+  const saveToLibrary = async () => {
+    await axios.post(`https://aloud-server.appspot.com/library/save/recording/${recording.id}`, {
+      "userId": "1"
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
+
+  const saveToCollection = async () => {
+    await axios.post(`https://aloud-server.appspot.com/recording/${choiceCollection.id}`, {
+      "recordingId": recording.id
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
+
   const handleCollectionAdd = () => {
-    //send axios post request to collection recording save route
-    // recording.id and collection.id
-    // need info from chosen collection (may have to retrieve with selected collection name)
+    saveToCollection();
   };
 
   const handleLibraryAdd = () => {
-    //send axios post request to library recording save route
-    // recording.id and user.id
-    // need info from global auth
+    saveToLibrary();
   };
 
   return (
@@ -146,7 +156,22 @@ export default function RecordingsListItem({ recording }) {
               onRequestClose={() => {
                 setCollectionsVisible(!collectionsModalVisible)
               }}>
-              <Text>collections</Text>
+              <Text style={{margin: 54, textAlign: "center"}}>collections</Text>
+              {collections.map(collection => {
+                return (
+                  <Button
+                    title={collection.title}
+                    type="clear"
+                    onPress={() => {
+                      //add to collection
+                      //axios post function called here
+                      setChoiceCollection(collection)
+                      handleCollectionAdd();
+                      setCollectionsVisible(!collectionsModalVisible);
+                    }}
+                  />
+                )
+              })}
               <Button
                 title="x"
                 type="clear"
@@ -159,26 +184,10 @@ export default function RecordingsListItem({ recording }) {
                 title="add to library"
                 type="clear"
                 onPress={() => {
-                  setLibrariesVisible(!librariesModalVisible);
+                  handleLibraryAdd();
+                  setModalVisible(!setModalVisible);
                 }}
               />
-              <Modal
-              style={styles.modal}
-              animationType="fade"
-              transparent={false}
-              visible={librariesModalVisible}
-              onRequestClose={() => {
-                setLibrariesVisible(!librariesModalVisible)
-              }}>
-              <Text>libraries</Text>
-              <Button
-                title="x"
-                type="clear"
-                onPress={() => {
-                  setLibrariesVisible(!librariesModalVisible);
-                }}
-              />
-              </Modal>
             <Button
               title="go to artist"
               type="clear"
@@ -197,8 +206,10 @@ export default function RecordingsListItem({ recording }) {
         </ScrollView>
       </Modal>
       <ListItem
+        containerStyle={{ backgroundColor: backgroundColor }}
+        underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus }}
+        leftIcon={{ name: iconStatus, color: iconColor }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}

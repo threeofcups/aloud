@@ -15,7 +15,7 @@ export default function SearchScreen() {
 
   useEffect(() => {
     const fetchContent = async () => {
-      await axios.get('https://aloud-server.appspot.com/home')
+      await axios.get('https://aloud-server.appspot.com/home/1')
         .then(response => {
           setCollections(response.data[0].collections);
           setRecordings(response.data[0].recordings);

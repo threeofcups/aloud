@@ -1,14 +1,29 @@
-import React, {useState} from 'react';
-import { Card, Text, Button } from 'react-native-elements';
-import { Modal } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import { Card, Text, Button, Image } from 'react-native-elements';
+import { Modal, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import RecordingsList from '../Lists/RecordingsList';
 import CollectionsScreen from '../../screens/CollectionScreen'
 
 export default function RecentListItem ({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
+  const [recordings, setRecordings] = useState([]);
+
+  useEffect(() => {
+    //get recordings from collection
+    const fetchContent = async () => {
+      await axios.get(`https://aloud-server.appspot.com/collection/${collection.id}`)
+        .then(response => {
+          setRecordings(response.data);
+        })
+        .catch(err => console.log('there was an axios err', err))
+    };
+
+    fetchContent();
+  }, [collection]);
 
   const onPressHandle = () => {
-    console.log('COLLECTION', collection);
     setModalVisibilty(!modalVisible);
   };
 
@@ -21,17 +36,25 @@ export default function RecentListItem ({ collection }) {
         onRequestClose={() => {
           setModalVisibilty(!modalVisible)
         }}>
-      <Text style={{ marginTop: 54, textAlign: "center" }}>{collection.title}</Text>
-      <Text style={{ margin: 22, textAlign: "center" }}>render all {collection.title} recordings here</Text>
-      <Text style={{ marginLeft: 22, textAlign: "center" }}>add options like save collection</Text>
-      <Text style={{ marginLeft: 22, textAlign: "center" }}>render recording list</Text>
-      <Button
-          title="x"
+        <Button
+          icon={{
+            name: "chevron-left",
+            size: 25,
+            color: "red"
+          }}
           type="clear"
           onPress={() => {
             setModalVisibilty(!modalVisible);
           }}
-      />
+        />
+        <Image
+          source={{ uri: collection.url_image }}
+          containerStyle={{ marginTop: 30, marginLeft: 15, width: 100, height: 100 }}
+        />
+      <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left" }}>{collection.title}</Text>
+      <Text style={{ marginLeft: 15, textAlign: "left" }}>{collection.description}</Text>
+      <Text style={{ marginLeft: 15, marginBottom: 15, textAlign: "left" }}>add options like save collection</Text>
+      <RecordingsList recordings={recordings} /> 
       </Modal>
     )
   } 

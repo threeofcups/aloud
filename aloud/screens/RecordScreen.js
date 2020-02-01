@@ -522,7 +522,7 @@ export default class RecordScreen extends React.Component {
       if(this.state.view === 'record'){
           return (
             <View style={styles.container}>
-            <Button onPress={rec => this.uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
+            <Button onPress={() => this.uploadRecFromPhone()} title="Upload from Device" color='#f90909'/>
               <View
                 style={[
                   styles.halfScreenContainer,
@@ -552,7 +552,7 @@ export default class RecordScreen extends React.Component {
                     </View>
                   <View style={styles.recordingDataContainer}>
                     <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-                      {this.state.isRecording ? 'LIVE' : ''}
+                      {this.state.isRecording ? 'Now Recording' : ''}
                     </Text>
                     <View style={styles.recordingDataRowContainer}>
                       <Image

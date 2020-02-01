@@ -76,9 +76,22 @@ export default function App() {
           
 const LoginPage = props => {
   return (
+    <View >
+ <Header 
+      backgroundColor={'#fbf0f2'}
+      centerComponent={{ text: 'Aloud', style: { color: '#f90909' , fontSize: 40, fontWeight:'bold'} }}
+      />
     <View>
-      <Text style={styles.header}>Sign In With Google</Text>
-      <Button title="Sign in with Google" onPress={() => props.signIn()} />
+      <Text></Text>
+      <Text style={styles.header }></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Text></Text>
+      <Button title="Sign in with Google" color='#f90909' onPress={() => props.signIn()} />
+    </View>
     </View>
   )
 }
@@ -89,7 +102,7 @@ const LoggedInPage = props => {
     <View style={styles.container}>
       <Header 
       backgroundColor={'#fbf0f2'}
-      centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
+      centerComponent={{ text: 'Aloud', style: { color: '#f90909' , fontSize: 40, fontWeight:'bold'} }}
       />
       <View backgroundColor={'#fbf0f2'}>
 
@@ -98,8 +111,6 @@ const LoggedInPage = props => {
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       {/* <Text style={styles.header}>Welcome:{props.name}</Text> */}
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
-     
-     
         <AppNavigator />
         
     </View>

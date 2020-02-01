@@ -18,10 +18,12 @@ import {
   import {Avatar} from 'react-native-elements'
   import { Ionicons } from '@expo/vector-icons';
   import axios from 'axios';
+  import ProfileBio from '../components/ProfileBio'
   import CollectionsList from '../components/Lists/CollectionsList';
   import RecordingsList from '../components/Lists/RecordingsList'
   import {UserContext} from '../App'
   import * as ImagePicker from 'expo-image-picker';
+
 export default function ProfileScreen() {
   const {userName, userId, photoUrl} = useContext(UserContext)
   const [userInfo, setUserInfo] = useState([]);
@@ -91,7 +93,6 @@ export default function ProfileScreen() {
               size="large"
               source={{uri: selectedImage.localUri}}
             />
-        
             <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> 
             <Text>@{userInfo.username}</Text>
             <Card >
@@ -109,23 +110,26 @@ export default function ProfileScreen() {
     <View style={styles.container}>
       <ScrollView >
         <View alignItems='center'>
+          <Text></Text>
         <Avatar
           rounded title ={userInfo.name}
           size="large"
           source={{uri: userInfo.url_image}}
           onLongPress={()=>{openImagePickerAsync()}}
         />
-        <Text style={styles.text}> @ {userInfo.username}</Text>
+        <Text></Text>
+        <Text style={styles.name}> @ {userInfo.username}</Text>
         </View>
         <Card containerStyle={{ borderWidth: 0, elevation: 0}}>
           <Text rightIcon={{ name: 'more-horiz' }}>{userInfo.bio}</Text>
         </Card>
+        {/* <ProfileBio/> */}
         <View>
           <Text></Text>
-          <Text style={styles.text}> collections </Text>
+          <Text style={styles.text}> Collections </Text>
           <CollectionsList collections={collections} />
           <Text></Text>
-          <Text style={styles.text}> recordings </Text>
+          <Text style={styles.text}> Recordings </Text>
           <RecordingsList recordings={recordings} />
         </View>
     </ScrollView>
@@ -151,7 +155,15 @@ const styles = StyleSheet.create({
     flex:2
   },
   text: {
-    alignItems: 'center'
+    alignItems: 'center',
+    color:'#1e001a'
+  },
+  name:{
+    color:'#1e001a',
+    alignItems:'center',
+    fontWeight:'bold',
+    fontSize: 25
+
   },
   thumbnail: {
     width: 300,

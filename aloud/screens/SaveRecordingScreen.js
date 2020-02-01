@@ -15,7 +15,8 @@ export default function SaveRecordingScreen({onBack}) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState('');
     const [privacySetting, setPrivacy] = useState('private');
-    const [generateTranscript, setGenerateTranscript] = useState(false)
+    // const [generateTranscript, setGenerateTranscript] = useState(false)
+    const [recordingUrl, setRecordingURl] = useState('')
     const [recFlash, recFlasher] = useState(null);
 
 

@@ -15,7 +15,7 @@ export default function RecordingsList({ recordings }) {
   const [listRecordings, setRecordings] = useState([]);
 
   useEffect(() => {
-    setRecordings(recordings || recData);
+    setRecordings(recordings);
   }, [recordings]);
 
   return (

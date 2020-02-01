@@ -160,6 +160,7 @@ export default function RecordingsListItem({ recording }) {
               {collections.map(collection => {
                 return (
                   <Button
+                    key={collection.id}
                     title={collection.title}
                     type="clear"
                     onPress={() => {

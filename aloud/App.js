@@ -5,10 +5,11 @@ import React, { useState, useEffect, Component } from 'react';
 import { Platform, StatusBar, StyleSheet, View, Text, Button, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import {PermissionsAndroid} from 'react-native';
-import { Header } from 'react-native-elements';
+import { Header, Footer } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 import axios from 'axios';
+
 // disables yellow warnings
 console.disableYellowBox = true;
 
@@ -90,10 +91,17 @@ const LoggedInPage = props => {
       backgroundColor={'#fbf0f2'}
       centerComponent={{ text: 'Aloud', style: { color: '#f90909' } }}
       />
+      <View backgroundColor={'#fbf0f2'}>
+
+      </View>
+    
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
       {/* <Text style={styles.header}>Welcome:{props.name}</Text> */}
       <Image style={styles.image} source={{ uri: props.photoUrl }} />
+     
+     
         <AppNavigator />
+        
     </View>
   
   )
@@ -157,4 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  playback: {
+
+  }
 });

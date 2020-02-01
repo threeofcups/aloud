@@ -23,7 +23,6 @@ import {
   import {UserContext} from '../App'
   import * as ImagePicker from 'expo-image-picker';
 export default function ProfileScreen() {
-  //todo id
   const {userName, userId, photoUrl} = useContext(UserContext)
   const [userInfo, setUserInfo] = useState([]);
   const [collections, setUserCollections] = useState([]);
@@ -35,8 +34,9 @@ export default function ProfileScreen() {
     console.log(userId)
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
+      // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
         .then(response => {
-          console.log('response', response.data[0].user[0])
+          // console.log('response', response.data[0].user[0])
           setUserInfo(response.data[0].user[0]);
           setUserCollections(response.data[0].collections);
           setUserRecordings(response.data[0].recordings);
@@ -85,72 +85,54 @@ export default function ProfileScreen() {
     if (selectedImage !== null) {
       return (
         <View style={styles.container}>
-        <ScrollView>
-        <Avatar
-        rounded title ={userInfo.name_display}
-        size="large"
-        source={{uri: selectedImage.localUri}}
-        />
-        {/* <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> */}
-        <Text>@{userInfo.username}</Text>
-        <Card >
-        <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
-        </Card>
-        <View>
-        <CollectionsList collections={collections} />
-        <RecordingsList recordings={recordings} />
-        </View>
+          <ScrollView style={styles.image}>
+            <Avatar
+              rounded title ={userInfo.name_display}
+              size="large"
+              source={{uri: selectedImage.localUri}}
+            />
+        
+            <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> 
+            <Text>@{userInfo.username}</Text>
+            <Card >
+              <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
+            </Card>
+            <View>
+              <CollectionsList collections={collections} />
+              <RecordingsList recordings={recordings} />
+           </View>
         </ScrollView>
-        </View>
+      </View>
     )
   } else {
     return (
     <View style={styles.container}>
-    <ScrollView>
-    <Avatar
-    rounded title ={userInfo.name}
-    size="large"
-    source={{uri: userInfo.url_image}}
-    />
-    <TouchableOpacity
-    onPress={openImagePickerAsync}
-    style={styles.text}>
-    {/* <Text style={styles.text}>
-    Upload a new profile photo
-    </Text> */}
-    </TouchableOpacity>
-    <Text style={styles.text}> @ {userInfo.username}
-    </Text>
-    <Card containerStyle={{ borderWidth: 0, elevation: 0}}>
-    <Text
-     rightIcon={{ name: 'more-horiz' }}>{userInfo.bio}</Text>
-    </Card>
-      <View>
-      <Text></Text>
-      <Text style={styles.text}> collections </Text>
-        <CollectionsList collections={collections} />
-        <Text></Text>
-        <Text style={styles.text}> recordings </Text>
-        <RecordingsList recordings={recordings} />
-      </View>
+      <ScrollView >
+        <View alignItems='center'>
+        <Avatar
+          rounded title ={userInfo.name}
+          size="large"
+          source={{uri: userInfo.url_image}}
+          onLongPress={()=>{openImagePickerAsync()}}
+        />
+        <Text style={styles.text}> @ {userInfo.username}</Text>
+        </View>
+        <Card containerStyle={{ borderWidth: 0, elevation: 0}}>
+          <Text rightIcon={{ name: 'more-horiz' }}>{userInfo.bio}</Text>
+        </Card>
+        <View>
+          <Text></Text>
+          <Text style={styles.text}> collections </Text>
+          <CollectionsList collections={collections} />
+          <Text></Text>
+          <Text style={styles.text}> recordings </Text>
+          <RecordingsList recordings={recordings} />
+        </View>
     </ScrollView>
-    </View>
+  </View>
     );
   }
 }
-
-//  const handleEditMode = ()=> {
-//     if(edit === 'false'){
-//       toggleEditMode('true');
-//     } else{
-//       toggleEditMode('false');
-//     }
-//     console.log(edit)
-//   }
-    // const editName =  <TextInput
-    // style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-    // onChangeText={text => onChangeText(text)}
-    // value={value}/>
 
 ProfileScreen.navigationOptions = {
   title: 'Profile',
@@ -166,6 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 100, height: 100,
     position: 'relative',
+    flex:2
   },
   text: {
     alignItems: 'center'

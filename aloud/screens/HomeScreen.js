@@ -43,11 +43,11 @@ export default function HomeScreen() {
     <View>
       <ScrollView
         contentContainerStyle={styles.contentContainer}>
-        <Text style={{ marginLeft: 15 }}>recently saved</Text>
+        <Text style={{ marginLeft: 15 }}>Recently Saved</Text>
         <RecentList recentlySaved={recentlySaved} />
-        <Text style={{ marginLeft: 15 }}>collections</Text>
+        <Text style={{ marginLeft: 15 }}>Collections</Text>
         <CollectionsList collections={collections} />
-        <Text style={{marginLeft: 15}}>recordings</Text>
+        <Text style={{marginLeft: 15}}>Recordings</Text>
         <RecordingsList recordings={recordings} /> 
       </ScrollView>
     </View>

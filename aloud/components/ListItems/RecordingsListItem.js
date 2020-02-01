@@ -14,6 +14,9 @@ export default function RecordingsListItem({ recording }) {
   const [collectionsModalVisible, setCollectionsVisible] = useState(false);
   const [collections, setCollections] = useState([]);
   const [choiceCollection, setChoiceCollection] = useState([]);
+  const [iconColor, setIconColor] = useState('#f90909');
+  const [backgroundColor, setBackground] = useState('#fdfffc');
+
   const fetchCollectionContent = async () => {
     await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
       .then(response => {
@@ -75,10 +78,14 @@ export default function RecordingsListItem({ recording }) {
   const handlePlayPause = async () => {
   if(isPlaying) {
     await playback.pauseAsync();
-    setIconStatus('play-circle-filled')
+    setIconColor('#f90909');
+    setIconStatus('play-circle-filled');
+    setBackground('#fdfffc');
   } else {
     await playback.playAsync();
+    setIconColor('#eac2cd');
     setIconStatus('pause-circle-filled');
+    setBackground('#fbf0f2');
   }
 
   setPlayStatus(!isPlaying);
@@ -199,8 +206,10 @@ export default function RecordingsListItem({ recording }) {
         </ScrollView>
       </Modal>
       <ListItem
+        containerStyle={{ backgroundColor: backgroundColor }}
+        underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus }}
+        leftIcon={{ name: iconStatus, color: iconColor }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}

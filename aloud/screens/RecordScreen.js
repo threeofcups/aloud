@@ -494,25 +494,49 @@ export default class RecordScreen extends React.Component {
           }
           
           }
-      let base64Aud = `data:audio/x-wav;base64, ${Base64.encode(succ.uri)}`;
-      console.log(base64Aud);
-      let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-      const data = {
-        'file': succ.uri,
-        'upload_preset': 'qna2tpvj',
-        'resource_type': 'video',
-      }
-        // then send POSTco server to save recording info
-        fetch(cloud, {
-          body: JSON.stringify(data),
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          method: 'POST',
-        })
-        .then(async r => {
-            let data = await r.json()
-            console.log('cloudinary url:', data.secure_url)
+
+          let cloudUri = Base64.encode(succ.uri);
+          console.log(cloudUri);
+          let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
+          console.log(base64Aud)
+          let fd = new FormData();
+          fd.append("file", `${base64Aud}`);
+          fd.append("upload_preset", "qna2tpvj");
+          fd.append("resource_type", "video")
+          fd.append("height", "200");
+          fd.append("width", "500");
+          fd.append("flags", "waveform");
+          fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
+            method: 'POST',
+            body: fd,
+            })
+            .then(async (response) => {
+              let recordingURL = await response.json();
+              console.log('Cloudinary Info:', recordingURL);
+              return recordingURL;
+            })
+          .catch(err => console.log('cloudinary err'))
+          })
+        .catch(err => console.log('audio upload err', err))
+    //}
+      // console.log(base64Aud);
+      // let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
+      // const data = {
+      //   'file': succ.uri,
+      //   'upload_preset': 'qna2tpvj',
+      //   'resource_type': 'video',
+      // }
+      //   // then send POSTco server to save recording info
+      //   fetch(cloud, {
+      //     body: JSON.stringify(data),
+      //     headers: {
+      //       'content-type': 'application/x-www-form-urlencoded'
+      //     },
+      //     method: 'POST',
+      //   })
+      //   .then(async r => {
+      //       let data = await r.json()
+      //       console.log('cloudinary url:', data.secure_url)
             // let recInfo = {
             //   id_user: 1,
             //   user: ,
@@ -521,19 +545,19 @@ export default class RecordScreen extends React.Component {
             //   url_recording: data.secure_url,
             //   created_at: ,
             //   published: ,
-            //   speech_to_text: ,
-            // }
-            fetch('/recordings', {
-              body: JSON.stringify(recInfo),
-              headers: {
-                'content-type': 'application/json'
-              },
-              method: 'POST',
-            })
-        })
-        .catch(err=>console.log(err))
-      })
-      .catch(err => console.log(err))
+      //       //   speech_to_text: ,
+      //       // }
+      //       fetch('/recordings', {
+      //         body: JSON.stringify(data.secure),
+      //         headers: {
+      //           'content-type': 'application/json'
+      //         },
+      //         method: 'POST',
+      //       })
+      //   })
+      //   .catch(err=>console.log(err))
+      // })
+      // .catch(err => console.log(err))
     }
   
     speak() {

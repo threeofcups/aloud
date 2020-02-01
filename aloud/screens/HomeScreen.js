@@ -1,9 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
 import  React from 'react';
 import { useState, useEffect } from 'react';
+import { Card } from 'react-native-elements';
 import axios from 'axios';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
+import RecentList from '../components/Lists/RecentList';
 import {
   Image,
   Platform,
@@ -18,14 +20,16 @@ import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
 
-  // const [collections, getCollections] = useState(0);
   const [collections, setHomeCollections] = useState([]);
   const [recordings, setHomeRecordings] = useState([]);
+  const [recentlySaved, setRecentlySaved] = useState([]);
 
   useEffect(() => {
     const fetchContent = async () => {
       await axios.get('https://aloud-server.appspot.com/home/1')
         .then(response => {
+          // setUsers(response.data[0].users);
+          setRecentlySaved(response.data[0].recent[0].collections);
           setHomeCollections(response.data[0].collections);
           setHomeRecordings(response.data[0].recordings);
         })
@@ -39,7 +43,11 @@ export default function HomeScreen() {
     <View>
       <ScrollView
         contentContainerStyle={styles.contentContainer}>
+        <Text style={{ marginLeft: 15 }}>recently saved</Text>
+        <RecentList recentlySaved={recentlySaved} />
+        <Text style={{ marginLeft: 15 }}>collections</Text>
         <CollectionsList collections={collections} />
+        <Text style={{marginLeft: 15}}>recordings</Text>
         <RecordingsList recordings={recordings} /> 
       </ScrollView>
     </View>

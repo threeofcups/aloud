@@ -13,6 +13,7 @@ import {
   Dimensions,
   Slider,
   TouchableHighlight,
+ 
   Button
 } from "react-native";
 import { Asset } from "expo-asset";
@@ -373,37 +374,74 @@ const uploadRecFromPhone = function(){
         
           return (
             <View style={styles.container}>
+              <TouchableOpacity
+                     onPress={()=> this.onSaveRecording()}
+   style={{
+       borderWidth:1,
+       borderColor:'rgba(0,0,0,0.2)',
+       alignItems:'center',
+       justifyContent:'center',
+       width:100,
+       height:100,
+       backgroundColor:'#f90909',
+       borderRadius:150,
+     }}
+ >
+  <Ionicons name={'md-cloud-upload'}
+                  onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device"
+                    size={80}
+                    color='#fbf0f2'
+                    />
+ </TouchableOpacity>
            
-            <Button onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device" color='#f90909'/>
               <View
                 style={[
-                  styles.halfScreenContainer,
+                  // styles.halfScreenContainer,
                   {
                     opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
                   },
                 ]}>
                 
-                <View>
-
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    style={styles.wrapper}>
-                    <Ionicons name={'md-save'}
+                <View alignItems='center'>
+                  <TouchableOpacity
+                     onPress={()=> this.onSaveRecording()}
+   style={{
+       borderWidth:1,
+       borderColor:'rgba(0,0,0,0.2)',
+       alignItems:'center',
+       justifyContent:'center',
+       width:100,
+       height:100,
+       backgroundColor:'#f90909',
+       borderRadius:150,
+     }}
+ >
+  <Ionicons name={'md-save'}
                     onPress={()=> this.onSaveRecording()}
-                    size={100}
+                    size={80}
+                    color='#fbf0f2'
                     />
-                  </TouchableHighlight>
-                <View style={styles.recordingContainer}>
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    style={styles.wrapper}
-                    onPress={this._onRecordPressed}
-                    disabled={this.state.isLoading}>
-                    <Ionicons name={'md-mic'}
-                    size={100}
+ </TouchableOpacity>
+ <Text></Text>
+                     <TouchableOpacity
+                     onPress={this._onRecordPressed}
+   style={{
+       borderWidth:1,
+       borderColor:'rgba(0,0,0,0.2)',
+       alignItems:'center',
+       justifyContent:'center',
+       width:100,
+       height:100,
+       backgroundColor:'#f90909',
+       borderRadius:150,
+     }}
+ >
+    <Ionicons name={'md-mic'}
+                    size={80}
+                    color='#fbf0f2'
                     />
-                  </TouchableHighlight>
-                    </View> 
+ </TouchableOpacity>
+                
                   <View style={styles.recordingDataContainer}>
                     <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
                       {this.state.isRecording ? 'LIVE' : ''}
@@ -453,34 +491,16 @@ const uploadRecFromPhone = function(){
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
                     />
                   </View>
-                  <View style={styles.playStopContainer}>
+                  <View >
                     <TouchableHighlight
                       underlayColor={BACKGROUND_COLOR}
-                      style={styles.wrapper}
+                      // style={styles.wrapper}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
                        {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
                     </TouchableHighlight>
                   </View>
                 </View>
-                  <Text style={[styles.timestamp, { fontFamily: 'cutive-mono-regular' }]}>Rate:</Text>
-                  <Slider
-                    style={styles.rateSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
-                    value={this.state.rate / RATE_SCALE}
-                    onSlidingComplete={this._onRateSliderSlidingComplete}
-                    disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-                  />
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    style={styles.wrapper}
-                    onPress={this._onPitchCorrectionPressed}
-                    disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                    <Text style={[{ fontFamily: 'cutive-mono-regular' }]}>
-                      PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-                    </Text>
-                  </TouchableHighlight>
                 </View>
             
           );
@@ -505,12 +525,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
-    minHeight: DEVICE_HEIGHT,
-    maxHeight: DEVICE_HEIGHT,
+    // minHeight: DEVICE_HEIGHT,
+    // maxHeight: DEVICE_HEIGHT,
   },
   noPermissionsText: {
     textAlign: 'center',
@@ -519,11 +539,11 @@ const styles = StyleSheet.create({
   halfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2.0,
-    maxHeight: DEVICE_HEIGHT / 2.0,
+    // minHeight: DEVICE_HEIGHT / 2.0,
+    // maxHeight: DEVICE_HEIGHT / 2.0,
   },
   recordingContainer: {
     flex: 1,
@@ -531,8 +551,8 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: ICON_RECORD_BUTTON.height,
-    maxHeight: ICON_RECORD_BUTTON.height,
+    // minHeight: ICON_RECORD_BUTTON.height,
+    // maxHeight: ICON_RECORD_BUTTON.height,
   },
   recordingDataContainer: {
     flex: 1,
@@ -545,21 +565,21 @@ const styles = StyleSheet.create({
     maxWidth: ICON_RECORD_BUTTON.width * 3.0,
   },
   recordingDataRowContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     // justifyContent: 'space-between',
     alignItems: 'center',
-    minHeight: ICON_RECORDING.height,
-    maxHeight: ICON_RECORDING.height,
+    // minHeight: ICON_RECORDING.height,
+    // maxHeight: ICON_RECORDING.height,
   },
   playbackContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: ICON_THUMB_1.height * 2.0,
-    maxHeight: ICON_THUMB_1.height * 2.0,
+    // minHeight: ICON_THUMB_1.height * 2.0,
+    // maxHeight: ICON_THUMB_1.height * 2.0,
   },
   playbackSlider: {
     alignSelf: 'stretch',
@@ -597,7 +617,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
     maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
   },

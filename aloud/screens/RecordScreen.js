@@ -723,10 +723,6 @@ const styles = StyleSheet.create({
   }
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c56e3d0fcd770fdc97f296fde98614ff8f1d3a5c
 RecordScreen.navigationOptions = {
   title: 'Record',
 };

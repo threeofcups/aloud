@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 
 export default function RecentList({ recentlySaved }) {
-  const [collections, setCollections] = useState({})
+  const [collections, setCollections] = useState(recentlySaved)
   const [collectionData, setCollectionData] = useState({})
   console.log(recentlySaved);
 
   useEffect(() => {
     setCollections(recentlySaved);
-  }, [collections]);
+  }, [recentlySaved]);
 
 
   return (

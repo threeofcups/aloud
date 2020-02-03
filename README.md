@@ -41,6 +41,16 @@ To contribute to __aloud__, follow these steps:
 
     Create the pull request.
 
+### Resources
+[Expo SDK](https://docs.expo.io/versions/latest/sdk/overview/)
+
+[Cloudinary](https://cloudinary.com/documentation/image_upload_api_reference)
+
+[PostGreSQL](https://www.postgresql.org/docs/)
+
+[React-Native](https://facebook.github.io/react-native/docs/components-and-apis.html)
+
+[Google Cloud Console](https://console.cloud.google.com/?pli=1)
 
 ### Contributors
 

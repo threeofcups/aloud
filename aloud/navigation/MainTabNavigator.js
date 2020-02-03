@@ -12,8 +12,6 @@ import SearchScreen from '../screens/SearchScreen';
 import RecordScreen from '../screens/RecordScreen';
 import SaveRecordingScreen from '../screens/SaveRecordingScreen'
 
-
-
 const config = Platform.select({
   web: { headerMode: 'false' },
   // default: {},
@@ -40,6 +38,7 @@ HomeStack.navigationOptions = {
       
     />
   ),
+  tabBarOptions: { showLabel: false }
 };
 
 HomeStack.path = '';

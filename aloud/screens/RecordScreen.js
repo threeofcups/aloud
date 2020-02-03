@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
-import * as MediaLibrary from 'expo-media-library'
+import * as MediaLibrary from 'expo-media-library';
 import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';

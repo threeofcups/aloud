@@ -24,7 +24,6 @@ export default function CollectionsListItem({ collection }) {
   }, [collection]);
 
   const onPressHandle = () => {
-    console.log('COLLECTION', collection);
     setModalVisibilty(!modalVisible);
   };
 

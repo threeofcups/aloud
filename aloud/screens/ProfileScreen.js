@@ -32,8 +32,6 @@ export default function ProfileScreen() {
    //Profile image hook uploader
   const [selectedImage, setSelectedImage] = React.useState(null);
   useEffect(() => {
-    console.log(userName)
-    console.log(userId)
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
       // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)

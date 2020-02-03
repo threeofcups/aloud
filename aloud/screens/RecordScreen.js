@@ -1,7 +1,6 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 import { Ionicons } from '@expo/vector-icons';
-import Trimmer from 'react-native-trimmer'
 import {
   Image,
   Platform,
@@ -18,6 +17,7 @@ import {
 } from "react-native";
 import { Asset } from "expo-asset";
 import { Audio, Video } from "expo-av";
+import * as MediaLibrary from 'expo-media-library';
 import * as Font from "expo-font";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from 'expo-file-system';
@@ -25,6 +25,9 @@ import * as Permissions from 'expo-permissions';
 import SaveRecordingScreen from './SaveRecordingScreen';
 import navigator from 'react-native-elements'
 import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-document-picker';
+import * as Speech from 'expo-speech';
+
 class Icon {
   constructor(module, width, height) {
     this.module = module;
@@ -76,10 +79,9 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      view: 'record',
-     
+      view: 'record'
     };
-    this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
+    this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
     this.onSaveRecording = this.onSaveRecording.bind(this)
@@ -95,8 +97,9 @@ export default class RecordScreen extends React.Component {
     this._askForPermissions();
   }
 
+
   _askForPermissions = async () => {
-    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING, Permissions.CAMERA_ROLL);
     this.setState({
       haveRecordingPermissions: response.status === 'granted',
     });
@@ -119,7 +122,6 @@ export default class RecordScreen extends React.Component {
       this.setState({
         soundDuration: null,
         soundPosition: null,
-        isPlaybackAllowed: false,
       });
       if (status.error) {
         console.log(`FATAL PLAYER ERROR: ${status.error}`);
@@ -187,10 +189,13 @@ export default class RecordScreen extends React.Component {
     } catch (error) {
       // Do nothing -- we are already unloaded.
     }
+
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
+
     console.log(`FILE INFO: ${JSON.stringify(info)}`);
+
     await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
+      allowsRecordingIOS: true,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
       playsInSilentModeIOS: true,
       playsInSilentLockedModeIOS: true,
@@ -199,16 +204,15 @@ export default class RecordScreen extends React.Component {
       playThroughEarpieceAndroid: false,
       staysActiveInBackground: true,
     });
-    const { sound, status } = await this.recording.createNewLoadedSoundAsync(
-      {
-        isLooping: true,
+
+    const { sound, status } = await this.recording.createNewLoadedSoundAsync({
+        isLooping: false,
         isMuted: this.state.muted,
         volume: this.state.volume,
         rate: this.state.rate,
         shouldCorrectPitch: this.state.shouldCorrectPitch,
       },
-      this._updateScreenForSoundStatus
-    );
+      this._updateScreenForSoundStatus );
     this.sound = sound;
     this.setState({
       isLoading: false,
@@ -289,13 +293,6 @@ export default class RecordScreen extends React.Component {
     }
   };
 
-  onSaveRecording(){
-    if(this.state.view !== 'save'){
-      this.setState({view: 'save'})
-    } else {
-      this.setState({view:'record'})
-    }
-  }
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
@@ -341,6 +338,170 @@ export default class RecordScreen extends React.Component {
     return `${this._getMMSSFromMillis(0)}`;
   }
 
+  //CODE ADDITIONS START HERE
+  async createAudioAsset() {
+    let newAss = await MediaLibrary.createAssetAsync(this.recording.getURI())
+    MediaLibrary.createAlbumAsync('Recordings', newAss)
+    .then(() => {
+      console.log('Album created!');
+    })
+    .catch(error => {
+      console.log('err', error);
+    });
+    }
+
+    async saveToPhoneLibrary(){
+      this.createAudioAsset()
+    .then(asset => MediaLibrary.saveToLibraryAsync(asset))
+    .catch(err => console.log('media library save asset err', err))
+    }
+
+    async uploadRecFromPhone(){
+      DocumentPicker.getDocumentAsync({
+        type: '*/*',
+        copyToCacheDirectory: true,
+        base64: true
+      })
+      .then(succ => {
+        //check out the saved info
+        console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
+        //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
+        var Base64 = {
+          // private property
+          _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+          // public method for encoding
+          encode : function (input) {
+              var output = "";
+              var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+              var i = 0;
+              input = Base64._utf8_encode(input);
+              while (i < input.length) {
+                  chr1 = input.charCodeAt(i++);
+                  chr2 = input.charCodeAt(i++);
+                  chr3 = input.charCodeAt(i++);
+                  enc1 = chr1 >> 2;
+                  enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                  enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                  enc4 = chr3 & 63;
+                  if (isNaN(chr2)) {
+                      enc3 = enc4 = 64;
+                  } else if (isNaN(chr3)) {
+                      enc4 = 64;
+                  }
+                  output = output +
+                  this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                  this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+              }
+              return output;
+          },
+          // public method for decoding
+          decode : function (input) {
+              var output = "";
+              var chr1, chr2, chr3;
+              var enc1, enc2, enc3, enc4;
+              var i = 0;
+              input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+              while (i < input.length) {
+                  enc1 = this._keyStr.indexOf(input.charAt(i++));
+                  enc2 = this._keyStr.indexOf(input.charAt(i++));
+                  enc3 = this._keyStr.indexOf(input.charAt(i++));
+                  enc4 = this._keyStr.indexOf(input.charAt(i++));
+                  chr1 = (enc1 << 2) | (enc2 >> 4);
+                  chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                  chr3 = ((enc3 & 3) << 6) | enc4;
+                  output = output + String.fromCharCode(chr1);
+                  if (enc3 != 64) {
+                      output = output + String.fromCharCode(chr2);
+                  }
+                  if (enc4 != 64) {
+                      output = output + String.fromCharCode(chr3);
+                  }
+              }
+              output = Base64._utf8_decode(output);
+              return output;
+          },
+          // private method for UTF-8 encoding
+          _utf8_encode : function (string) {
+              string = string.replace(/\r\n/g,"\n");
+              var utftext = "";
+              for (var n = 0; n < string.length; n++) {
+                  var c = string.charCodeAt(n);
+                  if (c < 128) {
+                      utftext += String.fromCharCode(c);
+                  }
+                  else if((c > 127) && (c < 2048)) {
+                      utftext += String.fromCharCode((c >> 6) | 192);
+                      utftext += String.fromCharCode((c & 63) | 128);
+                  }
+                  else {
+                      utftext += String.fromCharCode((c >> 12) | 224);
+                      utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                      utftext += String.fromCharCode((c & 63) | 128);
+                  }
+              }
+              return utftext;
+          },
+          // private method for UTF-8 decoding
+          _utf8_decode : function (utftext) {
+              var string = "";
+              var i = 0;
+              var c = c1 = c2 = 0;
+              while ( i < utftext.length ) {
+                  c = utftext.charCodeAt(i);
+                  if (c < 128) {
+                      string += String.fromCharCode(c);
+                      i++;
+                  }
+                  else if((c > 191) && (c < 224)) {
+                      c2 = utftext.charCodeAt(i+1);
+                      string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                      i += 2;
+                  }
+                  else {
+                      c2 = utftext.charCodeAt(i+1);
+                      c3 = utftext.charCodeAt(i+2);
+                      string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                      i += 3;
+                  }
+              }
+              return string;
+          }
+          }
+          //Post the Uploaded Recording to Cloudinary
+          let cloudUri = Base64.encode(succ.uri);
+          console.log(cloudUri);
+          let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
+          console.log(base64Aud)
+          let fd = new FormData();
+          fd.append("file", `${base64Aud}`);
+          fd.append("upload_preset", "qna2tpvj");
+          fd.append("resource_type", "video")
+          // fd.append("height", "200");
+          // fd.append("width", "500");
+          // fd.append("flags", "waveform");
+          fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
+            method: 'POST',
+            body: fd,
+            })
+            .then(async (response) => {
+              let recordingURL = await response.json();
+              console.log('Cloudinary Info:', recordingURL);
+              return recordingURL;
+            })
+            .then('https://aloud-server.appspot.com/recording')
+          .catch(err => console.log('cloudinary err'))
+          })
+        .catch(err => console.log('audio upload err', err))
+    }
+
+  onSaveRecording(){
+    if(this.state.view !== 'save'){
+      this.setState({view: 'save'})
+    } else {
+      this.setState({view:'record'})
+    }
+  }
+
   render() {
     if(!this.state.fontLoaded) {
         return (
@@ -359,19 +520,7 @@ export default class RecordScreen extends React.Component {
             </View>
         )
     }
-
-const uploadRecFromPhone = function(){
-  DocumentPicker.getDocumentAsync({
-    type: '*/*',
-    copyToCacheDirectory: true,
-  })
-  .then(succ => console.log(succ.uri, succ.type, succ.name, succ.size))
-  .catch(err => console.log('Audio upload error', err))
-  }
-
-
       if(this.state.view === 'record'){
-        
           return (
             <View style={styles.container}>
               <Text></Text>
@@ -438,7 +587,6 @@ const uploadRecFromPhone = function(){
                 </View>
                 </View>
           );
-
 } else {
   return (
     <View>
@@ -446,7 +594,7 @@ const uploadRecFromPhone = function(){
     </View>
   )
 }
-  }
+}
 }
 
 
@@ -575,7 +723,10 @@ const styles = StyleSheet.create({
   }
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c56e3d0fcd770fdc97f296fde98614ff8f1d3a5c
 RecordScreen.navigationOptions = {
   title: 'Record',
 };

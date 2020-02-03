@@ -394,6 +394,7 @@ const uploadRecFromPhone = function(){
                       />
                   </TouchableOpacity>
                   <Text></Text>
+                  
                   <TouchableOpacity
                     onPress={this._onRecordPressed}
                     style={styles.circleButtons}>
@@ -402,12 +403,11 @@ const uploadRecFromPhone = function(){
                     size={80}
                     />
                   </TouchableOpacity>
-                  {/* <View alignItems='center' > */}
+                  
                   <Text></Text>
                       <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                         {this._getRecordingTimestamp()}
                       </Text>
-                  {/* </View> */}
                 </View>
                 <View style={styles.playbackContainer}>
                   <Slider
@@ -559,6 +559,16 @@ const styles = StyleSheet.create({
     height:100,
     backgroundColor:'#f90909',
     borderRadius:150,
+  },
+  bigCircleButton: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:100,
+    height:100,
+    backgroundColor:'#fbf0f2',
+    borderRadius:180,
   },
   icon:{
     color:'#fbf0f2'

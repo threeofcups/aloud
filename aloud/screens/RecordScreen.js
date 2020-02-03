@@ -39,10 +39,10 @@ const ICON_RECORDING = new Icon(require('./assets/images/record_icon.png'), 20, 
 
 const ICON_PLAY_BUTTON = new Icon(require('./assets/images/play_button.png'), 34, 51);
 const ICON_PAUSE_BUTTON = new Icon(require('./assets/images/pause_button.png'), 34, 51);
-const ICON_STOP_BUTTON = new Icon(require('./assets/images/stop_button.png'), 22, 22);
+// const ICON_STOP_BUTTON = new Icon(require('./assets/images/stop_button.png'), 22, 22);
 
 const ICON_MUTED_BUTTON = new Icon(require('./assets/images/muted_button.png'), 67, 58);
-const ICON_UNMUTED_BUTTON = new Icon(require('./assets/images/unmuted_button.png'), 67, 58);
+// const ICON_UNMUTED_BUTTON = new Icon(require('./assets/images/unmuted_button.png'), 67, 58);
 
 const ICON_TRACK_1 = new Icon(require('./assets/images/track_1.png'), 166, 5);
 const ICON_THUMB_1 = new Icon(require('./assets/images/thumb_1.png'), 18, 19);
@@ -51,8 +51,8 @@ const ICON_THUMB_2 = new Icon(require('./assets/images/thumb_2.png'), 15, 19);
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 const BACKGROUND_COLOR = 'white';
 const LIVE_COLOR = '#f90909';
-const DISABLED_OPACITY = 0.5;
-const RATE_SCALE = 3.0;
+// const DISABLED_OPACITY = 0.5;
+// const RATE_SCALE = 3.0;
 
 export default class RecordScreen extends React.Component {
   constructor(props) {
@@ -376,11 +376,11 @@ const uploadRecFromPhone = function(){
             <View style={styles.container}>
               <Text></Text>
               <TouchableOpacity
-                     style={styles.circleButtons}>
+                     style={styles.circleButtons}
+                      onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device">
                 <Ionicons name={'md-cloud-upload'}
-                    onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device"
                     size={80}
-                    color='#fbf0f2'
+                    style={styles.icon}
                     />
               </TouchableOpacity>
               <Text></Text>
@@ -389,9 +389,9 @@ const uploadRecFromPhone = function(){
                      onPress={()=> this.onSaveRecording()}
                      style={styles.circleButtons}>
                     <Ionicons name={'md-save'}
-                      onPress={()=> this.onSaveRecording()}
+                      // onPress={()=> this.onSaveRecording()}
                       size={80}
-                      color='#fbf0f2'
+                      style={styles.icon}
                       />
                   </TouchableOpacity>
                   <Text></Text>
@@ -399,27 +399,18 @@ const uploadRecFromPhone = function(){
                     onPress={this._onRecordPressed}
                     style={styles.circleButtons}>
                     <Ionicons name={'md-mic'}
+                    style={styles.icon}
                     size={80}
-                    color='#fbf0f2'
                     />
                   </TouchableOpacity>
-                  <View >
-                    <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-                      {this.state.isRecording ? 'LIVE' : ''}
-                    </Text>
-                    <View style={styles.recordingDataRowContainer}>
-                      <Image
-                        style={[styles.image, { opacity: this.state.isRecording ? 1.0 : 0.0 }]}
-                        source={ICON_RECORDING.module}
-                      />
+                  <View alignItems='center' >
+                    <View alignItems='center'>
                       <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                         {this._getRecordingTimestamp()}
                       </Text>
                     </View>
                   </View>
                 </View>
-                
-               
                 <View style={styles.playbackContainer}>
                   <Slider
                     style={styles.playbackSlider}
@@ -429,6 +420,9 @@ const uploadRecFromPhone = function(){
                     onValueChange={this._onSeekSliderValueChange}
                     onSlidingComplete={this._onSeekSliderSlidingComplete}
                     disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
+                    minimumTrackTintColor={'#f90909'}
+                    maximumTrackTintColor={'1e001a'}
+                    thumbTintColor={'#f90909'}
                   />
                   <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                     {this._getPlaybackTimestamp()}
@@ -436,29 +430,13 @@ const uploadRecFromPhone = function(){
                 </View>
                 <View style={[styles.buttonsContainerBase, styles.buttonsContainerTopRow]}>
                   <View style={styles.volumeContainer}>
-                    <TouchableHighlight
-                      underlayColor={BACKGROUND_COLOR}
-                      style={styles.wrapper}
-                      onPress={this._onMutePressed}
-                      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                        {this.state.muted ? <Ionicons name={'md-volume-off'} size={50} /> : <Ionicons name={'md-volume-high'} size={50}/> }
-                    </TouchableHighlight>
-                    <Slider
-                      style={styles.volumeSlider}
-                      trackImage={ICON_TRACK_1.module}
-                      thumbImage={ICON_THUMB_2.module}
-                      value={1}
-                      onValueChange={this._onVolumeSliderValueChange}
-                      disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-                    />
                   </View>
                   <View style={styles.playStopContainer}>
                     <TouchableHighlight
                       underlayColor={BACKGROUND_COLOR}
-                      // style={styles.wrapper}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} /> : <Ionicons name={'md-play'} size={50}/> }
+                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} color={'white'} /> : <Ionicons name={'md-play'} size={50}/> }
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -485,12 +463,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     alignItems: 'center',
-    // alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
-    // minHeight: DEVICE_HEIGHT,
-    // maxHeight: DEVICE_HEIGHT,
   },
   noPermissionsText: {
     textAlign: 'center',
@@ -499,25 +473,18 @@ const styles = StyleSheet.create({
   halfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    // minHeight: DEVICE_HEIGHT / 2.0,
-    // maxHeight: DEVICE_HEIGHT / 2.0,
   },
   recordingContainer: {
     flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    // minHeight: ICON_RECORD_BUTTON.height,
-    // maxHeight: ICON_RECORD_BUTTON.height,
   },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: ICON_RECORD_BUTTON.height,
     maxHeight: ICON_RECORD_BUTTON.height,
@@ -525,24 +492,17 @@ const styles = StyleSheet.create({
     maxWidth: ICON_RECORD_BUTTON.width * 3.0,
   },
   recordingDataRowContainer: {
-    // flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
-    // minHeight: ICON_RECORDING.height,
-    // maxHeight: ICON_RECORDING.height,
   },
   playbackContainer: {
-    // flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    // minHeight: ICON_THUMB_1.height * 2.0,
-    // maxHeight: ICON_THUMB_1.height * 2.0,
   },
   playbackSlider: {
     alignSelf: 'stretch',
+    
   },
   liveText: {
     color:'#f90909',
@@ -566,7 +526,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
   },
   buttonsContainerTopRow: {
     maxHeight: ICON_MUTED_BUTTON.height,
@@ -577,23 +536,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent: 'space-between',
-    // minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
   },
   volumeContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // minWidth: DEVICE_WIDTH / 2.0,
-    // maxWidth: DEVICE_WIDTH / 2.0,
   },
   volumeSlider: {
     width: DEVICE_WIDTH / 2.0 - ICON_MUTED_BUTTON.width,
   },
   buttonsContainerBottomRow: {
-    // maxHeight: ICON_THUMB_1.height,
     alignSelf: 'stretch',
     paddingRight: 20,
     paddingLeft: 20,
@@ -610,6 +563,9 @@ const styles = StyleSheet.create({
     height:100,
     backgroundColor:'#f90909',
     borderRadius:150,
+  },
+  icon:{
+    color:'#fbf0f2'
   }
 });
 

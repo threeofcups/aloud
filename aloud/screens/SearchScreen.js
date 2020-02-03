@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { ExpoConfigView } from '@expo/samples';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+import {Image,Platform,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View,
 } from 'react-native';
-import SearchStack from '../navigation/SearchNavigator'
+import SearchStack from '../navigation/SearchNavigator';
+import ButtonGroup from 'react-native-elements';
+
 export default function SearchScreen() {
   const [value, onChangeText] = React.useState('search here');
+  const [collections, setCollections] = React.useState([]);
+  const [recordings, setRecordings] = React.useState([]);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      await axios.get('https://aloud-server.appspot.com/home/1')
+        .then(response => {
+          setCollections(response.data[0].collections);
+          setRecordings(response.data[0].recordings);
+        })
+        .catch(err => console.log('there was an axios err', err))
+    };
+
+    fetchContent();
+  }, []);
 
   return (
   <ScrollView>
@@ -25,8 +35,10 @@ export default function SearchScreen() {
         onChangeText={text => onChangeText(text)}
         value={value}
       />
-      <CollectionsList />
-      <RecordingsList />
+      <View>
+        <CollectionsList collections={collections} />
+        <RecordingsList recordings={recordings} />
+      </View>
   </ScrollView>
   );
 }

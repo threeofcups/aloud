@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CollectionsListItem from '../ListItems/CollectionsListItem';
 import { Ionicons } from '@expo/vector-icons';
 import collData from '../../src/sampleCollData';
-
+import CollectionScreen from '../../screens/CollectionScreen'
 import Colors from '../../constants/Colors';
 import {
   StyleSheet,
@@ -11,29 +11,42 @@ import {
   FlatList
 } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
+import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function CollectionsList({ collections }) {
   const [listCollections, setCollections] = useState([]);
-  
+  const [listOrCollection, toggleListOrCollection] = useState('list')
+  const [collectionData, setCollectionData] = useState({})
   useEffect(() => {
     setCollections(collections || collData);
   }, [collections]);
 
-  return (
-    <View>
+
+  if(listOrCollection === 'list'){
+    return(
+      <View>
       <FlatList
       horizontal
-        data={listCollections}
-        renderItem={({ item: rowData }) => {
-          return (
+      data={listCollections}
+      renderItem={({ item: rowData }) => {
+        setCollectionData(rowData)
+        return (
 
-            <CollectionsListItem collection={rowData}/>
-          );
+   
+    
+                <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
+              
+        )
         }}
         keyExtractor={(item, index) => `${index}`}
-      />
+        />
+       
     </View>
-  );
+
+    )
+  } else {
+    return <CollectionScreen  toggleListOrCollection={toggleListOrCollection} collection={collectionData}/>
+  }
 }
 // const styles = StyleSheet.create({
 //   container: {

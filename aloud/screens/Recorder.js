@@ -58,11 +58,10 @@ export default function RecordView() {
       size={100}
       />
     </TouchableHighlight>
-   
     <View style={styles.recordingDataContainer}>
       <View />
       <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
-        {this.state.isRecording ? 'LIVE' : ''}
+        {this.state.isRecording ? 'Now Recording' : ''}
       </Text>
       <View style={styles.recordingDataRowContainer}>
         <Image
@@ -80,7 +79,7 @@ export default function RecordView() {
   <View />
 </View>
 </View>
-          )
+)
 }
 
 const styles = StyleSheet.create({

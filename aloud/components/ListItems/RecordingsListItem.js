@@ -1,15 +1,29 @@
-// avatar, sound name, artist name, length, more
 import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
+import axios from 'axios';
 import Colors from '../../constants/Colors';
-import { View, StyleSheet } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native';
+import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
+  const [src, setSrc] = useState(recording.url_recording);
   const [isPlaying, setPlayStatus] = useState('');
   const [playback, setPlayback] = useState('');
-  const [onPlaybackUpdate, setOnPBupdate] = useState('');
   const [iconStatus, setIconStatus] = useState('play-circle-filled');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [collectionsModalVisible, setCollectionsVisible] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [choiceCollection, setChoiceCollection] = useState([]);
+  const [iconColor, setIconColor] = useState('#f90909');
+  const [backgroundColor, setBackground] = useState('#fdfffc');
+
+  const fetchCollectionContent = async () => {
+    await axios.get('https://aloud-server.appspot.com/profile/bjork/1')
+      .then(response => {
+        setCollections(response.data[0].collections);
+      })
+      .catch(err => console.log('there was an axios err', err))
+  };
 
 
   const loadAudio = () => {
@@ -17,7 +31,7 @@ export default function RecordingsListItem({ recording }) {
     try {
       const playback = new Audio.Sound()
       const source = {
-        uri: 'https://www.nasa.gov/mp3/584791main_spookysaturn.mp3'
+        uri: src,
       }
       const status = {
         shouldPlay: isPlaying,
@@ -36,7 +50,6 @@ export default function RecordingsListItem({ recording }) {
 
   };
 
-  useEffect(() => {
   const setAudioMode = async() => {
     try {
       await Audio.setAudioModeAsync({
@@ -54,66 +67,154 @@ export default function RecordingsListItem({ recording }) {
     }
   };
 
-  setAudioMode();
+  useEffect(() => {
+
+    
+    setAudioMode();
+    fetchCollectionContent();
+
   }, []);
 
   const handlePlayPause = async () => {
   if(isPlaying) {
     await playback.pauseAsync();
-    setIconStatus('play-circle-filled')
+    setIconColor('#f90909');
+    setIconStatus('play-circle-filled');
+    setBackground('#fdfffc');
   } else {
     await playback.playAsync();
+    setIconColor('#eac2cd');
     setIconStatus('pause-circle-filled');
+    setBackground('#fbf0f2');
   }
 
   setPlayStatus(!isPlaying);
   };
+  
+  const openModal = () => {
+    setModalVisible(!modalVisible);
+  }
 
+  const saveToLibrary = async () => {
+    await axios.post(`https://aloud-server.appspot.com/library/save/recording/${recording.id}`, {
+      "userId": "1"
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
 
-  // const playRecording = async() => {
-  //   try {
-  //     setSound(await Audio.Sound.createAsync(
-  //       { uri: 'https://ia902704.us.archive.org/26/items/macbeth_0810_librivox/macbeth_0_shakespeare.mp3' },
-  //       { shouldPlay: true }
-  //     ))
-  //     setPlayStatus(true);
-  //     setIconStatus('pause-circle-filled');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const saveToCollection = async () => {
+    await axios.post(`https://aloud-server.appspot.com/recording/${choiceCollection.id}`, {
+      "recordingId": recording.id
+    })
+      .then(success => {
+        console.log(success);
+      })
+      .catch(err => console.log('there was an axios err:', err))
+  };
 
-  // const pauseRecording = async () => {
-  //   try {
-      
-  //     setPlayStatus(false);
-  //     setIconStatus('play-circle-filled');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleCollectionAdd = () => {
+    saveToCollection();
+  };
 
-
-  // const playAndPause = () => {
-  //   switch (playStatus) {
-  //     case false:
-  //       playRecording();
-  //       break;
-  //     case true:
-  //       pauseRecording();
-  //       break;
-  //   }
-  // };
+  const handleLibraryAdd = () => {
+    saveToLibrary();
+  };
 
   return (
     <View style={styles.container}>
+      <Modal
+        style={styles.modal}
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible)
+        }}>
+        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+          <View>
+            <Text style={{ marginTop: 54, textAlign: "center"}}>playback view here</Text>
+            <Text style={{ textAlign: "center"}}>{recording.title}</Text>
+            <Text style={{ textAlign: "center" }}>{recording.username}</Text>
+            <Text style={{ margin: 22, textAlign: "left" }}>{recording.description}</Text>
+            <Text style={{ marginLeft: 22, marginBottom: 22, textAlign: "left" }}>{recording.speech_to_text}</Text>
+              <Button
+                title="add to collection"
+                type="clear"
+                onPress={() => {
+                  // setModalVisible(!modalVisible);
+                  setCollectionsVisible(true);
+              }}
+              />
+              <Modal
+              style={styles.modal}
+              animationType="fade"
+              transparent={false}
+              visible={collectionsModalVisible}
+              onRequestClose={() => {
+                setCollectionsVisible(!collectionsModalVisible)
+              }}>
+              <Text style={{margin: 54, textAlign: "center"}}>collections</Text>
+              {collections.map(collection => {
+                return (
+                  <Button
+                    title={collection.title}
+                    type="clear"
+                    onPress={() => {
+                      //add to collection
+                      //axios post function called here
+                      setChoiceCollection(collection)
+                      handleCollectionAdd();
+                      setCollectionsVisible(!collectionsModalVisible);
+                    }}
+                  />
+                )
+              })}
+              <Button
+                title="x"
+                type="clear"
+                onPress={() => {
+                  setCollectionsVisible(!collectionsModalVisible);
+                }}
+              />
+              </Modal>
+              <Button
+                title="add to library"
+                type="clear"
+                onPress={() => {
+                  handleLibraryAdd();
+                  setModalVisible(!setModalVisible);
+                }}
+              />
+            <Button
+              title="go to artist"
+              type="clear"
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            />
+              <Button
+                title="x"
+                type="clear"
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              />
+          </View>
+        </ScrollView>
+      </Modal>
       <ListItem
+        containerStyle={{ backgroundColor: backgroundColor }}
+        underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus}}
+        leftIcon={{ name: iconStatus, color: iconColor }}
         title={recording.title}
         subtitle={recording.username}
-        rightIcon={{ name: 'more-horiz'}}
-      />
+        rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}
+      bottomDivider
+    />
     </View>
   );
 }
@@ -130,5 +231,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     textAlign: 'center',
-  }
+  },
+  modal: {
+    backgroundColor: 'white',
+    margin: 0, 
+    alignItems: undefined,
+    justifyContent: undefined,
+  },
+  
 });

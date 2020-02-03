@@ -389,7 +389,6 @@ const uploadRecFromPhone = function(){
                      onPress={()=> this.onSaveRecording()}
                      style={styles.circleButtons}>
                     <Ionicons name={'md-save'}
-                      // onPress={()=> this.onSaveRecording()}
                       size={80}
                       style={styles.icon}
                       />
@@ -403,26 +402,23 @@ const uploadRecFromPhone = function(){
                     size={80}
                     />
                   </TouchableOpacity>
-                  <View alignItems='center' >
-                    <View alignItems='center'>
+                  {/* <View alignItems='center' > */}
+                  <Text></Text>
                       <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                         {this._getRecordingTimestamp()}
                       </Text>
-                    </View>
-                  </View>
+                  {/* </View> */}
                 </View>
                 <View style={styles.playbackContainer}>
                   <Slider
                     style={styles.playbackSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
                     value={this._getSeekSliderPosition()}
                     onValueChange={this._onSeekSliderValueChange}
                     onSlidingComplete={this._onSeekSliderSlidingComplete}
                     disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
-                    minimumTrackTintColor={'#f90909'}
-                    maximumTrackTintColor={'1e001a'}
-                    thumbTintColor={'#f90909'}
+                    minimumTrackTintColor={'#1e001a'}
+                    maximumTrackTintColor={'#1e001a'}
+                    thumbTintColor={'#1e001a'}
                   />
                   <Text style={[styles.playbackTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                     {this._getPlaybackTimestamp()}
@@ -436,7 +432,7 @@ const uploadRecFromPhone = function(){
                       underlayColor={BACKGROUND_COLOR}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} color={'white'} /> : <Ionicons name={'md-play'} size={50}/> }
+                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} color={'#1e001a'} /> : <Ionicons name={'md-play'} size={50} color={'#1e001a'}/> }
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -508,7 +504,7 @@ const styles = StyleSheet.create({
     color:'#f90909',
   },
   recordingTimestamp: {
-    paddingLeft: 20,
+    // paddingLeft: 20,
   },
   playbackTimestamp: {
     textAlign: 'right',

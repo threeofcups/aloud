@@ -6,16 +6,7 @@ import axios from 'axios';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
 import RecentList from '../components/Lists/RecentList';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
+import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {

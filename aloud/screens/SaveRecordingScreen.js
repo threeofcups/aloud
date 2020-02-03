@@ -10,12 +10,12 @@ import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+
 export default function SaveRecordingScreen({onBack}) {
-  const {userName, userId, photoUrl} = useContext(UserContext)
+    const {userName, userId, photoUrl} = useContext(UserContext)
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState('');
-    const [privacySetting, setPrivacy] = useState('private');
-    // const [generateTranscript, setGenerateTranscript] = useState(false)
+    const [privacySetting, setPrivacy] = useState('true');
     const [recordingUrl, setRecordingURl] = useState('')
     const [recFlash, recFlasher] = useState(null);
 
@@ -35,7 +35,13 @@ export default function SaveRecordingScreen({onBack}) {
         .then(()=> console.log('yay'))
         .catch(err => console.error('there was an error with save recording'))
     }
-
+    togglePrivacy = () => {
+      if(privacySetting === 'false'){
+        setPrivacy('true')
+      } else {
+        setPrivacy('true')
+      }
+    }
 
 return (
     <View>
@@ -47,48 +53,22 @@ return (
         />
         <Text>Recording Description:</Text>
         <TextInput
-        style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
+        style={{ height: 80, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}
         value={description}/>
         <Text>Public</Text>
-        <Switch onValueChange={(switchValue)=>{setPrivacy(switchValue)}} value={'public'}></Switch>
-        {/* <Text>Generate Transcript</Text>
-        <Switch></Switch>
-        <Text>Transcript</Text>
-        <TextInput></TextInput> */}
-        {/* <recNav /> */}
-        {/* <Button onPress={(event) => {
-          const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-          const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
-          //const axios = require('axios');
-          //addEventListener('change', function(event){
-            const file = event.target.files[0];
-            const formData = new FormData();
-            // formData.append('file', file);
-            // formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            const defaultHeaders = {'Content-Type': 'application/x-www-form-urlencoded'};
-            axios({
-              url: CLOUDINARY_URL,
-              method: 'POST',
-              headers: defaultHeaders,
-              data: formData,
-              upload_preset: CLOUDINARY_UPLOAD_PRESET
-            })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-        //  })
-          //make the axios call to generate audio url
-          //save url to cloudinary
-          //grab url from response object
-          //save url to the DB
-          console.log('saved that sound for you')
-        }} title="Save My Sound" color='#f90909'/> */}
+        <Switch
+          onValueChange={(value) =>setPrivacy(value)}
+          style={{marginBottom: 10}}
+          value={privacySetting} 
+          trackColor={{
+            true: '#f90909',
+            false:'#f90909',
+        }} 
+          thumbColor={'#fbf0f2'}/>
+        <Text></Text>
         <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        <Button onPress={() => {
-          //grab the url thats been saved to the db from the cloudinary call
-          //save the url to a new collection in the db
-         onBack()}} title="Cancel" color='#f90909'
-          />
+        <Button onPress={() => {onBack()}} title="Cancel" color='#f90909'/>
         </ScrollView>
     </View>
 )};

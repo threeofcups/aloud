@@ -296,6 +296,7 @@ export default class RecordScreen extends React.Component {
       this.setState({view:'record'})
     }
   }
+  
   _getSeekSliderPosition() {
     if (
       this.sound != null &&
@@ -334,6 +335,7 @@ export default class RecordScreen extends React.Component {
     }
     return '';
   }
+
   _getRecordingTimestamp() {
     if (this.state.recordingDuration != null) {
       return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;

@@ -57,6 +57,7 @@ ProfileStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-contact' : 'md-contact'} />
   ),
+  tabBarOptions: { showLabel: false }
 };
 
 ProfileStack.path = '';
@@ -73,6 +74,7 @@ LibraryStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-headset' : 'md-headset'} />
   ),
+  tabBarOptions: { showLabel: false }
 };
 
 LibraryStack.path = '';
@@ -89,6 +91,7 @@ RecordStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-add-circle' : 'md-add-circle'} />
   ),
+  tabBarOptions: { showLabel: false }
 };
 
 RecordStack.path = '';
@@ -105,6 +108,7 @@ SearchStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
   ),
+  tabBarOptions: { showLabel: false }
 };
 
 SearchStack.path = '';

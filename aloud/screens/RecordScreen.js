@@ -374,75 +374,36 @@ const uploadRecFromPhone = function(){
         
           return (
             <View style={styles.container}>
+              <Text></Text>
               <TouchableOpacity
-                     onPress={()=> this.onSaveRecording()}
-   style={{
-       borderWidth:1,
-       borderColor:'rgba(0,0,0,0.2)',
-       alignItems:'center',
-       justifyContent:'center',
-       width:100,
-       height:100,
-       backgroundColor:'#f90909',
-       borderRadius:150,
-     }}
- >
-  <Ionicons name={'md-cloud-upload'}
-                  onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device"
+                     style={styles.circleButtons}>
+                <Ionicons name={'md-cloud-upload'}
+                    onPress={rec => uploadRecFromPhone(rec)} title="Upload from Device"
                     size={80}
                     color='#fbf0f2'
                     />
- </TouchableOpacity>
-           
-              <View
-                style={[
-                  // styles.halfScreenContainer,
-                  {
-                    opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-                  },
-                ]}>
-                
+              </TouchableOpacity>
+              <Text></Text>
                 <View alignItems='center'>
                   <TouchableOpacity
                      onPress={()=> this.onSaveRecording()}
-   style={{
-       borderWidth:1,
-       borderColor:'rgba(0,0,0,0.2)',
-       alignItems:'center',
-       justifyContent:'center',
-       width:100,
-       height:100,
-       backgroundColor:'#f90909',
-       borderRadius:150,
-     }}
- >
-  <Ionicons name={'md-save'}
-                    onPress={()=> this.onSaveRecording()}
+                     style={styles.circleButtons}>
+                    <Ionicons name={'md-save'}
+                      onPress={()=> this.onSaveRecording()}
+                      size={80}
+                      color='#fbf0f2'
+                      />
+                  </TouchableOpacity>
+                  <Text></Text>
+                  <TouchableOpacity
+                    onPress={this._onRecordPressed}
+                    style={styles.circleButtons}>
+                    <Ionicons name={'md-mic'}
                     size={80}
                     color='#fbf0f2'
                     />
- </TouchableOpacity>
- <Text></Text>
-                     <TouchableOpacity
-                     onPress={this._onRecordPressed}
-   style={{
-       borderWidth:1,
-       borderColor:'rgba(0,0,0,0.2)',
-       alignItems:'center',
-       justifyContent:'center',
-       width:100,
-       height:100,
-       backgroundColor:'#f90909',
-       borderRadius:150,
-     }}
- >
-    <Ionicons name={'md-mic'}
-                    size={80}
-                    color='#fbf0f2'
-                    />
- </TouchableOpacity>
-                
-                  <View style={styles.recordingDataContainer}>
+                  </TouchableOpacity>
+                  <View >
                     <Text style={[styles.liveText, {fontFamily: 'cutive-mono-regular' }]}>
                       {this.state.isRecording ? 'LIVE' : ''}
                     </Text>
@@ -457,7 +418,7 @@ const uploadRecFromPhone = function(){
                     </View>
                   </View>
                 </View>
-                </View>
+                
                
                 <View style={styles.playbackContainer}>
                   <Slider
@@ -480,7 +441,7 @@ const uploadRecFromPhone = function(){
                       style={styles.wrapper}
                       onPress={this._onMutePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                        {this.state.muted ? <Ionicons name={'md-volume-high'} size={50} /> : <Ionicons name={'md-volume-off'} size={50}/> }
+                        {this.state.muted ? <Ionicons name={'md-volume-off'} size={50} /> : <Ionicons name={'md-volume-high'} size={50}/> }
                     </TouchableHighlight>
                     <Slider
                       style={styles.volumeSlider}
@@ -491,7 +452,7 @@ const uploadRecFromPhone = function(){
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}
                     />
                   </View>
-                  <View >
+                  <View style={styles.playStopContainer}>
                     <TouchableHighlight
                       underlayColor={BACKGROUND_COLOR}
                       // style={styles.wrapper}
@@ -502,7 +463,6 @@ const uploadRecFromPhone = function(){
                   </View>
                 </View>
                 </View>
-            
           );
 
 } else {
@@ -585,7 +545,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   liveText: {
-    color: LIVE_COLOR,
+    color:'#f90909',
   },
   recordingTimestamp: {
     paddingLeft: 20,
@@ -618,22 +578,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // justifyContent: 'space-between',
-    minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
   },
   volumeContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minWidth: DEVICE_WIDTH / 2.0,
-    maxWidth: DEVICE_WIDTH / 2.0,
+    // minWidth: DEVICE_WIDTH / 2.0,
+    // maxWidth: DEVICE_WIDTH / 2.0,
   },
   volumeSlider: {
     width: DEVICE_WIDTH / 2.0 - ICON_MUTED_BUTTON.width,
   },
   buttonsContainerBottomRow: {
-    maxHeight: ICON_THUMB_1.height,
+    // maxHeight: ICON_THUMB_1.height,
     alignSelf: 'stretch',
     paddingRight: 20,
     paddingLeft: 20,
@@ -641,22 +601,18 @@ const styles = StyleSheet.create({
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
+  circleButtons: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:100,
+    height:100,
+    backgroundColor:'#f90909',
+    borderRadius:150,
+  }
 });
 
-
-// export default function RecordScreen() {
-
-//   return (
-//     <View allignItems={'center'}>
-
-//       <Ionicons name={'md-mic'}
-//       size={300}
-//       onPress={()=>{console.log('dot')}}
-//       />
-      
-//     </View>
-//   );
-// }
 
 RecordScreen.navigationOptions = {
   title: 'Record',

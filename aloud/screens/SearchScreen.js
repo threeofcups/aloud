@@ -3,22 +3,25 @@ import axios from 'axios';
 import { ExpoConfigView } from '@expo/samples';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
+import RecordingsListItem from '../components/ListItems/RecordingsListItem';
 import {Image,Platform,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View,
 } from 'react-native';
+import {SearchBar} from 'react-native-elements';
 import SearchStack from '../navigation/SearchNavigator';
-import ButtonGroup from 'react-native-elements';
 
 export default function SearchScreen() {
-  const [value, onChangeText] = React.useState('search here');
-  const [collections, setCollections] = React.useState([]);
+  const [searchTerm, onChangeText] = React.useState('search...');
+  // const [collections, setCollections] = React.useState([]);
   const [recordings, setRecordings] = React.useState([]);
+  const [defaultRecordings, setDefaultRecordings] = React.useState([]);
+  const [collections, setDefaultCollections] = React.useState([]);
 
   useEffect(() => {
     const fetchContent = async () => {
       await axios.get('https://aloud-server.appspot.com/home/1')
         .then(response => {
-          setCollections(response.data[0].collections);
-          setRecordings(response.data[0].recordings);
+          setDefaultCollections(response.data[0].collections);
+          setDefaultRecordings(response.data[0].recordings);
         })
         .catch(err => console.log('there was an axios err', err))
     };
@@ -26,18 +29,60 @@ export default function SearchScreen() {
     fetchContent();
   }, []);
 
-  return (
-  <ScrollView>
-    {/* <Text>search bar</Text> */}
-    {/* <SearchStack/> */}
-      <TextInput
-        style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
+  const handleSubmit = (() => {
+    console.log('hit submit', searchTerm);
+    const fetchContent = async () => {
+      await axios.post(`http://aloud-server.appspot.com/query/${searchTerm}`)
+        .then(response => {
+          setRecordings(response.data);
+        })
+        .catch(err => console.log('there was an axios err', err))
+    };
+
+    fetchContent();
+  });
+
+  if (!recordings.length) {
+    return (
+    <ScrollView>
+      <SearchBar
+        lightTheme
+        round
+        platform="android"
+        searchIcon={{ size: 20, color: 'red' }}
+        clearIcon={{ size: 20, color: '#eac2cd' }}
+        inputStyle={{ fontStyle: "italic", fontSize: 16 }}
+        onSubmitEditing={handleSubmit}
         onChangeText={text => onChangeText(text)}
-        value={value}
+        value={searchTerm}
       />
       <View>
-        <CollectionsList collections={collections} />
-        <RecordingsList recordings={recordings} />
+        <RecordingsList recordings={defaultRecordings} />
+      </View>
+    </ScrollView>
+    )
+  }
+
+  return (
+  <ScrollView>
+      <SearchBar
+        lightTheme
+        round
+        platform="android"
+        searchIcon={{ size: 20, color: 'red' }}
+        clearIcon={{ size: 20, color: '#eac2cd' }}
+        inputStyle={{ fontStyle: "italic", fontSize: 16}}
+        onSubmitEditing={handleSubmit}
+        onChangeText={text => {
+          onChangeText(text)
+          handleSubmit()
+        }}
+        value={searchTerm}
+      />
+      <View>
+      {recordings.map(recording => {
+        return <RecordingsListItem recording={recording.item} />
+      })}
       </View>
   </ScrollView>
   );

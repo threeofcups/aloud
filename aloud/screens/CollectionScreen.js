@@ -28,14 +28,19 @@ useEffect(() => {
     setCollectionRecordings(collection.recordings)
 }, []);
 
+/*TODO:
+  - New Collection Creation
+  - Add Image when creating collection
+  - Send Collection info to DB
+*/
 return (
 <View>
       <View  >
       {/* <Button onPress={()=>toggleListOrCollection('list')} title="Upload from Device" color='#f90909'/> */}
       <TouchableWithoutFeedback onPress={()=>toggleListOrCollection('list')}>
+     
 
       <Card
-    
     containerStyle={{ padding: 0, width: 300 }}
     image={{ uri: collection.url_image } }
     title={collection.title} 
@@ -50,6 +55,11 @@ return (
         <RecordingsList recordings={recordings} />
       </View>
   </ScrollView>
+  <Button
+      title="Create a New Collection" 
+      color='#f90909'
+      onPress={() => console.log('new collection added')} 
+      />
 </View>
   );
 }

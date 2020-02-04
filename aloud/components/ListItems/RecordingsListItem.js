@@ -166,7 +166,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-            <Text style={{ marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>add to library</Text>
+            <Text style={{ marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
               onPress={() => {

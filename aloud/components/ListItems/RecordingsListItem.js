@@ -233,7 +233,7 @@ export default function RecordingsListItem({ recording }) {
           }}
           title="x"
         >
-          <Text style={{ marginTop: 20, marginLeft: 50, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
+          <Text style={{ marginTop: 20, marginLeft: 20, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
         </TouchableOpacity>
        </LinearGradient>
       </Modal>

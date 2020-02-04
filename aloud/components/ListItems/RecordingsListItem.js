@@ -166,16 +166,16 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-              <Text style={{ marginTop: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>add to library</Text>
+              <Text style={{ marginTop: 30, marginBottom: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>add to library</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
               }}
               title="go to artist"
             >
               <Text style={{ marginTop: 30, marginBottom: 10, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);

@@ -211,8 +211,9 @@ export default function RecordingsListItem({ recording }) {
           colors={['#eac2cd', '#ffefef']}
         >
         <Text style={{ marginTop: 54, marginLeft: 20, marginBottom: 20, textAlign: "left", fontWeight: 'bold', color: '#1e001a' }}>collections</Text>
-        {collections.map(collection => {
+        {collections.map((collection, i) => {
           return (
+            <View key={i}>
             <TouchableOpacity
               onPress={() => {
                 setChoiceCollection(collection)
@@ -223,6 +224,7 @@ export default function RecordingsListItem({ recording }) {
             >
               <Text style={{ marginBottom: 10, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>{collection.title}</Text>
             </TouchableOpacity>
+            </View>
           )
         })}
         <TouchableOpacity

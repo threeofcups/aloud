@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useContext} from 'react';
-import axios from 'axios';
 import {UserContext} from '../App'
 import {View, Text, TextInput, Switch, Button, AppState, StyleSheet} from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack';
@@ -10,6 +9,7 @@ import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+import UPLOAD_PRESET from '../src/config/cloudinary';
 export default function SaveRecordingScreen({onBack}) {
   const {userName, userId, photoUrl} = useContext(UserContext)
     const [title, setTitle] = useState("");
@@ -31,9 +31,8 @@ export default function SaveRecordingScreen({onBack}) {
         .then(succ => {
           //check out the saved info
           //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
-          //encrypt the audio files into a base64
-          
-          var Base64 = {
+          //encrypt the audio files into a base64 string
+          const Base64 = {
             // private property
             _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
             // public method for encoding
@@ -134,15 +133,17 @@ export default function SaveRecordingScreen({onBack}) {
                     return string;
                   }
                 }
-    console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
-          //Post the Uploaded Recording to Cloudinary
+          
+            console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
+            //Post the Uploaded Recording to Cloudinary
             let cloudUri = Base64.encode(succ.uri);
             console.log(cloudUri);
             let base64Aud = `data:audio/mpeg;base64,${cloudUri}`;
             console.log(base64Aud)
+            //Cloudinary Presets
             let fd = new FormData();
             fd.append("file", `${base64Aud}`);
-            fd.append("upload_preset", "qna2tpvj");
+            fd.append("upload_preset", 'qna2tpvj');
             fd.append("resource_type", "video");
             fd.append("height", "200");
             fd.append("width", "500");
@@ -151,15 +152,16 @@ export default function SaveRecordingScreen({onBack}) {
             fd.append("background", "white");
             fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
               method: 'POST',
-              body: fd,
+              body: fd
             })
             .then(async (response) => {
               let recordingURL = await response.json();
-                console.log('Cloudinary Info:', recordingURL);
+                console.log('Cloudinary Info:' + recordingUrl);
                 return recordingURL;
               })
               .then(() => {
-        let audioObj = {
+        const audioObj = {
+          //TODO : dynamic user id 
           "id_user": "1",
           "title": title,
           "description": description,
@@ -172,9 +174,9 @@ export default function SaveRecordingScreen({onBack}) {
           body: audioObj
         })
       })
-        .then(()=> console.log('yay'))
-        .catch(err => console.error('there was an error with save recording'))
-    })
+      .then(()=> console.log('Your recording has been saved to our database'))
+      .catch(err => console.log('there was an error with save recording', err))
+  })
 }
 
 
@@ -198,38 +200,10 @@ return (
         <Text>Transcript</Text>
         <TextInput></TextInput> */}
         {/* <recNav /> */}
-        {/* <Button onPress={(event) => {
-          const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
-          const CLOUDINARY_UPLOAD_PRESET = 'qna2tpvj';
-          //const axios = require('axios');
-          //addEventListener('change', function(event){
-            const file = event.target.files[0];
-            const formData = new FormData();
-            // formData.append('file', file);
-            // formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            const defaultHeaders = {'Content-Type': 'application/x-www-form-urlencoded'};
-            axios({
-              url: CLOUDINARY_URL,
-              method: 'POST',
-              headers: defaultHeaders,
-              data: formData,
-              upload_preset: CLOUDINARY_UPLOAD_PRESET
-            })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-        //  })
-          //make the axios call to generate audio url
-          //save url to cloudinary
-          //grab url from response object
-          //save url to the DB
-          console.log('saved that sound for you')
+        {/* <Button onPress={() => {
         }} title="Save My Sound" color='#f90909'/> */}
-        <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        <Button onPress={() => {
-          //grab the url thats been saved to the db from the cloudinary call
-          //save the url to a new collection in the db
-         onBack()}} title="Cancel" color='#f90909'
-          />
+        <Button title="Select Sound" color='#f90909' onPress={()=> saveRecording()}/>
+        <Button onPress={() => onBack()} title="Cancel" color='#f90909'/>
         </ScrollView>
     </View>
 )};

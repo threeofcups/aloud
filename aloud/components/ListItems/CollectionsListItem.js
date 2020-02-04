@@ -11,6 +11,8 @@ export default function CollectionsListItem({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
   const [recordings, setRecordings] = useState([]);
 
+  // console.log(collection);
+
   useEffect(() => {
     //get recordings from collection
     const fetchContent = async () => {
@@ -58,7 +60,7 @@ export default function CollectionsListItem({ collection }) {
           >
               <Text style={{ marginTop: 15, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
             onPress={() => {
               //go to artist handler
                 setModalVisibilty(!modalVisible);
@@ -66,7 +68,7 @@ export default function CollectionsListItem({ collection }) {
             title="go to artist"
           >
               <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </LinearGradient>
         </ScrollView>
       </Modal>

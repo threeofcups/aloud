@@ -58,7 +58,7 @@ export default function CollectionsListItem({ collection }) {
             }}
             title="go to artist"
           >
-              <Text style={{ marginTop: 15, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
+              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity
             onPress={() => {

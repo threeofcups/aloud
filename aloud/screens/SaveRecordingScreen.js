@@ -143,10 +143,12 @@ export default function SaveRecordingScreen({onBack}) {
             let fd = new FormData();
             fd.append("file", `${base64Aud}`);
             fd.append("upload_preset", "qna2tpvj");
-            fd.append("resource_type", "video")
-            // fd.append("height", "200");
-            // fd.append("width", "500");
-            // fd.append("flags", "waveform");
+            fd.append("resource_type", "video");
+            fd.append("height", "200");
+            fd.append("width", "500");
+            fd.append("flags", "waveform");
+            fd.append("color", "black");
+            fd.append("background", "white");
             fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
               method: 'POST',
               body: fd,

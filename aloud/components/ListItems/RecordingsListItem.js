@@ -134,22 +134,22 @@ export default function RecordingsListItem({ recording }) {
         onRequestClose={() => {
           setModalVisible(!modalVisible)
         }}>
-        <ScrollView style={{ marginTop: 0, flex: 1, backgroundColor: '#fbf0f2' }}>
+        <ScrollView style={{ marginTop: 0, flex: 1, backgroundColor: 'transparent' }}>
           <View>
             <LinearGradient
-              colors={['#fb6969', '#eac2cd', '#eac2cd', '#ffefef']}
+              colors={['#fb5656', '#eac2cd', '#eac2cd', '#eac2cd']}
             >
             <Icon
               name={iconStatus}
               underlayColor='#fbf0f2'
               onPress={() => handlePlayPause()}
-              iconStyle={{ marginTop: 50, margin: 22, color: iconColor}}
+              iconStyle={{ marginTop: 70, margin: 22, color: iconColor}}
               size={60}
             />
             <Text style={{ textAlign: "center", fontWeight: 'bold', fontSize: 22, color: '#1e001a'}}>{recording.title}</Text>
-            <Text style={{ textAlign: "center", fontWeight: 'bold', color: '#fb6262'}}>@{recording.username}</Text>
+            <Text style={{ textAlign: "center", fontWeight: 'bold', color: '#f90909'}}>@{recording.username}</Text>
             <Text style={{ marginTop: 11, marginLeft: 22, textAlign: "left" }}>{recording.description}</Text>
-            <Text style={{ marginTop: 11, marginLeft: 22, textAlign: "left", color: '#fb6262' }}>google voice to text</Text>
+            <Text style={{ marginTop: 11, marginLeft: 22, textAlign: "left", color: '#f90909' }}>google voice to text</Text>
             <Text style={{ marginLeft: 22, marginBottom: 22, textAlign: "left" }}>{recording.speech_to_text}</Text>
             <TouchableOpacity
               onPress={() => {
@@ -157,7 +157,7 @@ export default function RecordingsListItem({ recording }) {
               }} 
               title="add to collection"
             >
-              <Text style={{ fontWeight: 'bold', color: '#fb6262', textAlign: "center"}}>add to collection</Text>
+                <Text style={{ fontWeight: 'bold', color: '#f90909', textAlign: "center"}}>add to collection</Text>
             </TouchableOpacity>
               <TouchableOpacity
               onPress={() => {
@@ -166,7 +166,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-              <Text style={{ marginTop: 30, marginBottom: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>add to library</Text>
+                <Text style={{ marginTop: 30, marginBottom: 30, fontWeight: 'bold', color: '#f90909', textAlign: "center" }}>add to library</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
               onPress={() => {
@@ -182,22 +182,22 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="x"
               >
-              <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>x</Text>
+              <Text style={{ marginBottom: 500, fontSize: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>x</Text>
             </TouchableOpacity>
             </LinearGradient>
           </View>
         </ScrollView>
       </Modal>
       <ListItem
-        containerStyle={{ backgroundColor: backgroundColor }}
+        containerStyle={{ backgroundColor: 'transparent' }}
         underlayColor='#f90909'
         onPress={() => handlePlayPause()}
         leftIcon={{ name: iconStatus, color: iconColor }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}
-      bottomDivider
-    />
+        bottomDivider
+      />
     {/* collections modal */}
       <Modal
         backgroundColor='#fbf0f2'
@@ -231,7 +231,7 @@ export default function RecordingsListItem({ recording }) {
           }}
           title="x"
         >
-          <Text style={{ marginTop: 20, marginLeft: 50, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>x</Text>
+          <Text style={{ marginTop: 20, marginLeft: 50, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
         </TouchableOpacity>
        </LinearGradient>
       </Modal>
@@ -243,7 +243,7 @@ export default function RecordingsListItem({ recording }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eac3cd',
+    backgroundColor: 'transparent',
   },
   playIcon: {
     marginBottom: 20,

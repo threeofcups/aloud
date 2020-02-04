@@ -48,6 +48,7 @@ export default function CollectionsListItem({ collection }) {
         <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left", fontWeight: 'bold', fontSize: 22 }}>{collection.title}</Text>
         <Text style={{ marginLeft: 15, fontWeight: 'bold', color: '#f90909' }}>@{collection.username}</Text>
         <Text style={{ margin: 15, textAlign: "left" }}>{collection.description}</Text>
+        <RecordingsList recordings={recordings} />
         <TouchableOpacity
             onPress={() => {
               //save to library handler
@@ -55,7 +56,7 @@ export default function CollectionsListItem({ collection }) {
             }}
             title="go to artist"
           >
-            <Text style={{ marginTop: 15, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
+              <Text style={{ marginTop: 15, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
         </TouchableOpacity>
         <TouchableOpacity
             onPress={() => {
@@ -64,17 +65,8 @@ export default function CollectionsListItem({ collection }) {
             }}
             title="go to artist"
           >
-            <Text style={{ marginTop: 15, marginBottom: 10, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
+              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
           </TouchableOpacity>
-        <RecordingsList recordings={recordings} />
-        <TouchableOpacity
-          onPress={() => {
-                setModalVisibilty(!modalVisible);
-          }}
-          title="x"
-        >
-        <Text style={{ fontSize: 30, marginBottom: 1000, fontWeight: 'bold', color: '#f90909', textAlign: "center" }}>x</Text>
-        </TouchableOpacity>
         </LinearGradient>
         </ScrollView>
       </Modal>

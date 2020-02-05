@@ -33,7 +33,7 @@ export default function ProfileScreen() {
   const [selectedImage, setSelectedImage] = React.useState(null);
   useEffect(() => {
     const fetchContent = async () => {
-      await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
+      await fetch(`https://aloud-server.appspot.com/profile/bjork/1`)
       // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
         .then(response => {
           // console.log('response', response.data[0].user[0])
@@ -79,7 +79,10 @@ export default function ProfileScreen() {
           let data = await r.json()
           console.log(data.secure_url)
           return data.secure_url
-      }).catch(err=>console.log(err))
+      }).then(() => {
+
+      })
+      .catch(err=>console.log(err))
       //send post rq to DB to store profile pic using (data.secure_url)
     };
     if (selectedImage !== null) {

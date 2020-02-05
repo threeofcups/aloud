@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useContext} from 'react';
-import axios from 'axios';
 import {UserContext} from '../App'
 import {View, Text, TextInput, Switch, Button, AppState, StyleSheet} from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack';
@@ -10,6 +9,7 @@ import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+import UPLOAD_PRESET from '../src/config/cloudinary';
 export default function SaveRecordingScreen({onBack}) {
   const {userName, userId, photoUrl} = useContext(UserContext)
     const [title, setTitle] = useState("");
@@ -22,6 +22,7 @@ export default function SaveRecordingScreen({onBack}) {
 
 
     saveRecording = async() => {
+
       //grab the saved document
       //grab the secure url from return
       //post it to the db
@@ -176,6 +177,8 @@ export default function SaveRecordingScreen({onBack}) {
         })
         .catch(err => console.log('audio upload err', err))
       }
+
+      
 return (
     <View>
         <ScrollView>
@@ -196,9 +199,12 @@ return (
         <Text>Transcript</Text>
         <TextInput></TextInput> */}
         {/* <recNav /> */}
-        <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        <Button onPress={() => onBack()} title="Cancel" color='#f90909'
-          />
+
+        {/* <Button onPress={() => {
+        }} title="Save My Sound" color='#f90909'/> */}
+        <Button title="Select Sound" color='#f90909' onPress={()=> saveRecording()}/>
+        <Button onPress={() => onBack()} title="Cancel" color='#f90909'/>
+
         </ScrollView>
     </View>
   );

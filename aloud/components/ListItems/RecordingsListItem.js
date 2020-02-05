@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { Audio } from "expo-av";
 import axios from 'axios';
 import Colors from '../../constants/Colors';
-import { View, StyleSheet, Modal, Text, ScrollView, Picker } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, Modal, Text, ScrollView, Picker, TouchableOpacity  } from 'react-native';
 import { ListItem, Button, Icon } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
@@ -133,89 +134,101 @@ export default function RecordingsListItem({ recording }) {
         onRequestClose={() => {
           setModalVisible(!modalVisible)
         }}>
-        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+        <ScrollView style={{ marginTop: 0, flex: 1, backgroundColor: 'transparent' }}>
           <View>
-            <Text style={{ marginTop: 54, textAlign: "center"}}>playback view here</Text>
-            <Text style={{ textAlign: "center"}}>{recording.title}</Text>
-            <Text style={{ textAlign: "center" }}>{recording.username}</Text>
-            <Text style={{ margin: 22, textAlign: "left" }}>{recording.description}</Text>
+            <LinearGradient
+              colors={['#fb5656', '#eac2cd', '#eac2cd', '#eac2cd']}
+            >
+            <Icon
+              name={iconStatus}
+              underlayColor='#fbf0f2'
+              onPress={() => handlePlayPause()}
+              iconStyle={{ marginTop: 70, margin: 22, color: iconColor}}
+              size={60}
+            />
+            <Text style={{ textAlign: "center", fontWeight: 'bold', fontSize: 22, color: '#1e001a'}}>{recording.title}</Text>
+            <Text style={{ textAlign: "center", fontWeight: 'bold', color: '#f90909'}}>@{recording.username}</Text>
+            <Text style={{ marginTop: 11, marginLeft: 22, textAlign: "left" }}>{recording.description}</Text>
+            <Text style={{ marginTop: 11, marginLeft: 22, textAlign: "left", color: '#f90909' }}>google voice to text</Text>
             <Text style={{ marginLeft: 22, marginBottom: 22, textAlign: "left" }}>{recording.speech_to_text}</Text>
-              <Button
-                title="add to collection"
-                type="clear"
-                onPress={() => {
-                  // setModalVisible(!modalVisible);
-                  setCollectionsVisible(true);
+            <TouchableOpacity
+              onPress={() => {
+                setCollectionsVisible(!collectionsModalVisible);
+              }} 
+              title="add to collection"
+            >
+                <Text style={{ marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
+            </TouchableOpacity>
+              <TouchableOpacity
+              onPress={() => {
+                handleLibraryAdd();
+                setModalVisible(!setModalVisible);
               }}
-              />
-              <Modal
-              style={styles.modal}
-              animationType="fade"
-              transparent={false}
-              visible={collectionsModalVisible}
-              onRequestClose={() => {
-                setCollectionsVisible(!collectionsModalVisible)
-              }}>
-              <Text style={{margin: 54, textAlign: "center"}}>collections</Text>
-              {collections.map(collection => {
-                return (
-                  <Button
-                    key={collection.id}
-                    title={collection.title}
-                    type="clear"
-                    onPress={() => {
-                      //add to collection
-                      //axios post function called here
-                      setChoiceCollection(collection)
-                      handleCollectionAdd();
-                      setCollectionsVisible(!collectionsModalVisible);
-                    }}
-                  />
-                )
-              })}
-              <Button
-                title="x"
-                type="clear"
-                onPress={() => {
-                  setCollectionsVisible(!collectionsModalVisible);
-                }}
-              />
-              </Modal>
-              <Button
-                title="add to library"
-                type="clear"
-                onPress={() => {
-                  handleLibraryAdd();
-                  setModalVisible(!setModalVisible);
-                }}
-              />
-            <Button
-              title="go to artist"
-              type="clear"
+              title="add to library"
+            >
+            <Text style={{ marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
               onPress={() => {
                 setModalVisible(!modalVisible);
               }}
-            />
-              <Button
-                title="x"
-                type="clear"
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              />
+              title="go to artist"
+            >
+              <Text style={{ marginTop: 30, marginBottom: 10, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
+            </TouchableOpacity> */}
+            </LinearGradient>
           </View>
         </ScrollView>
       </Modal>
       <ListItem
-        containerStyle={{ backgroundColor: backgroundColor }}
+        containerStyle={{ backgroundColor: 'transparent' }}
         underlayColor='#f90909'
         onPress={() => handlePlayPause()}
         leftIcon={{ name: iconStatus, color: iconColor }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}
-      bottomDivider
-    />
+        bottomDivider
+      />
+    {/* collections modal */}
+      <Modal
+        backgroundColor='#fbf0f2'
+        animationType="fade"
+        transparent={false}
+        visible={collectionsModalVisible}
+        onRequestClose={() => {
+          setCollectionsVisible(!collectionsModalVisible)
+        }}>
+        <LinearGradient
+          colors={['#eac2cd', '#ffefef']}
+        >
+        <Text style={{ marginTop: 54, marginLeft: 20, marginBottom: 20, textAlign: "left", fontWeight: 'bold', color: '#1e001a' }}>collections</Text>
+        {collections.map((collection, i) => {
+          return (
+            <View key={i}>
+            <TouchableOpacity
+              onPress={() => {
+                setChoiceCollection(collection)
+                handleCollectionAdd();
+                setCollectionsVisible(!collectionsModalVisible);
+              }}
+              title="collection"
+            >
+              <Text style={{ marginBottom: 20, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>{collection.title}</Text>
+            </TouchableOpacity>
+            </View>
+          )
+        })}
+        <TouchableOpacity
+          onPress={() => {
+            setCollectionsVisible(!collectionsModalVisible);
+          }}
+          title="x"
+        >
+          <Text style={{ marginLeft: 20, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
+        </TouchableOpacity>
+       </LinearGradient>
+      </Modal>
     </View>
   );
 }
@@ -224,7 +237,7 @@ export default function RecordingsListItem({ recording }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eac3cd',
+    backgroundColor: 'transparent',
   },
   playIcon: {
     marginBottom: 20,
@@ -234,7 +247,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modal: {
-    backgroundColor: 'white',
+    backgroundColor: '#eac3cd',
     margin: 0, 
     alignItems: undefined,
     justifyContent: undefined,

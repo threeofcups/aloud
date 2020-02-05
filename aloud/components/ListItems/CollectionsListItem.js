@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Text, Button, Image } from 'react-native-elements';
+import { Card, Text, Button, Image, Overlay } from 'react-native-elements';
 import { Modal, View, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -32,9 +32,10 @@ export default function CollectionsListItem({ collection }) {
 
   if (modalVisible) {
     return (
-      <Modal
+      <Overlay
+        onBackdropPress={()=> {setModalVisibilty(!modalVisible)}}
         animationType="fade"
-        transparent={false}
+        transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisibilty(!modalVisible)
@@ -72,7 +73,7 @@ export default function CollectionsListItem({ collection }) {
         <Text style={{ marginBottom: 500}}></Text>
         </LinearGradient>
         </ScrollView>
-      </Modal>
+      </Overlay>
     ) 
   }
 

@@ -23,19 +23,19 @@ export default function HomeScreen() {
   const [collections, setHomeCollections] = useState([]);
   const [recordings, setHomeRecordings] = useState([]);
   const [recentlySaved, setRecentlySaved] = useState([]);
+  
+  const fetchContent = async () => {
+    await axios.get('https://aloud-server.appspot.com/home/1')
+      .then(response => {
+        // setUsers(response.data[0].users);
+        setRecentlySaved(response.data[0].recent[0].collections);
+        setHomeCollections(response.data[0].collections);
+        setHomeRecordings(response.data[0].recordings);
+      })
+      .catch(err => console.log('there was an axios err', err))
+    };
 
   useEffect(() => {
-    const fetchContent = async () => {
-      await axios.get('https://aloud-server.appspot.com/home/1')
-        .then(response => {
-          // setUsers(response.data[0].users);
-          setRecentlySaved(response.data[0].recent[0].collections);
-          setHomeCollections(response.data[0].collections);
-          setHomeRecordings(response.data[0].recordings);
-        })
-        .catch(err => console.log('there was an axios err', err))
-      };
-
     fetchContent();
   }, []);
 

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import AddCollection from '../AddCollection';
 
 export default function CollectionsList({ collections }) {
   const [listCollections, setCollections] = useState([]);
@@ -31,8 +32,8 @@ export default function CollectionsList({ collections }) {
       renderItem={({ item: rowData }) => {
         setCollectionData(rowData)
         return (
-                <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
-              
+                // <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
+              <AddCollection/>
         )
         }}
         keyExtractor={(item, index) => `${index}`}

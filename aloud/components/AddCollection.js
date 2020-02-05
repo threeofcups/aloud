@@ -3,13 +3,13 @@ import React, {useState, useContext}  from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ListItem, Card, Overlay } from 'react-native-elements';
-import {Image, Platform, ScrollView, StyleSheet, Text, Button, TextInput, TouchableOpacity, View } from 'react-native';
+import {Image, Platform, ScrollView, StyleSheet, Text, Button, TextInput, Icon,  TouchableOpacity, View } from 'react-native';
 import Colors from '../constants/Colors';
 import axios from 'axios';
 import { bundleDirectory } from 'expo-file-system';
 import {UserContext} from '../App'
 import * as ImagePicker from 'expo-image-picker';
-
+// import { Ionicons } from '@expo/vector-icons';
 
 
 export default function AddCollection(props) {
@@ -19,11 +19,12 @@ export default function AddCollection(props) {
     const [collectionTitle, setCollectionTitle] = useState('');
     const {userName, userId, photoUrl} = useContext(UserContext)
 
-//Todo fill out axios request to save collection
+
 
 //Todo Style
-const onSaveCollection = () => {
-    axios.post('/collections/save', {
+//Todo user feedback for image uploaded
+const onSaveCollection = async() => {
+    await axios.post('https://aloud-server.appspot.com/collection/save', {
 
     "id_user_creator": "1",
       "title": collectionTitle,
@@ -31,9 +32,8 @@ const onSaveCollection = () => {
           "url_image": uploadedImage
   
     })
-    .then(()=>{console.log('hi')})
-    // .then(()=> setVisibility(false))
-    .catch((err)=> {console.log('there was an error saving your collection')})
+    .then(()=> setVisibility(false))
+    .catch((err)=> {console.error( err)})
 }
 
 let openImagePickerAsync = async () => {
@@ -50,8 +50,9 @@ let openImagePickerAsync = async () => {
     if (pickerResult.cancelled === true) {
       return;
     }
-    setSelectedImage({ localUri: pickerResult.uri });
+   
     //save image to cloudinary db
+    setUploadedImage({ localUri: pickerResult.uri })
   let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
   let cloud = 'https://api.cloudinary.com/v1_1/dahfjsacf/upload';
   const data = {
@@ -67,11 +68,14 @@ let openImagePickerAsync = async () => {
       method: 'POST',
     }).then(async r => {
         let data = await r.json()
-        console.log(data.secure_url)
+        console.log('hi',data.secure_url)
         return data.secure_url
-    }).then((data) => {
-        console.log('dot', data.secure_url)
+    }).then(()=> {
         setUploadedImage(data.secure_url)
+     
+    })
+    .then((data) => {
+      console.log('image',uploadedImage)
     })
     .catch((err) => {
         return console.log(err);
@@ -80,22 +84,16 @@ let openImagePickerAsync = async () => {
   };
 
         return (
-            <View>
+            <View alignItems={'center'}>
 
-            <TouchableWithoutFeedback onPress={()=> setVisibility(true)} >
-<Card
+            <Ionicons name={'md-add-circle-outline'} onPress={()=> setVisibility(true)} size={50} color={'#f90909'}/>
+            
 
-containerStyle={{ padding: 0, width: 150, height: 150, borderWidth: 0, marginBottom: 15, color:'#eac2cd'  }}
-title='ADD COLLECTION'
-
-featuredSubtitle='ADD COLLECTION'
-/>
-</TouchableWithoutFeedback>
 <Overlay
   isVisible={isVisible}
   onBackdropPress={() => setVisibility(false)}
 >
-    <Image source={{uri : uploadedImage}}></Image>
+    <Image source={{uri : uploadedImage}}/>
     <Button title='Upload Image' onPress={()=> openImagePickerAsync()} color={'#eac2cd'}/>
     
 

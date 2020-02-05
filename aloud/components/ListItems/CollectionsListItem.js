@@ -27,8 +27,9 @@ export default function CollectionsListItem({ collection }) {
   }, [collection]);
 
   const handleLibrarySave = () => {
+    console.log(collection);
     axios.post(`https://aloud-server.appspot.com/library/save/collection/${collection.id}`, {
-      "userId": 1,
+      "userId": "1",
     })
       .then(response => {
         console.log(response.status);
@@ -39,6 +40,7 @@ export default function CollectionsListItem({ collection }) {
         setModalVisibilty(!modalVisible);
       })
   };
+
 
   const onPressHandle = () => {
     setModalVisibilty(!modalVisible);

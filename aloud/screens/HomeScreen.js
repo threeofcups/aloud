@@ -28,7 +28,6 @@ export default function HomeScreen() {
         })
         .catch(err => console.log('there was an axios err', err))
       };
-
     fetchContent();
   }, []);
 

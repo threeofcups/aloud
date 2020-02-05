@@ -6,23 +6,16 @@ import axios from 'axios';
 import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
 import RecentList from '../components/Lists/RecentList';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
+import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { MonoText } from '../components/StyledText';
+import AddCollection from '../components/AddCollection'
 
 export default function HomeScreen() {
 
   const [collections, setHomeCollections] = useState([]);
   const [recordings, setHomeRecordings] = useState([]);
   const [recentlySaved, setRecentlySaved] = useState([]);
+  const [isVisible, setVisibility] = useState(false);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -46,7 +39,9 @@ export default function HomeScreen() {
         <Text style={{ marginLeft: 15 }}>Recently Saved</Text>
         <RecentList recentlySaved={recentlySaved} />
         <Text style={{ marginLeft: 15 }}>Collections</Text>
+   
         <CollectionsList collections={collections} />
+        <AddCollection isVisible={isVisible}/>
         <Text style={{marginLeft: 15}}>Recordings</Text>
         <RecordingsList recordings={recordings} /> 
       </ScrollView>

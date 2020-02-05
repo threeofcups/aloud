@@ -9,13 +9,11 @@ import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import UPLOAD_PRESET from '../src/config/cloudinary';
 export default function SaveRecordingScreen({onBack}) {
-  const {userName, userId, photoUrl} = useContext(UserContext)
+    const {userName, userId, photoUrl} = useContext(UserContext)
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState('');
-    const [privacySetting, setPrivacy] = useState('private');
-    // const [generateTranscript, setGenerateTranscript] = useState(false)
+    const [privacySetting, setPrivacy] = useState('true');
     const [recordingUrl, setRecordingURl] = useState('')
     const [recFlash, recFlasher] = useState(null);
 
@@ -189,21 +187,23 @@ return (
         />
         <Text>Recording Description:</Text>
         <TextInput
-        style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
+        style={{ height: 80, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}
         value={description}/>
         <Text>Public</Text>
-        <Switch onValueChange={(switchValue)=>{setPrivacy(switchValue)}} value={'public'}></Switch>
-        {/* <Text>Generate Transcript</Text>
-        <Switch></Switch>
-        <Text>Transcript</Text>
-        <TextInput></TextInput> */}
-        {/* <recNav /> */}
 
-        {/* <Button onPress={() => {
-        }} title="Save My Sound" color='#f90909'/> */}
-        <Button title="Select Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        <Button onPress={() => onBack()} title="Cancel" color='#f90909'/>
+        <Switch
+          onValueChange={(value) =>setPrivacy(value)}
+          style={{marginBottom: 10}}
+          value={privacySetting} 
+          trackColor={{
+            true: '#f90909',
+            false:'#f90909',
+        }} 
+          thumbColor={'#fbf0f2'}/>
+        <Text></Text>
+        <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
+        <Button onPress={() => {onBack()}} title="Cancel" color='#f90909'/>
 
         </ScrollView>
     </View>

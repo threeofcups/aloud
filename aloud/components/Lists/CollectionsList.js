@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList
+  FlatList,
+  Button
 } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 import { TouchableHighlight, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import AddCollection from '../AddCollection';
 
 export default function CollectionsList({ collections }) {
   const [listCollections, setCollections] = useState([]);
@@ -25,14 +27,18 @@ export default function CollectionsList({ collections }) {
   if(listOrCollection === 'list'){
     return(
       <View>
+        {/* <Text>     Collections</Text> */}
+       
       <FlatList
       horizontal
       data={listCollections}
       renderItem={({ item: rowData }) => {
         setCollectionData(rowData)
         return (
+          
+        //  <AddCollection/>
                 <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
-              
+        
         )
         }}
         keyExtractor={(item, index) => `${index}`}

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Text, Button, Image } from 'react-native-elements';
-import { Modal, View } from 'react-native';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Modal, View, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { LinearGradient } from 'expo-linear-gradient';
 import RecordingsList from '../Lists/RecordingsList';
 import CollectionsScreen from '../../screens/CollectionScreen'
 
 export default function CollectionsListItem({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
   const [recordings, setRecordings] = useState([]);
+
+  // console.log(collection);
 
   useEffect(() => {
     //get recordings from collection
@@ -36,40 +39,51 @@ export default function CollectionsListItem({ collection }) {
         onRequestClose={() => {
           setModalVisibilty(!modalVisible)
         }}>
-        <Button
-          icon={{
-            name: "chevron-left",
-            size: 25,
-            color: "red"
-          }}
-          type="clear"
-          onPress={() => {
-            setModalVisibilty(!modalVisible);
-          }}
-        />
+        <ScrollView>
+        <LinearGradient
+          colors={['#fc8f8f', '#eac2cd', '#eac2cd', '#ffefef']}
+        >
         <Image
           source={{ uri: collection.url_image }}
           containerStyle={{ marginTop: 30, marginLeft: 15, width: 100, height: 100 }}
         />
-        <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left" }}>{collection.title}</Text>
-        <Text style={{ marginLeft: 15, textAlign: "left" }}>{collection.username}</Text>
-        <Text style={{ margin: 15, marginBottom: 15, textAlign: "left" }}>{collection.description}</Text>
-        <Text style={{ marginLeft: 15, textAlign: "left" }}>save collection button</Text>
-        <Text style={{ marginLeft: 15, marginBotton: 15, textAlign: "left" }}>go to artist button</Text>
+        <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left", fontWeight: 'bold', fontSize: 22 }}>{collection.title}</Text>
+        <Text style={{ marginLeft: 15, fontWeight: 'bold', color: '#f90909' }}>@{collection.username}</Text>
+        <Text style={{ margin: 15, textAlign: "left" }}>{collection.description}</Text>
         <RecordingsList recordings={recordings} />
+        <TouchableOpacity
+            onPress={() => {
+              //save to library handler
+              setModalVisibilty(!modalVisible);
+            }}
+            title="go to artist"
+          >
+              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity
+            onPress={() => {
+              //go to artist handler
+                setModalVisibilty(!modalVisible);
+            }}
+            title="go to artist"
+          >
+              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
+          </TouchableOpacity> */}
+        </LinearGradient>
+        </ScrollView>
       </Modal>
     ) 
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => { onPressHandle() }}>
+    <TouchableOpacity onPress={() => { onPressHandle() }}>
       <Card
         containerStyle={{ padding: 0, width: 150, height: 150, borderWidth: 0, marginBottom: 15 }}
         image={{ uri: collection.url_image }}
         // title={collection.title} 
         featuredSubtitle={collection.title}
       />
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   )
 
 }

@@ -157,7 +157,7 @@ export default function RecordingsListItem({ recording }) {
               }} 
               title="add to collection"
             >
-                <Text style={{ fontWeight: 'bold', color: '#f90909', textAlign: "center"}}>add to collection</Text>
+                <Text style={{ marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
             </TouchableOpacity>
               <TouchableOpacity
               onPress={() => {
@@ -166,7 +166,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-                <Text style={{ marginTop: 30, marginBottom: 30, fontWeight: 'bold', color: '#f90909', textAlign: "center" }}>add to library</Text>
+            <Text style={{ marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
               onPress={() => {
@@ -176,14 +176,6 @@ export default function RecordingsListItem({ recording }) {
             >
               <Text style={{ marginTop: 30, marginBottom: 10, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
             </TouchableOpacity> */}
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-              title="x"
-              >
-              <Text style={{ marginBottom: 500, fontSize: 30, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>x</Text>
-            </TouchableOpacity>
             </LinearGradient>
           </View>
         </ScrollView>
@@ -222,7 +214,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="collection"
             >
-              <Text style={{ marginBottom: 10, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>{collection.title}</Text>
+              <Text style={{ marginBottom: 20, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>{collection.title}</Text>
             </TouchableOpacity>
             </View>
           )
@@ -233,7 +225,7 @@ export default function RecordingsListItem({ recording }) {
           }}
           title="x"
         >
-          <Text style={{ marginTop: 20, marginLeft: 50, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
+          <Text style={{ marginLeft: 20, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
         </TouchableOpacity>
        </LinearGradient>
       </Modal>

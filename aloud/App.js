@@ -9,7 +9,7 @@ import { Header } from 'react-native-elements';
 import AppNavigator from './navigation/AppNavigator';
 import * as Google from 'expo-google-app-auth';
 import axios from 'axios';
-
+import Logo from './assets/images/image.svg'
 // disables yellow warnings
 console.disableYellowBox = true;
 
@@ -77,9 +77,10 @@ export default function App() {
 const LoginPage = props => {
   return (
     <View >
- <Header 
+  <Header
+      style={styles.container}
       backgroundColor={'#fbf0f2'}
-      centerComponent={{ text: 'Aloud', style: { color: '#f90909' , fontSize: 40, fontWeight:'bold'} }}
+      centerComponent={Logo}
       />
     <View>
       <Text></Text>
@@ -100,9 +101,10 @@ const LoggedInPage = props => {
   return (
     
     <View style={styles.container}>
-      <Header 
+       <Header
+      style={styles.container}
       backgroundColor={'#fbf0f2'}
-      centerComponent={{ text: 'Aloud', style: { color: '#f90909' , fontSize: 40, fontWeight:'bold'} }}
+      centerComponent={Logo}
       />
       <View backgroundColor={'#fbf0f2'}>
 

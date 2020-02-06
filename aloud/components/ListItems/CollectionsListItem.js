@@ -26,6 +26,22 @@ export default function CollectionsListItem({ collection }) {
     fetchContent();
   }, [collection]);
 
+  const handleLibrarySave = () => {
+    console.log(collection);
+    axios.post(`https://aloud-server.appspot.com/library/save/collection/${collection.id}`, {
+      "userId": "1",
+    })
+      .then(response => {
+        console.log(response.status);
+        setModalVisibilty(!modalVisible);
+      })
+      .catch(err => {
+        console.error(err);
+        setModalVisibilty(!modalVisible);
+      })
+  };
+
+
   const onPressHandle = () => {
     setModalVisibilty(!modalVisible);
   };
@@ -50,15 +66,15 @@ export default function CollectionsListItem({ collection }) {
         <Text style={{ marginTop: 15, marginLeft: 15, textAlign: "left", fontWeight: 'bold', fontSize: 22 }}>{collection.title}</Text>
         <Text style={{ marginLeft: 15, fontWeight: 'bold', color: '#f90909' }}>@{collection.username}</Text>
         <Text style={{ margin: 15, textAlign: "left" }}>{collection.description}</Text>
-        <RecordingsList recordings={recordings} />
         <TouchableOpacity
             onPress={() => {
               //save to library handler
+              handleLibrarySave();
               setModalVisibilty(!modalVisible);
             }}
-            title="go to artist"
+            title="save to library"
           >
-              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>save to library</Text>
+              <Text style={{ marginLeft: 15, marginBottom: 20, fontWeight: 'bold', color: '#fb6262', textAlign: "left" }}>save to library</Text>
         </TouchableOpacity>
         {/* <TouchableOpacity
             onPress={() => {
@@ -69,6 +85,8 @@ export default function CollectionsListItem({ collection }) {
           >
               <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
           </TouchableOpacity> */}
+        <RecordingsList recordings={recordings} />
+        <Text style={{ marginBottom: 500}}></Text>
         </LinearGradient>
         </ScrollView>
       </Modal>

@@ -48,7 +48,7 @@ export default function App() {
     }})
           .then(response => {
             setTheState({userName:result.user.name, googleId: result.user.id, photoUrl:result.user.photoUrl, userId:response[0].id})
-          //TODO what if user is already in database
+          
           })
           .catch(console.error('there was an error saving user'))
         

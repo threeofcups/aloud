@@ -33,7 +33,7 @@ export default function ProfileScreen() {
   const [selectedImage, setSelectedImage] = React.useState(null);
   useEffect(() => {
     const fetchContent = async () => {
-      await fetch(`https://aloud-server.appspot.com/profile/bjork/1`)
+      await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
       // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
         .then(response => {
           // console.log('response', response.data[0].user[0])

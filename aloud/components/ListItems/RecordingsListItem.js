@@ -185,7 +185,7 @@ export default function RecordingsListItem({ recording }) {
         containerStyle={{ backgroundColor: 'transparent' }}
         underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus, color: iconColor, size:40 }}
+        leftIcon={{ name: iconStatus, color: iconColor, size:35 }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}

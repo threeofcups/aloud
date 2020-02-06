@@ -69,7 +69,6 @@ export default function CollectionsListItem({ collection }) {
         <Text style={{ margin: 15, textAlign: "left" }}>{collection.description}</Text>
         <TouchableOpacity
             onPress={() => {
-              //save to library handler
               handleLibrarySave();
               setModalVisibilty(!modalVisible);
             }}
@@ -77,15 +76,6 @@ export default function CollectionsListItem({ collection }) {
           >
               <Text style={{ marginLeft: 15, marginBottom: 20, fontWeight: 'bold', color: '#fb6262', textAlign: "left" }}>save to library</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-            onPress={() => {
-              //go to artist handler
-                setModalVisibilty(!modalVisible);
-            }}
-            title="go to artist"
-          >
-              <Text style={{ marginTop: 15, marginBottom: 500, fontWeight: 'bold', color: '#fb6262', textAlign: "center" }}>go to artist</Text>
-          </TouchableOpacity> */}
         <RecordingsList recordings={recordings} />
         <Text style={{ marginBottom: 500}}></Text>
         </LinearGradient>
@@ -99,7 +89,6 @@ export default function CollectionsListItem({ collection }) {
       <Card
         containerStyle={{ padding: 0, width: 150, height: 150, borderWidth: 0, marginBottom: 15 }}
         image={{ uri: collection.url_image }}
-        // title={collection.title} 
         featuredSubtitle={collection.title}
       />
     </TouchableOpacity>

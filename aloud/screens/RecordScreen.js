@@ -656,6 +656,18 @@ export default class RecordScreen extends React.Component {
         .catch(err => console.log('audio upload err', err))
     }
 
+    onUpload (){
+      this.uploadRecFromPhone()
+     
+      setTimeout(()=> {
+        this.setState({uploaded:true})
+
+      }, 500)
+
+      
+
+     
+    }
 
   render() {
     if(!this.state.fontLoaded) {
@@ -759,10 +771,9 @@ export default class RecordScreen extends React.Component {
                 </View>
           );
 
-      } else if( this.state.view === 'up'){
+      } else if( this.state.view === 'up' && this.state.uploaded === true){
           return (
             <View>
-
             <TouchableOpacity 
                    onPress={() => {
                      this.setState({view:'options'});
@@ -774,9 +785,8 @@ export default class RecordScreen extends React.Component {
                    />
                </TouchableOpacity>
                    <View alignItems={'center'}>
-           <TouchableOpacity style={styles.upCircleButtons}
-               onPress={() => this.uploadRecFromPhone()} title="Upload from Device">
-               <Ionicons name={'md-cloud-upload'}
+           <TouchableOpacity style={styles.upCircleButtons}>
+               <Ionicons name={'md-checkmark'}
                size={80}
                style={styles.icon}
                />
@@ -785,7 +795,34 @@ export default class RecordScreen extends React.Component {
            <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
        </View>
                 )   
-      } else {
+      } else if (this.state.view === 'up' && this.state.uploaded === false) {
+        return (
+          <View>
+
+          <TouchableOpacity 
+                 onPress={() => {
+                   this.setState({view:'options'});
+                  }}>
+             <Ionicons name={'md-arrow-round-back'}
+                 size={50}
+                 style={{marginLeft: 20, marginTop: 5}}
+                 color='#f90909'
+                 />
+             </TouchableOpacity>
+                 <View alignItems={'center'}>
+         <TouchableOpacity style={styles.upCircleButtons}
+             onPress={() => this.onUpload()} title="Upload from Device">
+             <Ionicons name={'md-cloud-upload'}
+             size={80}
+             style={styles.icon}
+             />
+         </TouchableOpacity>
+             </View>
+         <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+     </View>
+        )
+      }
+      else {
   return (
     <View>
       <View marginBottom={30}>

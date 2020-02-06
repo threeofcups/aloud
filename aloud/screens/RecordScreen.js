@@ -221,10 +221,14 @@ export default class RecordScreen extends React.Component {
    _onRecordPressed = () => {
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
+      this.recordButtonChange()
+
     } else {
       this._stopPlaybackAndBeginRecording();
+      this.recordButtonChange()
+
     }
-    //  this.recordButtonChange()
+     
   };
 
   _onPlayPausePressed = () => {

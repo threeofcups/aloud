@@ -30,17 +30,18 @@ export default function ProfileScreen() {
   const [collections, setUserCollections] = useState([]);
   const [recordings, setUserRecordings] = useState([]);
    //Profile image hook uploader
-  const [selectedImage, setSelectedImage] = React.useState(null);
+  const [selectedImage, setSelectedImage] = React.useState('');
   useEffect(() => {
     const fetchContent = async () => {
       await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
       // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
         .then(response => {
-          // console.log('response', response.data[0].user[0])
+          console.log('response', response.data[0].collections)
           setUserInfo(response.data[0].user[0]);
           setUserCollections(response.data[0].collections);
           setUserRecordings(response.data[0].recordings);
         })
+        .then(()=> console.log('then'))
         .catch(err => console.error(err));
     };
     fetchContent()
@@ -85,28 +86,30 @@ export default function ProfileScreen() {
       .catch(err=>console.log(err))
       //send post rq to DB to store profile pic using (data.secure_url)
     };
-    if (selectedImage !== null) {
-      return (
-        <View style={styles.container}>
-          <ScrollView style={styles.image}>
-            <Avatar
-              rounded title ={userInfo.name_display}
-              size="large"
-              source={{uri: selectedImage.localUri}}
-            />
-            <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> 
-            <Text>@{userInfo.username}</Text>
-            <Card >
-              <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
-            </Card>
-            <View>
-              <CollectionsList collections={collections} />
-              <RecordingsList recordings={recordings} />
-           </View>
-        </ScrollView>
-      </View>
-    )
-  } else {
+  //   if (selectedImage !== null) {
+  //     return (
+  //       <View style={styles.container}>
+  //         <ScrollView >
+  //         <View alignItems='center'>
+  //           <Avatar
+  //             rounded title ={userInfo.name_display}
+  //             size="large"
+  //             source={{uri: selectedImage.localUri}}
+  //           />
+  //           <Text style={styles.buttonText} onPress={openImagePickerAsync}>Upload a new photo</Text> 
+  //           <Text>@{userInfo.username}</Text>
+  //           <Card >
+  //             <Text rightIcon={{ name: 'more-horiz' }}>Bio: {userInfo.bio}</Text>
+  //           </Card>
+  //           <View>
+  //             <CollectionsList collections={collections} />
+  //             <RecordingsList recordings={recordings} />
+  //          </View>
+  //          </View>
+  //       </ScrollView>
+  //     </View>
+  //   )
+  // } else {
     return (
     <View style={styles.container}>
       <ScrollView >
@@ -137,7 +140,7 @@ export default function ProfileScreen() {
   </View>
     );
   }
-}
+// }
 
 ProfileScreen.navigationOptions = {
   title: 'Profile',

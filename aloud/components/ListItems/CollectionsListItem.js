@@ -9,6 +9,7 @@ import CollectionsScreen from '../../screens/CollectionScreen'
 export default function CollectionsListItem({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
   const [recordings, setRecordings] = useState([]);
+
   useEffect(() => {
     //get recordings from collection
     const fetchContent = async () => {
@@ -37,6 +38,7 @@ export default function CollectionsListItem({ collection }) {
   const onPressHandle = () => {
     setModalVisibilty(!modalVisible);
   };
+
   if(collection.title === ''){
     return (
       <View>
@@ -81,7 +83,11 @@ export default function CollectionsListItem({ collection }) {
     </TouchableOpacity>
         </View>
   )
+
+    
   } else
+
+
     return (
       <View>
       <Overlay

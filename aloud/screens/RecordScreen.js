@@ -13,7 +13,6 @@ import {
   Dimensions,
   Slider,
   TouchableHighlight,
- 
   Button
 } from "react-native";
 import { Asset } from "expo-asset";
@@ -785,10 +784,10 @@ export default class RecordScreen extends React.Component {
                    />
                </TouchableOpacity>
                    <View alignItems={'center'}>
-           <TouchableOpacity style={styles.upCircleButtons}>
+           <TouchableOpacity style={styles.uploadedCircleButtons}>
                <Ionicons name={'md-checkmark'}
                size={80}
-               style={styles.icon}
+               style={ styles.uploadedIcon}
                />
            </TouchableOpacity>
                </View>
@@ -981,6 +980,18 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5
   },
+  uploadedCircleButtons: {
+    borderWidth:3,
+    borderColor:'#f90909',
+    alignItems:'center',
+    justifyContent:'center',
+    width:100,
+    height:100,
+    backgroundColor:'#fbf0f2',
+    borderRadius:90,
+    marginTop: 5,
+    marginBottom: 5
+  },
   bigCircleButton: {
     borderWidth:1,
     borderColor:'rgba(0,0,0,0.2)',
@@ -994,6 +1005,9 @@ const styles = StyleSheet.create({
   },
   icon:{
     color:'#fbf0f2'
+  },
+  uploadedIcon:{
+    color: '#f90909'
   }
 });
 

@@ -185,7 +185,7 @@ export default function RecordingsListItem({ recording }) {
         containerStyle={{ backgroundColor: 'transparent' }}
         underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus, color: iconColor }}
+        leftIcon={{ name: iconStatus, color: iconColor, size:40 }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}
@@ -215,7 +215,7 @@ onPress={() => {
 }} title="Upload from Device">
 
             <Ionicons name={'md-arrow-round-back'}
-            size={60}
+            size={50}
             style={{marginLeft: 20, marginTop: 10}}
             color='#f90909'
             />

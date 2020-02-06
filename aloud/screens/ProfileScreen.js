@@ -142,20 +142,16 @@ export default function ProfileScreen() {
           onLongPress={()=>{openImagePickerAsync()}}
         />
         <Text></Text>
-        <Text style={styles.name}> @ {userInfo.username}</Text>
+        <Text style={styles.name}> @{userInfo.username}</Text>
         </View>
         <Card containerStyle={{ borderWidth: 0, elevation: 0}}>
-          <Text rightIcon={{ name: 'more-horiz' }}>{userInfo.bio}</Text>
+          <Text>{userInfo.bio}</Text>
         </Card>
-        {/* <ProfileBio/> */}
-        <View>
-          <Text></Text>
-          <Text style={styles.text}> Collections </Text>
+          <Text style={styles.titleText}> Collections </Text>
           <CollectionsList collections={collections} />
-          <Text></Text>
-          <Text style={styles.text}> Recordings </Text>
+          <Text style={styles.titleText}> Recordings </Text>
           <RecordingsList recordings={recordings} />
-        </View>
+       
     </ScrollView>
   </View>
     );
@@ -180,10 +176,20 @@ const styles = StyleSheet.create({
   },
   text: {
     alignItems: 'center',
-    color:'#1e001a'
+    color:'#1e001a', 
+  },
+  titleText: {
+    alignItems: 'center',
+    color:'#1e001a',
+    fontWeight:'bold',
+    marginBottom: 10,
+    alignItems:'center',
+    justifyContent:'center',
+    marginLeft: 130,
+    marginTop: 10
   },
   name:{
-    color:'#1e001a',
+    color:'#f90909',
     alignItems:'center',
     fontWeight:'bold',
     fontSize: 25

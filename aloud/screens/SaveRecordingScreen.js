@@ -24,17 +24,18 @@ export default function SaveRecordingScreen({onBack}) {
       //grab the saved document
       //grab the secure url from return
       //post it to the db
-      DocumentPicker.getDocumentAsync({
-        type: '*/*',
-        copyToCacheDirectory: true,
-        base64: true
-      })
-      .then(succ => {
-        //check out the saved info
-        console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
-        //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
-     
-        //encode audio to base64
+      // DocumentPicker.getDocumentAsync({
+      //   type: '*/*',
+      //   copyToCacheDirectory: true,
+      //   base64: true
+      // })
+      axios.get('https://aloud-server.appspot.com/user/1')
+      .then(() => {
+      //   //check out the saved info
+      //   console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
+      //   //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
+     console.log('jill')
+      //   //encode audio to base64
         var Base64 = {
           // private property
           _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -203,7 +204,7 @@ return (
           thumbColor={'#fbf0f2'}/>
         <Text></Text>
         <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        <Button onPress={() => {onBack()}} title="Cancel" color='#f90909'/>
+        {/* <Button onPress={() => {onBack()}} title="Cancel" color='#f90909'/> */}
 
         </ScrollView>
     </View>

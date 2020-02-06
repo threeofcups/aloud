@@ -76,7 +76,8 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      view: 'record',
+      view: 'options',
+      uploaded: false
      
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
@@ -675,46 +676,59 @@ export default class RecordScreen extends React.Component {
         )
     }
 
-
-      if(this.state.view === 'record'){
-          return (
-            <View style={styles.container}>
-              <Text></Text>
-              <TouchableOpacity
-
-                    style={styles.circleButtons}
-                      onPress={() => this.uploadRecFromPhone()} title="Upload from Device">
-
+      if(this.state.view === 'options'){
+        return (
+          <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.circleButtons}
+                onPress={() => this.setState({view: 'up'})}>
                 <Ionicons name={'md-cloud-upload'}
                     size={80}
                     style={styles.icon}
                     />
-              </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={()=> this.setState({view: 'record'})}
+                style={styles.circleButtons}>
+                <Ionicons name={'md-mic'}
+                style={styles.icon}
+                size={80}
+                />
+            </TouchableOpacity>
+          </View>
+        )
+      } else if(this.state.view === 'record'){
+          return (
+            <View style={styles.container}>
+               <TouchableOpacity alignItems={'center'}
+                        onPress={() => {
+                          this.setState({view:'options'});
+                        }}>
+                    <Ionicons name={'md-arrow-round-back'}
+                        size={60}
+                        style={{marginLeft: 20, marginTop: 10}}
+                        color='#f90909'
+                        />
+                    </TouchableOpacity>
               <Text></Text>
-                <View alignItems='center'>
+              <View alignItems='center'>
                   <TouchableOpacity
                      onPress={()=> this.onSaveRecording()}
                      style={styles.circleButtons}>
-                    <Ionicons name={'md-save'}
-                      size={80}
-                      style={styles.icon}
-                      />
+                      <Ionicons name={'md-save'}
+                        size={80}
+                        style={styles.icon}
+                        />
                   </TouchableOpacity>
                   <Text></Text>
                   
-                  <TouchableOpacity
-                    onPress={this._onRecordPressed}
-                    style={styles.circleButtons}>
-                    <Ionicons name={'md-mic'}
-                    style={styles.icon}
-                    size={80}
-                    />
+                  <TouchableOpacity onPress={this._onRecordPressed} style={styles.circleButtons}>
+                      <Ionicons name={'md-mic'} style={styles.icon} size={80}/>
                   </TouchableOpacity>
-                  
                   <Text></Text>
-                      <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
+                  <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                         {this._getRecordingTimestamp()}
-                      </Text>
+                  </Text>
                 </View>
                 <View style={styles.playbackContainer}>
                   <Slider
@@ -746,10 +760,50 @@ export default class RecordScreen extends React.Component {
                 </View>
           );
 
-} else {
+      } else if( this.state.view === 'up'){
+          return (
+            <View>
+            <TouchableOpacity alignItems={'center'}
+                   onPress={() => {
+                     this.setState({view:'options'});
+                   }}>
+               <Ionicons name={'md-arrow-round-back'}
+                   size={60}
+                   style={{marginLeft: 20, marginTop: 10}}
+                   color='#f90909'
+                   />
+               </TouchableOpacity>
+           <TouchableOpacity style={styles.circleButtons}
+               onPress={() => this.uploadRecFromPhone()} title="Upload from Device">
+               <Ionicons name={'md-cloud-upload'}
+               size={80}
+               style={styles.icon}
+               />
+           </TouchableOpacity>
+           <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+       </View>
+                )   
+      } else {
   return (
     <View>
-      <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+         <TouchableOpacity alignItems={'center'}
+                onPress={() => {
+                  this.setState({view:'record'});
+                }}>
+            <Ionicons name={'md-arrow-round-back'}
+                size={60}
+                style={{marginLeft: 20, marginTop: 10}}
+                color='#f90909'
+                />
+            </TouchableOpacity>
+        <TouchableOpacity style={styles.circleButtons}
+            onPress={() => this.uploadRecFromPhone()} title="Upload from Device">
+            <Ionicons name={'md-cloud-upload'}
+            size={80}
+            style={styles.icon}
+            />
+        </TouchableOpacity>
+        <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
     </View>
   )
 }

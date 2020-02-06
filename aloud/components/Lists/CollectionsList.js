@@ -36,7 +36,7 @@ export default function CollectionsList({ collections }) {
         setCollectionData(rowData)
         return (
           
-        //  <AddCollection/>
+       
                 <CollectionsListItem listOrCollection={listOrCollection} collection={rowData} toggleListOrCollection={toggleListOrCollection}/>
         
         )

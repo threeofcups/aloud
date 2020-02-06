@@ -13,3 +13,5 @@ web-report/
 # macOS
 .DS_Store
 /src/config/cloudinary.js
+
+.env

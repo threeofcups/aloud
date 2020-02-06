@@ -6,12 +6,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import RecordingsList from '../Lists/RecordingsList';
 import CollectionsScreen from '../../screens/CollectionScreen'
-
 export default function CollectionsListItem({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
   const [recordings, setRecordings] = useState([]);
-
-  
 
   useEffect(() => {
     //get recordings from collection
@@ -22,10 +19,8 @@ export default function CollectionsListItem({ collection }) {
         })
         .catch(err => console.log('there was an axios err', err))
     };
-
     fetchContent();
   }, [collection]);
-
   const handleLibrarySave = () => {
     console.log(collection);
     axios.post(`https://aloud-server.appspot.com/library/save/collection/${collection.id}`, {
@@ -40,12 +35,9 @@ export default function CollectionsListItem({ collection }) {
         setModalVisibilty(!modalVisible);
       })
   };
-
-
   const onPressHandle = () => {
     setModalVisibilty(!modalVisible);
   };
-
 
   if(collection.title === ''){
     return (
@@ -91,8 +83,10 @@ export default function CollectionsListItem({ collection }) {
     </TouchableOpacity>
         </View>
   )
+
     
   } else
+
 
     return (
       <View>
@@ -137,5 +131,4 @@ export default function CollectionsListItem({ collection }) {
     </TouchableOpacity>
         </View>
   )
-
 }

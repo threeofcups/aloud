@@ -10,6 +10,7 @@ import {
     View,
     TextInput,
     ListItem,
+    RefreshControl
   } from 'react-native';
   import {Card} from 'react-native-elements'
   import proData  from '../src/sampleProData';
@@ -31,21 +32,38 @@ export default function ProfileScreen() {
   const [recordings, setUserRecordings] = useState([]);
    //Profile image hook uploader
   const [selectedImage, setSelectedImage] = React.useState('');
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  function wait(timeout) {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchContent();
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
+
+  const fetchContent = async () => {
+    await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
+    // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
+      .then(response => {
+        console.log('response', response.data[0].collections)
+        setUserInfo(response.data[0].user[0]);
+        setUserCollections(response.data[0].collections);
+        setUserRecordings(response.data[0].recordings);
+      })
+      .then(()=> console.log('then'))
+      .catch(err => console.error(err));
+  };
+
   useEffect(() => {
-    const fetchContent = async () => {
-      await axios.get(`https://aloud-server.appspot.com/profile/bjork/1`)
-      // await axios.get(`https://aloud-server.appspot.com/profile/${userName}/${userId}`)
-        .then(response => {
-          console.log('response', response.data[0].collections)
-          setUserInfo(response.data[0].user[0]);
-          setUserCollections(response.data[0].collections);
-          setUserRecordings(response.data[0].recordings);
-        })
-        .then(()=> console.log('then'))
-        .catch(err => console.error(err));
-    };
     fetchContent()
   }, []);
+
     //profile image uploader
     let openImagePickerAsync = async () => {
       let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -112,7 +130,9 @@ export default function ProfileScreen() {
   // } else {
     return (
     <View style={styles.container}>
-      <ScrollView >
+      <ScrollView 
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <View alignItems='center'>
           <Text></Text>
         <Avatar

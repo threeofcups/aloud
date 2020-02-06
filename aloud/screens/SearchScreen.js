@@ -5,32 +5,50 @@ import CollectionsList from '../components/Lists/CollectionsList';
 import RecordingsList from '../components/Lists/RecordingsList';
 import RecordingsListItem from '../components/ListItems/RecordingsListItem';
 import CollectionsListItem from '../components/ListItems/CollectionsListItem';
-import {Image, FlatList, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,
+import {
+  Image, FlatList, Platform, RefreshControl, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,
 } from 'react-native';
 import {SearchBar, Text} from 'react-native-elements';
 import SearchStack from '../navigation/SearchNavigator';
 
 export default function SearchScreen() {
   const [searchTerm, onChangeText] = React.useState(' ');
-  const [preSearch, setHasBeenSearched] = useState(true);
+  const [preSearch, setPreSearch] = useState(true);
   const [recordings, setRecordings] = React.useState([]);
   const [noMatch, setNoMatch] = React.useState(false);
   const [defaultRecordings, setDefaultRecordings] = React.useState([]);
   const [defaultCollections, setDefaultCollections] = React.useState([]);
   const [collections, setCollections] = React.useState([]);
-  
-  useEffect(() => {
-    const fetchContent = async () => {
-      await axios.get('https://aloud-server.appspot.com/home/1')
-        .then(response => {
-          setDefaultCollections(response.data[0].collections);
-          setDefaultRecordings(response.data[0].recordings);
-        })
-        .catch(err => console.log('there was an axios err', err))
-    };
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  function wait(timeout) {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     fetchContent();
+    onChangeText('');
+    setNoMatch(false);
+    setPreSearch(true);
     setRecordings([]);
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
+
+  const fetchContent = async () => {
+    await axios.get('https://aloud-server.appspot.com/home/1')
+      .then(response => {
+        setDefaultCollections(response.data[0].collections);
+        setDefaultRecordings(response.data[0].recordings);
+      })
+      .catch(err => console.log('there was an axios err', err))
+  };
+
+  useEffect(() => {
+    fetchContent();
   }, []);
 
   const handleSubmit = (() => {
@@ -39,12 +57,12 @@ export default function SearchScreen() {
         .then(response => {
           if (!response.data[0].recordingMatches.length && !response.data[0].collectionMatches.length) {
             setNoMatch(true);
-            setHasBeenSearched(false);
+            setPreSearch(false);
           } else {
           setRecordings(response.data[0].recordingMatches);
           setCollections(response.data[0].collectionMatches);
           setNoMatch(false);
-          setHasBeenSearched(false);
+          setPreSearch(false);
           }
         })
         .catch(err => console.log('there was an axios err', err))
@@ -55,7 +73,9 @@ export default function SearchScreen() {
 
   if (noMatch) {
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <SearchBar
           lightTheme
           round
@@ -81,7 +101,9 @@ export default function SearchScreen() {
 
   if (preSearch) {
     return (
-    <ScrollView>
+    <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <SearchBar
         lightTheme
         round
@@ -105,7 +127,9 @@ export default function SearchScreen() {
   }
 
   return (
-  <ScrollView>
+  <ScrollView
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+  >
       <SearchBar
         lightTheme
         round

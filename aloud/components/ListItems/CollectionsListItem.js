@@ -26,6 +26,22 @@ export default function CollectionsListItem({ collection }) {
     fetchContent();
   }, [collection]);
 
+  const handleLibrarySave = () => {
+    console.log(collection);
+    axios.post(`https://aloud-server.appspot.com/library/save/collection/${collection.id}`, {
+      "userId": "1",
+    })
+      .then(response => {
+        console.log(response.status);
+        setModalVisibilty(!modalVisible);
+      })
+      .catch(err => {
+        console.error(err);
+        setModalVisibilty(!modalVisible);
+      })
+  };
+
+
   const onPressHandle = () => {
     setModalVisibilty(!modalVisible);
   };
@@ -54,6 +70,7 @@ export default function CollectionsListItem({ collection }) {
         <TouchableOpacity
             onPress={() => {
               //save to library handler
+              handleLibrarySave();
               setModalVisibilty(!modalVisible);
             }}
             title="save to library"

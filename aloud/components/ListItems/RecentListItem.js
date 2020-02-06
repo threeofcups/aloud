@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Card, Text, Button, Image } from 'react-native-elements';
+import { Card, Text, Button, Image, Overlay } from 'react-native-elements';
 import { Modal, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -30,16 +30,17 @@ export default function RecentListItem ({ collection }) {
 
   if (modalVisible) {
     return (
-      <Modal
+      <Overlay
+        onBackdropPress={()=> {setModalVisibilty(!modalVisible)}}
         animationType="fade"
-        transparent={false}
+        transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisibilty(!modalVisible)
         }}>
         <ScrollView>
         <LinearGradient
-          colors={['#fc8f8f', '#eac2cd', '#eac2cd', '#ffefef']}
+          colors={['#eac2cd', '#ffefef','#ffefef','#ffefef']}
         >
           <Image
             source={{ uri: collection.url_image }}
@@ -61,7 +62,7 @@ export default function RecentListItem ({ collection }) {
           <Text style={{ marginBottom: 500 }}></Text>
       </LinearGradient>
       </ScrollView>
-      </Modal>
+      </Overlay>
     )
   } 
 

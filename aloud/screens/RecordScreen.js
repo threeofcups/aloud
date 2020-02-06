@@ -76,7 +76,8 @@ export default class RecordScreen extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      view: 'record',
+      view: 'options',
+      uploaded: false
      
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
@@ -655,6 +656,18 @@ export default class RecordScreen extends React.Component {
         .catch(err => console.log('audio upload err', err))
     }
 
+    onUpload (){
+      this.uploadRecFromPhone()
+     
+      setTimeout(()=> {
+        this.setState({uploaded:true})
+
+      }, 500)
+
+      
+
+     
+    }
 
   render() {
     if(!this.state.fontLoaded) {
@@ -675,46 +688,58 @@ export default class RecordScreen extends React.Component {
         )
     }
 
-
-      if(this.state.view === 'record'){
-          return (
-            <View style={styles.container}>
-              <Text></Text>
-              <TouchableOpacity
-
-                    style={styles.circleButtons}
-                      onPress={() => this.uploadRecFromPhone()} title="Upload from Device">
-
+      if(this.state.view === 'options'){
+        return (
+          <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.optionsCircleButtons}
+                onPress={() => this.setState({view: 'up'})}>
                 <Ionicons name={'md-cloud-upload'}
                     size={80}
                     style={styles.icon}
                     />
-              </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={()=> this.setState({view: 'record'})}
+                style={styles.optionsCircleButtons}>
+                <Ionicons name={'md-mic'}
+                style={styles.icon}
+                size={80}
+                />
+            </TouchableOpacity>
+          </View>
+        )
+      } else if(this.state.view === 'record'){
+          return (
+            <View >
+               <TouchableOpacity alignItems={'center'}
+                        onPress={() => {
+                          this.setState({view:'options'});
+                        }}>
+                    <Ionicons name={'md-arrow-round-back'}
+                        size={50}
+                        style={{marginLeft: 20, marginTop: 5}}
+                        color='#f90909'
+                        />
+                    </TouchableOpacity>
               <Text></Text>
-                <View alignItems='center'>
+              <View alignItems='center'>
                   <TouchableOpacity
                      onPress={()=> this.onSaveRecording()}
-                     style={styles.circleButtons}>
-                    <Ionicons name={'md-save'}
-                      size={80}
-                      style={styles.icon}
-                      />
+                     style={styles.recordCircleButtons}>
+                      <Ionicons name={'md-save'}
+                        size={80}
+                        style={styles.icon}
+                        />
                   </TouchableOpacity>
                   <Text></Text>
-                  
-                  <TouchableOpacity
-                    onPress={this._onRecordPressed}
-                    style={styles.circleButtons}>
-                    <Ionicons name={'md-mic'}
-                    style={styles.icon}
-                    size={80}
-                    />
+                  <TouchableOpacity onPress={this._onRecordPressed} style={styles.recordCircleButtons}>
+                      <Ionicons name={'md-mic'} style={styles.icon} size={80}/>
                   </TouchableOpacity>
-                  
                   <Text></Text>
-                      <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
+                  <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
                         {this._getRecordingTimestamp()}
-                      </Text>
+                  </Text>
                 </View>
                 <View style={styles.playbackContainer}>
                   <Slider
@@ -746,10 +771,72 @@ export default class RecordScreen extends React.Component {
                 </View>
           );
 
-} else {
+      } else if( this.state.view === 'up' && this.state.uploaded === true){
+          return (
+            <View>
+            <TouchableOpacity 
+                   onPress={() => {
+                     this.setState({view:'options'});
+                    }}>
+               <Ionicons name={'md-arrow-round-back'}
+                   size={50}
+                   style={{marginLeft: 20, marginTop: 5}}
+                   color='#f90909'
+                   />
+               </TouchableOpacity>
+                   <View alignItems={'center'}>
+           <TouchableOpacity style={styles.upCircleButtons}>
+               <Ionicons name={'md-checkmark'}
+               size={80}
+               style={styles.icon}
+               />
+           </TouchableOpacity>
+               </View>
+           <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+       </View>
+                )   
+      } else if (this.state.view === 'up' && this.state.uploaded === false) {
+        return (
+          <View>
+
+          <TouchableOpacity 
+                 onPress={() => {
+                   this.setState({view:'options'});
+                  }}>
+             <Ionicons name={'md-arrow-round-back'}
+                 size={50}
+                 style={{marginLeft: 20, marginTop: 5}}
+                 color='#f90909'
+                 />
+             </TouchableOpacity>
+                 <View alignItems={'center'}>
+         <TouchableOpacity style={styles.upCircleButtons}
+             onPress={() => this.onUpload()} title="Upload from Device">
+             <Ionicons name={'md-cloud-upload'}
+             size={80}
+             style={styles.icon}
+             />
+         </TouchableOpacity>
+             </View>
+         <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+     </View>
+        )
+      }
+      else {
   return (
     <View>
-      <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
+      <View marginBottom={30}>
+         <TouchableOpacity alignItems={'center'}
+                onPress={() => {this.setState({view:'record'});}}>
+            <Ionicons name={'md-arrow-round-back'}
+                size={50}
+                style={{marginLeft: 20, marginTop: 5}}
+                color='#f90909'
+                />
+            </TouchableOpacity>
+       
+                </View>
+        <SaveRecordingScreen view={this.state.view} onBack={this.onSaveRecording}/>
     </View>
   )
 }
@@ -768,6 +855,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: BACKGROUND_COLOR,
+    marginTop: 50
   },
   noPermissionsText: {
     textAlign: 'center',
@@ -802,6 +890,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'stretch',
+    marginTop: 5
   },
   playbackSlider: {
     alignSelf: 'stretch',
@@ -857,7 +946,30 @@ const styles = StyleSheet.create({
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
-  circleButtons: {
+  optionsCircleButtons: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:120,
+    height:120,
+    backgroundColor:'#f90909',
+    borderRadius:150,
+    marginTop: 50
+  },
+  recordCircleButtons: {
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:120,
+    height:120,
+    backgroundColor:'#f90909',
+    borderRadius:120,
+    marginTop: 5,
+    marginBottom: 5
+  },
+  upCircleButtons: {
     borderWidth:1,
     borderColor:'rgba(0,0,0,0.2)',
     alignItems:'center',
@@ -865,7 +977,9 @@ const styles = StyleSheet.create({
     width:100,
     height:100,
     backgroundColor:'#f90909',
-    borderRadius:150,
+    borderRadius:90,
+    marginTop: 5,
+    marginBottom: 5
   },
   bigCircleButton: {
     borderWidth:1,
@@ -876,6 +990,7 @@ const styles = StyleSheet.create({
     height:100,
     backgroundColor:'#fbf0f2',
     borderRadius:180,
+    marginBottom:10
   },
   icon:{
     color:'#fbf0f2'

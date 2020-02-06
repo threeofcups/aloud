@@ -40,7 +40,7 @@ export default function RecentListItem ({ collection }) {
         }}>
         <ScrollView>
         <LinearGradient
-          colors={['#fc8f8f', '#eac2cd', '#eac2cd', '#ffefef']}
+          colors={['#eac2cd', '#ffefef','#ffefef','#ffefef']}
         >
           <Image
             source={{ uri: collection.url_image }}

@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, StyleSheet, Modal, Text, ScrollView, Picker, TouchableOpacity  } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ListItem, Card, Overlay, Button, Icon } from 'react-native-elements';
+import { ListItem, Card, Overlay, Button, Icon, CardItem } from 'react-native-elements';
 
 export default function RecordingsListItem({ recording }) {
   const [src, setSrc] = useState(recording.url_recording);
@@ -144,13 +144,14 @@ export default function RecordingsListItem({ recording }) {
         <ScrollView style={{ marginTop: 0, flex: 1, backgroundColor: 'transparent' }}>
           <View>
             <LinearGradient
-              colors={['#fb5656', '#eac2cd', '#eac2cd', '#eac2cd']}
+            colors={['#eac2cd', '#ffefef','#ffefef','#ffefef']}
+              // colors={['#fb5656', '#eac2cd', '#eac2cd', '#eac2cd']}
             >
             <Icon
               name={iconStatus}
               underlayColor='#fbf0f2'
               onPress={() => handlePlayPause()}
-              iconStyle={{ marginTop: 70, margin: 22, color: iconColor}}
+              iconStyle={{ marginTop: 65, margin: 22, color: iconColor}}
               size={60}
             />
             <Text style={{ textAlign: "center", fontWeight: 'bold', fontSize: 22, color: '#1e001a'}}>{recording.title}</Text>
@@ -164,7 +165,7 @@ export default function RecordingsListItem({ recording }) {
               }} 
               title="add to collection"
             >
-                <Text style={{ marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
+                <Text style={{ fontSize: 15, marginTop: 11, marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
             </TouchableOpacity>
               <TouchableOpacity
               onPress={() => {
@@ -173,7 +174,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-            <Text style={{ marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
+            <Text style={{ fontSize: 15, marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
             </TouchableOpacity>
          
             </LinearGradient>
@@ -191,33 +192,35 @@ export default function RecordingsListItem({ recording }) {
         bottomDivider
       />
    
-   {/* <LinearGradient
-     colors={['#eac2cd', '#ffefef']}
-   > */}
       <Overlay
       onBackdropPress={() => modalBackdropPress()}
       style={styles.modal}
         backgroundColor='#fbf0f2'
         animationType="fade"
         transparent={true}
-        visible={collectionsModalVisible}
+        isVisible={collectionsModalVisible}
         onRequestClose={() => {
           setCollectionsVisible(!collectionsModalVisible)
         }}>
+    
+   <ScrollView>
+    <LinearGradient
+     colors={['#eac2cd', '#ffefef']}>
+
          <TouchableOpacity alignItems={'center'}
 
 
-          onPress={() => {
-            setCollectionsVisible(!collectionsModalVisible);
-          }} title="Upload from Device">
+onPress={() => {
+  setCollectionsVisible(!collectionsModalVisible);
+}} title="Upload from Device">
 
             <Ionicons name={'md-arrow-round-back'}
             size={60}
-            style={styles.icon}
+            style={{marginLeft: 20, marginTop: 10}}
             color='#f90909'
             />
 </TouchableOpacity>
-        <Text style={{ marginTop: 54, marginLeft: 20, marginBottom: 20, textAlign: "left", fontWeight: 'bold', color: '#1e001a' }}>collections</Text>
+        <Text style={{fontSize: 22, marginTop: 15, marginLeft: 20, marginBottom: 25, textAlign: "center", fontWeight: 'bold', color: '#1e001a' }}>Collections</Text>
         {collections.map((collection, i) => {
           return (
             <View key={i}>
@@ -228,15 +231,21 @@ export default function RecordingsListItem({ recording }) {
                 setCollectionsVisible(!collectionsModalVisible);
               }}
               title="collection"
-            >
-              <Text style={{ marginBottom: 10, fontWeight: 'bold', color: '#fb6262', marginLeft: 20 }}>{collection.title}</Text>
+              >
+                <Card style={{backgroundColor:"pink"}} >
+                
+ 
+              <Text style={{ fontSize: 17, marginBottom: 12, textAlign: "center", fontWeight: 'bold', color: '#fb6262' }}>{collection.title}</Text>
+                
+                </Card>
             </TouchableOpacity>
             </View>
           )
         })}
+       </LinearGradient>
+        </ScrollView>
 
       </Overlay>
-       {/* </LinearGradient> */}
     </View>
   );
 }

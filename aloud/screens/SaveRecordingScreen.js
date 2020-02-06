@@ -181,17 +181,17 @@ export default function SaveRecordingScreen({onBack}) {
 return (
     <View>
         <ScrollView>
-        <Text>Recording Title:</Text>
+        <Text style={{fontWeight: 'bold'}} >Recording Title:</Text>
         <TextInput style={{ height: 40, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setTitle(text)}
         value={title}
         />
-        <Text>Recording Description:</Text>
+        <Text style={{fontWeight: 'bold'}} >Recording Description:</Text>
         <TextInput
         style={{ height: 80, borderColor: 'black', borderWidth: 0.5, margin: 10 }}
         onChangeText={text => setDescription(text)}
         value={description}/>
-        <Text>Public</Text>
+        <Text style={{fontWeight: 'bold'}} >Public</Text>
 
         <Switch
           onValueChange={(value) =>setPrivacy(value)}
@@ -204,8 +204,6 @@ return (
           thumbColor={'#fbf0f2'}/>
         <Text></Text>
         <Button title="Submit Sound" color='#f90909' onPress={()=> saveRecording()}/>
-        {/* <Button onPress={() => {onBack()}} title="Cancel" color='#f90909'/> */}
-
         </ScrollView>
     </View>
   );
@@ -232,6 +230,7 @@ const styles = StyleSheet.create({
       color:'#fff',
       textAlign:'center',
       paddingLeft : 10,
-      paddingRight : 10
+      paddingRight : 10,
+      fontWeight: 'bold'
   }
 });

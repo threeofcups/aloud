@@ -20,7 +20,7 @@ export default function SaveRecordingScreen({onBack}) {
 
 
     saveRecording = async() => {
-
+      onBack()
       //grab the saved document
       //grab the secure url from return
       //post it to the db
@@ -30,6 +30,7 @@ export default function SaveRecordingScreen({onBack}) {
       //   base64: true
       // })
       axios.get('https://aloud-server.appspot.com/user/1')
+      .then(() => onBack())
       .then(() => {
       //   //check out the saved info
       //   console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
@@ -171,9 +172,11 @@ export default function SaveRecordingScreen({onBack}) {
               "speech_to_text": "sample sample sample",
               })
             .then(()=> console.log('your saved recording has been stored in our database'))
+            
             .catch(err => console.error('there was an error with save recording'))
           })
         })
+        
         .catch(err => console.log('audio upload err', err))
       }
 

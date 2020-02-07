@@ -38,7 +38,7 @@ export default function HomeScreen() {
         setHomeCollections(response.data[0].collections);
         setHomeRecordings(response.data[0].recordings);
       })
-      .catch(err => console.log('there was an axios err', err))
+      .catch(err => console.error('there was an axios err', err))
   };
 
   useEffect(() => {

@@ -8,14 +8,14 @@ import RecordingsList from '../components/Lists/RecordingsList';
 import RecentList from '../components/Lists/RecentList';
 import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, RefreshControl } from 'react-native';
 import { MonoText } from '../components/StyledText';
-import AddCollection from '../components/AddCollection'
+// import AddCollection from '../components/AddCollection'
 
 export default function HomeScreen() {
 
   const [collections, setHomeCollections] = useState([]);
   const [recordings, setHomeRecordings] = useState([]);
   const [recentlySaved, setRecentlySaved] = useState([]);
-  const [isVisible, setVisibility] = useState(false);
+  // const [isVisible, setVisibility] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   function wait (timeout) {
@@ -53,9 +53,8 @@ export default function HomeScreen() {
         <Text style={{ marginLeft: 15 }}>Recently Saved</Text>
         <RecentList recentlySaved={recentlySaved} />
         <Text style={{ marginLeft: 15 }}>Collections</Text>
-   
         <CollectionsList collections={collections} />
-        <AddCollection isVisible={isVisible}/>
+        {/* <AddCollection isVisible={isVisible}/> */}
         <Text style={{marginLeft: 15}}>Recordings</Text>
         <RecordingsList recordings={recordings} /> 
       </ScrollView>

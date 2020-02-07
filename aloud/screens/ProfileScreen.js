@@ -24,15 +24,16 @@ import {
   import RecordingsList from '../components/Lists/RecordingsList'
   import {UserContext} from '../App'
   import * as ImagePicker from 'expo-image-picker';
+  import AddCollection from '../components/AddCollection'
 
 export default function ProfileScreen() {
   const {userName, userId, photoUrl} = useContext(UserContext)
   const [userInfo, setUserInfo] = useState([]);
   const [collections, setUserCollections] = useState([]);
   const [recordings, setUserRecordings] = useState([]);
-   //Profile image hook uploader
   const [selectedImage, setSelectedImage] = React.useState('');
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isVisible, setVisibility] = useState(false);
 
   function wait(timeout) {
     return new Promise(resolve => {
@@ -130,7 +131,7 @@ export default function ProfileScreen() {
   // } else {
     return (
     <View style={styles.container}>
-      <ScrollView 
+      <ScrollView
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View alignItems='center'>
@@ -148,6 +149,7 @@ export default function ProfileScreen() {
           <Text>{userInfo.bio}</Text>
         </Card>
           <Text style={styles.titleText}> Collections </Text>
+          <AddCollection style={styles}isVisible={isVisible}/>
           <CollectionsList collections={collections} />
           <Text style={styles.titleText}> Recordings </Text>
           <RecordingsList recordings={recordings} />
@@ -185,7 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems:'center',
     justifyContent:'center',
-    marginLeft: 130,
+    marginLeft: 15,
     marginTop: 10
   },
   name:{

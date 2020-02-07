@@ -147,11 +147,24 @@ export default function RecordingsListItem({ recording }) {
             colors={['#eac2cd', '#ffefef','#ffefef','#ffefef']}
               // colors={['#fb5656', '#eac2cd', '#eac2cd', '#eac2cd']}
             >
+                 <TouchableOpacity alignItems={'center'}
+
+
+onPress={() => {
+  setModalVisible(!modalVisible)
+}} title="Upload from Device">
+
+            <Ionicons name={'md-arrow-round-back'}
+            size={50}
+            style={{marginLeft: 20, marginTop: 10}}
+            color='#f90909'
+            />
+</TouchableOpacity>
             <Icon
               name={iconStatus}
               underlayColor='#fbf0f2'
               onPress={() => handlePlayPause()}
-              iconStyle={{ marginTop: 65, margin: 22, color: iconColor}}
+              iconStyle={{ marginTop: 40, margin: 22, color: iconColor}}
               size={60}
             />
             <Text style={{ textAlign: "center", fontWeight: 'bold', fontSize: 22, color: '#1e001a'}}>{recording.title}</Text>
@@ -165,7 +178,7 @@ export default function RecordingsListItem({ recording }) {
               }} 
               title="add to collection"
             >
-                <Text style={{ fontSize: 15, marginTop: 11, marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
+                <Text style={{ fontSize: 20, marginTop: 40, marginLeft: 20, fontWeight: 'bold', color: '#f90909', textAlign: "left"}}>add to collection</Text>
             </TouchableOpacity>
               <TouchableOpacity
               onPress={() => {
@@ -174,7 +187,7 @@ export default function RecordingsListItem({ recording }) {
               }}
               title="add to library"
             >
-            <Text style={{ fontSize: 15, marginLeft: 20, marginTop: 10, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
+            <Text style={{ fontSize: 20, marginLeft: 20, marginTop: 20, marginBottom: 500, fontWeight: 'bold', color: '#f90909', textAlign: "left" }}>save to library</Text>
             </TouchableOpacity>
          
             </LinearGradient>
@@ -185,7 +198,7 @@ export default function RecordingsListItem({ recording }) {
         containerStyle={{ backgroundColor: 'transparent' }}
         underlayColor='#f90909'
         onPress={() => handlePlayPause()}
-        leftIcon={{ name: iconStatus, color: iconColor, size:40 }}
+        leftIcon={{ name: iconStatus, color: iconColor, size:35 }}
         title={recording.title}
         subtitle={recording.username}
         rightIcon={{ name: 'more-horiz', onPress: () => openModal()}}

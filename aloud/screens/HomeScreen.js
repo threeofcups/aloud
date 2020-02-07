@@ -38,7 +38,7 @@ export default function HomeScreen() {
         setHomeCollections(response.data[0].collections);
         setHomeRecordings(response.data[0].recordings);
       })
-      .catch(err => console.log('there was an axios err', err))
+      .catch(err => console.error('there was an axios err', err))
   };
 
   useEffect(() => {
@@ -50,13 +50,13 @@ export default function HomeScreen() {
       <ScrollView
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={styles.contentContainer}>
-        <Text style={{ marginLeft: 15 }}>Recently Saved</Text>
+        <Text style={{ marginLeft: 15, color: '#1e001a', fontWeight:'bold', marginTop:10 }}>Recently Saved</Text>
         <RecentList recentlySaved={recentlySaved} />
-        <Text style={{ marginLeft: 15 }}>Collections</Text>
+        <Text style={{ marginLeft: 15, color: '#1e001a', fontWeight:'bold', marginTop:10 }}>Collections</Text>
    
         <CollectionsList collections={collections} />
-        <AddCollection isVisible={isVisible}/>
-        <Text style={{marginLeft: 15}}>Recordings</Text>
+        {/* <AddCollection isVisible={isVisible}/> */}
+        <Text style={{marginLeft: 15, color: '#1e001a', fontWeight:'bold', marginTop:10}}>Recordings</Text>
         <RecordingsList recordings={recordings} /> 
       </ScrollView>
     </View>

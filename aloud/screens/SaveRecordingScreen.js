@@ -3,12 +3,14 @@ import {UserContext} from '../App'
 import {View, Text, TextInput, Switch, Button, AppState, StyleSheet} from 'react-native'
 import { createStackNavigator } from 'react-navigation-stack';
 import recNav from '../navigation/AppNavigator';
+import axios from 'axios';
 import RecordingsList from '../components/Lists/RecordingsList'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RecordStack } from '../navigation/MainTabNavigator';
 import RecordScreen from '../screens/RecordScreen';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
+
 export default function SaveRecordingScreen({onBack}) {
     const {userName, userId, photoUrl} = useContext(UserContext)
     const [title, setTitle] = useState("");
@@ -18,23 +20,37 @@ export default function SaveRecordingScreen({onBack}) {
     const [recFlash, recFlasher] = useState(null);
 
 
+    // createAudioAsset = async() => {
+    //   let newAss = await MediaLibrary.createAssetAsync(this.recording.getURI())
+    //   MediaLibrary.createAlbumAsync('Recordings', newAss)
+    //   .then(() => {
+    //     console.log('Album created!');
+    //   })
+    //   .catch(error => {
+    //     console.log('err', error);
+    //   });
+    //   }
+
+    //   saveToPhoneLibrary = async() => {
+    //     this.createAudioAsset()
+    //   .then(asset => MediaLibrary.saveToLibraryAsync(asset))
+    //   .catch(err => console.log('media library save asset err', err))
+    //   }
 
     saveRecording = async() => {
-
       //grab the saved document
       //grab the secure url from return
       //post it to the db
-      // DocumentPicker.getDocumentAsync({
-      //   type: '*/*',
-      //   copyToCacheDirectory: true,
-      //   base64: true
-      // })
-      axios.get('https://aloud-server.appspot.com/user/1')
+      DocumentPicker.getDocumentAsync({
+        type: '*/*',
+        copyToCacheDirectory: true,
+        base64: true
+      })
+      // axios.get('https://aloud-server.appspot.com/user/1')
       .then(() => {
       //   //check out the saved info
-      //   console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
+      console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
       //   //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
-     console.log('jill')
       //   //encode audio to base64
         var Base64 = {
           // private property
@@ -148,9 +164,9 @@ export default function SaveRecordingScreen({onBack}) {
           fd.append("upload_preset", "qna2tpvj");
           fd.append("resource_type", "video");
           //waveforms
-          fd.append("height", "200");
-          fd.append("width", "500");
-          fd.append("flags", "waveform");
+          // fd.append("height", "200");
+          // fd.append("width", "500");
+          // fd.append("flags", "waveform");
           //send the url to the cloud via fetch
           fetch('https://api.cloudinary.com/v1_1/dahfjsacf/upload', {
             method: 'POST',
@@ -177,7 +193,6 @@ export default function SaveRecordingScreen({onBack}) {
         .catch(err => console.log('audio upload err', err))
       }
 
-      
 return (
     <View>
         <ScrollView>

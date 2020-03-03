@@ -76,13 +76,16 @@ export default class RecordScreen extends React.Component {
       volume: 1.0,
       rate: 1.0,
       view: 'options',
-      uploaded: false
+      uploaded: false,
+      circleColor:'#f90909',
+      iconColor: '#fbf0f2'
      
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY));
      // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
     this.onSaveRecording = this.onSaveRecording.bind(this)
+    this.recordButtonChange = this.recordButtonChange.bind(this)
   }
 
   componentDidMount() {
@@ -215,12 +218,17 @@ export default class RecordScreen extends React.Component {
     });
   }
 
-  _onRecordPressed = () => {
+   _onRecordPressed = () => {
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
+      this.recordButtonChange()
+
     } else {
       this._stopPlaybackAndBeginRecording();
+      this.recordButtonChange()
+
     }
+     
   };
 
   _onPlayPausePressed = () => {
@@ -668,6 +676,17 @@ export default class RecordScreen extends React.Component {
      
     }
 
+    recordButtonChange(){
+      if(this.state.iconColor === '#fbf0f2'){
+        this.setState({iconColor: '#f90909'})
+        this.setState({circleColor: '#fbf0f2'})
+      } else {
+        this.setState({iconColor: '#fbf0f2'})
+        this.setState({circleColor: '#f90909'})
+      }
+ 
+    }
+
   render() {
     if(!this.state.fontLoaded) {
         return (
@@ -732,11 +751,20 @@ export default class RecordScreen extends React.Component {
                         />
                   </TouchableOpacity>
                   <Text></Text>
-                  <TouchableOpacity onPress={this._onRecordPressed} style={styles.recordCircleButtons}>
-                      <Ionicons name={'md-mic'} style={styles.icon} size={80}/>
+                  <TouchableOpacity onPress={this._onRecordPressed} style={{borderWidth:1,
+                      borderColor:'rgba(0,0,0,0.2)',
+                      alignItems:'center',
+                      justifyContent:'center',
+                      width:120,
+                      height:120,
+                      backgroundColor:this.state.circleColor,
+                      borderRadius:120,
+                      marginTop: 5,
+                      marginBottom: 5}}>
+                      <Ionicons name={'md-mic'} style={{ color: this.state.iconColor}} size={80}/>
                   </TouchableOpacity>
                   <Text></Text>
-                  <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular' }]}>
+                  <Text style={[styles.recordingTimestamp, { fontFamily: 'cutive-mono-regular', color:'#1e001a' }]}>
                         {this._getRecordingTimestamp()}
                   </Text>
                 </View>
@@ -760,10 +788,11 @@ export default class RecordScreen extends React.Component {
                   </View>
                   <View style={styles.playStopContainer}>
                     <TouchableHighlight
+                    style={{marginTop: 35}}
                       underlayColor={BACKGROUND_COLOR}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} color={'#1e001a'} /> : <Ionicons name={'md-play'} size={50} color={'#1e001a'}/> }
+                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={70} color={'#1e001a'} /> : <Ionicons name={'md-play'} size={70} color={'#1e001a'}/> }
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -1008,7 +1037,22 @@ const styles = StyleSheet.create({
   },
   uploadedIcon:{
     color: '#f90909'
-  }
+  },
+  // recordButtons: {
+  //   borderWidth:1,
+  //   borderColor:'rgba(0,0,0,0.2)',
+  //   alignItems:'center',
+  //   justifyContent:'center',
+  //   width:120,
+  //   height:120,
+  //   backgroundColor:this.state.circleColor,
+  //   borderRadius:120,
+  //   marginTop: 5,
+  //   marginBottom: 5
+  // },
+  // recordIcon:{
+  //   color:this.state.iconColor
+  // },
 });
 
 

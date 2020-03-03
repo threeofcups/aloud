@@ -18,7 +18,7 @@ export default function RecentListItem ({ collection }) {
         .then(response => {
           setRecordings(response.data);
         })
-        .catch(err => console.log('there was an axios err', err))
+        .catch(err => console.error('there was an axios err', err))
     };
 
     fetchContent();

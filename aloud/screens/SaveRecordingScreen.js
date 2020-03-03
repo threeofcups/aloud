@@ -31,27 +31,15 @@ export default function SaveRecordingScreen({onBack}) {
     //   });
     //   }
 
-    //   saveToPhoneLibrary = async() => {
-    //     this.createAudioAsset()
-    //   .then(asset => MediaLibrary.saveToLibraryAsync(asset))
-    //   .catch(err => console.log('media library save asset err', err))
-    //   }
-
     saveRecording = async() => {
-      //grab the saved document
-      //grab the secure url from return
-      //post it to the db
-      DocumentPicker.getDocumentAsync({
-        type: '*/*',
-        copyToCacheDirectory: true,
-        base64: true
-      })
-      // axios.get('https://aloud-server.appspot.com/user/1')
+      onBack()
+      axios.get('https://aloud-server.appspot.com/user/1')
+      .then(() => onBack())
       .then(() => {
-      //   //check out the saved info
+        //check out the saved info
       console.log(`Recording Information -- path: ${succ.uri}, type: ${succ.type}, size: ${succ.size}`)
-      //   //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
-      //   //encode audio to base64
+        //https://www.iana.org/assignments/media-types/media-types.xhtml#audio - MIME audio types
+        //encode audio to base64
         var Base64 = {
           // private property
           _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -187,9 +175,11 @@ export default function SaveRecordingScreen({onBack}) {
               "speech_to_text": "sample sample sample",
               })
             .then(()=> console.log('your saved recording has been stored in our database'))
+            
             .catch(err => console.error('there was an error with save recording'))
           })
         })
+        
         .catch(err => console.log('audio upload err', err))
       }
 

@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { View, StyleSheet, Modal, Text, ScrollView, Picker, TouchableOpacity  } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ListItem, Card, Overlay, Button, Icon, CardItem } from 'react-native-elements';
+import CollectionsListAdd from '../Lists/CollectionsListAdd'
 
 export default function RecordingsListItem({ recording }) {
   const [src, setSrc] = useState(recording.url_recording);
@@ -215,7 +216,6 @@ onPress={() => {
         onRequestClose={() => {
           setCollectionsVisible(!collectionsModalVisible)
         }}>
-    
    <ScrollView>
     <LinearGradient
      colors={['#eac2cd', '#ffefef']}>
@@ -234,6 +234,10 @@ onPress={() => {
             />
 </TouchableOpacity>
         <Text style={{fontSize: 22, marginTop: 15, marginLeft: 20, marginBottom: 25, textAlign: "center", fontWeight: 'bold', color: '#1e001a' }}>Collections</Text>
+        {/* <CollectionsListAdd collections={collections}>
+      
+        </CollectionsListAdd> */}
+          
         {collections.map((collection, i) => {
           return (
             <View key={i}>
@@ -255,6 +259,11 @@ onPress={() => {
             </View>
           )
         })}
+        <Text>
+        </Text>
+        <Text/>
+        <Text/>
+        <Text/>
        </LinearGradient>
         </ScrollView>
 

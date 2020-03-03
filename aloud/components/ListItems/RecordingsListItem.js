@@ -278,7 +278,11 @@ import axios from 'axios';
 import Colors from '../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, StyleSheet, Modal, Text, ScrollView, Picker, TouchableOpacity  } from 'react-native';
-import { ListItem, Button, Icon } from 'react-native-elements';
+
+import { Ionicons } from '@expo/vector-icons';
+import { ListItem, Card, Overlay, Button, Icon, CardItem } from 'react-native-elements';
+import CollectionsListAdd from '../Lists/CollectionsListAdd'
+
 
 export default function RecordingsListItem({ recording }) {
   const [src, setSrc] = useState(recording.url_recording);
@@ -486,10 +490,30 @@ onPress={() => {
         onRequestClose={() => {
           setCollectionsVisible(!collectionsModalVisible)
         }}>
-        <LinearGradient
-          colors={['#eac2cd', '#ffefef']}
-        >
-        <Text style={{ marginTop: 54, marginLeft: 20, marginBottom: 20, textAlign: "left", fontWeight: 'bold', color: '#1e001a' }}>collections</Text>
+
+   <ScrollView>
+    <LinearGradient
+     colors={['#eac2cd', '#ffefef']}>
+
+         <TouchableOpacity alignItems={'center'}
+
+
+onPress={() => {
+  setCollectionsVisible(!collectionsModalVisible);
+}} title="Upload from Device">
+
+            <Ionicons name={'md-arrow-round-back'}
+            size={50}
+            style={{marginLeft: 20, marginTop: 10}}
+            color='#f90909'
+            />
+</TouchableOpacity>
+        <Text style={{fontSize: 22, marginTop: 15, marginLeft: 20, marginBottom: 25, textAlign: "center", fontWeight: 'bold', color: '#1e001a' }}>Collections</Text>
+        {/* <CollectionsListAdd collections={collections}>
+      
+        </CollectionsListAdd> */}
+          
+
         {collections.map((collection, i) => {
           return (
             <View key={i}>
@@ -506,14 +530,13 @@ onPress={() => {
             </View>
           )
         })}
-        <TouchableOpacity
-          onPress={() => {
-            setCollectionsVisible(!collectionsModalVisible);
-          }}
-          title="x"
-        >
-          <Text style={{ marginLeft: 20, marginBottom: 1000, fontSize: 24, fontWeight: 'bold', color: '#fb6262' }}>x</Text>
-        </TouchableOpacity>
+
+        <Text>
+        </Text>
+        <Text/>
+        <Text/>
+        <Text/>
+
        </LinearGradient>
       </Modal>
     </View>

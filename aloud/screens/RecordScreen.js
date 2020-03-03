@@ -792,7 +792,7 @@ export default class RecordScreen extends React.Component {
                       underlayColor={BACKGROUND_COLOR}
                       onPress={this._onPlayPausePressed}
                       disabled={!this.state.isPlaybackAllowed || this.state.isLoading}>
-                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={70} color={'#1e001a'} /> : <Ionicons name={'md-play'} size={70} color={'#1e001a'}/> }
+                       {this.state.isPlaying ? <Ionicons name={'md-pause'} size={50} color={'#1e001a'} /> : <Ionicons name={'md-play'} size={50} color={'#1e001a'}/> }
                     </TouchableHighlight>
                   </View>
                 </View>

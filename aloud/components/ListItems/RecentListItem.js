@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Card, Text, Button, Image, Overlay } from 'react-native-elements';
+import { Card, Text, Button, Image } from 'react-native-elements';
 import { Modal, View } from 'react-native';
 import { TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import RecordingsList from '../Lists/RecordingsList';
-import CollectionsScreen from '../../screens/CollectionScreen'
+import CollectionsScreen from '../../screens/CollectionScreen';
 
 export default function RecentListItem ({ collection }) {
   const [modalVisible, setModalVisibilty] = useState(false);
@@ -30,17 +30,16 @@ export default function RecentListItem ({ collection }) {
 
   if (modalVisible) {
     return (
-      <Overlay
-        onBackdropPress={()=> {setModalVisibilty(!modalVisible)}}
+      <Modal
         animationType="fade"
-        transparent={true}
+        transparent={false}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisibilty(!modalVisible)
         }}>
         <ScrollView>
         <LinearGradient
-          colors={['#eac2cd', '#ffefef','#ffefef','#ffefef']}
+          colors={['#fc8f8f', '#eac2cd', '#eac2cd', '#ffefef']}
         >
           <Image
             source={{ uri: collection.url_image }}
@@ -62,7 +61,7 @@ export default function RecentListItem ({ collection }) {
           <Text style={{ marginBottom: 500 }}></Text>
       </LinearGradient>
       </ScrollView>
-      </Overlay>
+      </Modal>
     )
   } 
 
@@ -76,5 +75,4 @@ export default function RecentListItem ({ collection }) {
         />
       </TouchableWithoutFeedback>
     )
-
 }
